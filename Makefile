@@ -5,7 +5,7 @@ TARGETS := swcarpentry/r-novice-gapminder.txt
 
 all: $(TARGETS)
 
-swcarpentry/%.txt : swcarpentry/%.R transform-lesson.R
+%.txt : %.R transform-lesson.R
 	Rscript transform-lesson.R \
 		--save    ../$(@D)/ \
 		--output  ../$(@D)/sandpaper/ \
