@@ -8,9 +8,9 @@ all: $(TARGETS)
 %.txt : %.R transform-lesson.R
 	Rscript transform-lesson.R \
 		--build \
-		--save    ../$(@D)/ \
-		--output  ../$(@D)/sandpaper/ \
-		          $(@D)/$* \
-		          $<
+		--save   ../$(@D)/ \
+		--output ../$(@D)/sandpaper/ \
+		         $(@D)/$* \
+		         $<
 	touch $@
 
