@@ -151,7 +151,9 @@ if (new_established) {
 }
 
 # appending our gitignore file
-file.append(to(".gitignore"), from(".gitignore"))
+tgi <- readLines(to(".gitignore"))
+fgi <- readLines(from(".gitignore"))
+writeLines(unique(c(tgi, fgi)), to(".gitignore"))
 
 # Modify config file to match as close as possible to the one we have
 cli::cli_h2("setting the configuration parameters in config.yaml")
@@ -236,7 +238,8 @@ if (arguments$build) {
   build_lesson(new, quiet = FALSE)
 }
 
-if (length(last)) {
+stat <- gert::git_status(repo = new)
+if (length(last) && nrow(stat) > 0) {
   cli::cli_alert_info("Committing new changes...")
   git_add(".", repo = new)
   git_commit("[custom] fix lesson contents",
