@@ -25,7 +25,7 @@ Usage:
 <script>                  additional script to run after the transformation.
                           Important variables to use will be `old` = path to the
                           lesson we just downloaded and `new` = path to the new
-                          sandpaper lesson.
+                          sandpaper lesson. `old_lesson` = the Lesson object
 }' -> doc
 library("fs")
 library("docopt")
@@ -81,7 +81,7 @@ lsn <- tempfile()
 there <- function(...) path(lsn, ...)
 
 cli::cli_h1("Reading in lesson with {.pkg pegboard}")
-pgap <- pegboard::Lesson$new(src, fix_liquid = arguments$fix_liquid)
+old_lesson <- pegboard::Lesson$new(src, fix_liquid = arguments$fix_liquid)
 # Script to transform the episodes via pegboard with traces
 transform <- function(e, out = lsn) {
   outdir <- fs::path(out, "episodes/")
@@ -160,8 +160,8 @@ if (length(gert::git_remote_list(repo = src)) == 0) {
 
 # Transform and write to our episodes folder
 cli::cli_h1("Transforming Episodes")
-purrr::walk(pgap$episodes, ~try(transform(.x)))
-set_episodes(lsn, order = names(pgap$episodes), write = TRUE)
+purrr::walk(old_lesson$episodes, ~try(transform(.x)))
+set_episodes(lsn, order = names(old_lesson$episodes), write = TRUE)
 
 # Modify the index to include our magic header
 idx <- list.files(".", pattern = "^index.R?md")
