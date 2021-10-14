@@ -48,10 +48,13 @@ if (!dir_exists(this_repo)) {
 }
 old <- path(this_repo, path_file(arguments$repo))
 new <- path(new, path_file(arguments$repo))
-
-if (dir_exists(new)) {
-  dir_delete(new) # we need to clean up what we previously created
+# Record status of previous attempt
+if (length(arguments$script)) {
+  old_commits <- readLines(gsub(".R$", ".txt", arguments$script))
+} else {
+  old_commits <- character(0)
 }
+new_commits <- character(2)
 # Download a carpentries lesson
 #
 library("usethis")
@@ -59,12 +62,18 @@ library("gert")
 we_have_local_copy <- dir_exists(old)
 if (we_have_local_copy) {
   cli::cli_alert("switching to local copy of {.file {arguments$repo}} and pulling changes")
-  setwd(old)
   git_pull(repo = old)
 } else {
   cli::cli_alert("Downloading {.file {arguments$repo}} with {.fn usethis::create_from_github}")
-  create_from_github(arguments$repo, destdir = this_repo, fork = FALSE, open = TRUE)
+  create_from_github(arguments$repo, destdir = this_repo, fork = FALSE, open = FALSE)
 }
+
+new_commits[1] <- git_info(repo = old)$commit
+
+if (dir_exists(new)) {
+  new_commits[2] <- git_info(repo = new)$commit
+}
+
 
 # Transfom a carpentries lesson to a sandpaper lesson
 #
@@ -81,13 +90,12 @@ library("purrr")
 library("xml2")
 library("here")
 
-src <- old
-lsn <- tempfile()
+lsn  <- tempfile()
 from <- function(...) path(old, ...)
 to   <- function(...) path(lsn, ...)
 
 cli::cli_h1("Reading in lesson with {.pkg pegboard}")
-old_lesson <- pegboard::Lesson$new(src, fix_liquid = arguments$fix_liquid)
+old_lesson <- pegboard::Lesson$new(old, fix_liquid = arguments$fix_liquid)
 # Script to transform the episodes via pegboard with traces
 transform <- function(e, out = lsn) {
   outdir <- fs::path(out, "episodes/")
@@ -127,12 +135,20 @@ set_config <- function(key, value, path = lsn) {
   writeLines(l, cfg)
 }
 
-# Create lesson
-cli::cli_h1("creating a new sandpaper lesson")
+new_established <- length(old_commits) && old_commits[2] == new_commits[2]
+
 suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
-create_lesson(lsn, name = cfg$title, open = FALSE)
-file_delete(to("episodes", "01-introduction.Rmd"))
-file_delete(to("index.md"))
+
+if (new_established) {
+  cli::cli_h1("using existing lesson in {.file new}")
+  lsn <- new
+} else {
+  # Create lesson
+  cli::cli_h1("creating a new sandpaper lesson")
+  create_lesson(lsn, name = cfg$title, open = FALSE)
+  file_delete(to("episodes", "01-introduction.Rmd"))
+  file_delete(to("index.md"))
+}
 
 # appending our gitignore file
 file.append(to(".gitignore"), from(".gitignore"))
@@ -143,10 +159,10 @@ set_config("title", cfg$title)
 set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
 set_config("contact", cfg$email)
 
-if (length(gert::git_remote_list(repo = src)) == 0) {
+if (length(gert::git_remote_list(repo = old)) == 0) {
   message("Cannot automatically set the following configuration values:\n source: <GITHUB URL>\n carpentry: <CARPENTRY ABBREVIATION>\n\nPlease edit config.yaml to set these values")
 } else {
-  rmt <- gert::git_remote_list(repo = src)
+  rmt <- gert::git_remote_list(repo = old)
   i <- if (any(i <- rmt$name == "upstream")) which(i) else 1L
   url <- rmt$url[[i]]
   rmt <- gh:::github_remote_parse(rmt$url[[i]])$username
@@ -168,10 +184,10 @@ purrr::walk(old_lesson$episodes, ~try(transform(.x)))
 set_episodes(lsn, order = names(old_lesson$episodes), write = TRUE)
 
 # Modify the index to include our magic header
-idx <- list.files(".", pattern = "^index.R?md")
+idx <- list.files(old, pattern = "^index.R?md")
 if (length(idx)) {
   idx <- if (length(idx) == 2) "index.Rmd" else idx
-  idx <- Episode$new(idx, fix_liquid = TRUE)
+  idx <- Episode$new(from(idx), fix_liquid = TRUE)
   idx$yaml[length(idx$yaml) + 0:1] <- c("site: sandpaper::sandpaper_site", "---")
   idx$unblock()$use_sandpaper()
 }
@@ -196,14 +212,19 @@ fs::dir_copy(from("fig"), to("episodes/fig"), overwrite = TRUE)
 fs::dir_copy(from("files"), to("episodes/files"), overwrite = TRUE)
 fs::dir_copy(from("data"), to("episodes/data"), overwrite = TRUE)
 
-cli::cli_h1("Copying transformed lesson to {new}")
-dir_copy(lsn, new)
-cli::cli_alert_info("Committing...")
-git_add(".", repo = new)
-git_commit("Transfer lesson to sandpaper",
-  committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
-  repo = new
-)
+if (!new_established) {
+  if (dir_exists(new)) {
+    dir_delete(new)
+  }
+  cli::cli_h1("Copying transformed lesson to {new}")
+  dir_copy(lsn, new)
+  cli::cli_alert_info("Committing...")
+  git_add(".", repo = new)
+  git_commit("Transfer lesson to sandpaper",
+    committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
+    repo = new
+  )
+}
 cli::cli_alert_info("The lesson is ready in {.file {new}}")
 
 if (length(last)) {
@@ -214,3 +235,16 @@ if (length(last)) {
 if (arguments$build) {
   build_lesson(new, quiet = FALSE)
 }
+
+if (length(last)) {
+  cli::cli_alert_info("Committing new changes...")
+  git_add(".", repo = new)
+  git_commit("[custom] fix lesson contents",
+    committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
+    repo = new
+  )
+}
+
+cli::cli_alert_info("writing commit statuses")
+new_commits[2] <- git_info(repo = new)$commit
+writeLines(new_commits, sub("R$", "txt", arguments$script))
