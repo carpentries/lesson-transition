@@ -90,22 +90,20 @@ old_lesson <- pegboard::Lesson$new(src, fix_liquid = arguments$fix_liquid)
 # Script to transform the episodes via pegboard with traces
 transform <- function(e, out = lsn) {
   outdir <- fs::path(out, "episodes/")
-  cli::cat_rule(fs::path_rel(e$name, out)) # -----------------------------------
-  cli::cli_process_start(glue::glue(" converting blockquotes to fenced div"))
+  cli::cli_process_start("Converting {.file {fs::path_rel(e$name, out)}} to {.emph sandpaper}")
+  cli::cli_status_update("converting block quotes to pandoc fenced div")
   e$unblock()
-  cli::cli_process_done()
 
-  cli::cli_process_start(glue::glue("removing Jekyll syntax"))
+  cli::cli_status_update("removing Jekyll syntax")
   e$use_sandpaper()
-  cli::cli_process_done()
 
-  cli::cli_process_start(glue::glue("moving yaml items to body"))
+  cli::cli_status_update("moving yaml items to body")
   e$move_questions()
   e$move_objectives()
   e$move_keypoints()
   cli::cli_process_done()
 
-  cli::cli_process_start(glue::glue("writing output"))
+  cli::cli_process_start("Writing {.file {outdir}/{e$name}}")
   e$write(outdir, format = "Rmd", edit = FALSE)
   cli::cli_process_done()
 }
@@ -141,7 +139,7 @@ file.append(there(".gitignore"), here(".gitignore"))
 # Modify config file to match as close as possible to the one we have
 cli::cli_h2("setting the configuration parameters in config.yaml")
 set_config("title", cfg$title)
-set_config("life_cycle", cfg$life_cycle)
+set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
 set_config("contact", cfg$email)
 
 if (length(gert::git_remote_list(repo = src)) == 0) {
