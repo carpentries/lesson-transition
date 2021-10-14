@@ -40,12 +40,15 @@ if (arguments$quiet) {
 }
 
 this_repo <- if (length(arguments$save)) path_abs(arguments$save) else tempfile()
-new <- path_abs(arguments$out)
+new  <- path_abs(arguments$out)
 last <- if (length(arguments$script)) path_abs(arguments$script) else NULL
 
 if (!dir_exists(this_repo)) {
   dir_create(this_repo, recurse = TRUE)
 }
+old <- path(this_repo, path_file(arguments$repo))
+new <- path(new, path_file(arguments$repo))
+
 if (dir_exists(new)) {
   dir_delete(new) # we need to clean up what we previously created
 }
@@ -53,7 +56,6 @@ if (dir_exists(new)) {
 #
 library("usethis")
 library("gert")
-old <- path(this_repo, path_file(arguments$repo))
 we_have_local_copy <- dir_exists(old)
 if (we_have_local_copy) {
   cli::cli_alert("switching to local copy of {.file {arguments$repo}} and pulling changes")
