@@ -9,9 +9,29 @@ Infrastructure").
 These scripts require a setup with R and access to the internet. It is currently
 a work in progress and may evolve in the future.
 
-The makefile controls translations of our lessons, with more to be added.
+## Usage
 
-These are the parameters for the lesson translation scripts:
+To add a lesson for translation, there are two steps:
+
+1. add an R script with the repository name under a folder with the organisation
+   name (e.g. `swcarpentry/r-novice-gapminder.R` or 
+  `datacarpentry/R-ecology-lesson.R`). 
+2. run `make`
+
+### Notes
+
+The `transform-lesson.R` script is meant to serve as a generalized method for
+converting lesson content from one engine to the other. It does the majority of
+the heavy lifting, but it can not completely convert lessons perfectly. Because
+each lesson is built in a _slightly_ different way and kramdown (Jekyll's 
+markdown parser) allows for patterns that would be invalid in any other parser,
+the conversion is not 100%. This additional R script allows you to make
+additional changes such as moving files or fixing errors. This file can be blank
+if there are no changes you wish to make
+
+If your lesson is in a repository that does not belong to an official carpentries
+account, you will need to append the `DIRS` varaible in the makefile.
+
 
 ```
 Transform a lesson from styles template to sandpaper infrastructure
