@@ -12,17 +12,20 @@ Usage:
   transform-lesson.R -v | --version
   transform-lesson.R [-qnf] [-s <dir>] -o <dir> <repo> [<script>]
 
--h, --help                show this information and exit
--v, --version             print the version information of this script
--q, --quiet               do not print any progress messages
--n, --dry-run             perform the translation, but do not create the output directory
--f, --fix-liquid          fix liquid tags that may not be processed normally
--s <dir>, --save=<dir>    the directory to save the repository for later use,
+-h, --help                Show this information and exit
+-v, --version             Print the version information of this script
+-q, --quiet               Do not print any progress messages
+-n, --dry-run             Perform the translation, but do not create the output
+                          directory.
+-f, --fix-liquid          Fix liquid tags that may not be processed normally
+-b, --build               Build the lesson after translation. This can be useful
+                          when writing scripts to see what needs to be fixed.
+-s <dir>, --save=<dir>    The directory to save the repository for later use,
                           defaults to a temporary directory
--o <dir>, --output=<dir>  the output directory for the new sandpaper repository
-<repo>                    the GitHub repository that contains the lesson. E.g.
+-o <dir>, --output=<dir>  The output directory for the new sandpaper repository
+<repo>                    The GitHub repository that contains the lesson. E.g.
                           carpentries/lesson-example
-<script>                  additional script to run after the transformation.
+<script>                  Additional script to run after the transformation.
                           Important variables to use will be `old` = path to the
                           lesson we just downloaded and `new` = path to the new
                           sandpaper lesson. `old_lesson` = the Lesson object
@@ -205,4 +208,8 @@ cli::cli_alert_info("The lesson is ready in {.file {new}}")
 if (length(last)) {
   cli::cli_alert_info("Running {last}")
   source(last)
+}
+
+if (arguments$build) {
+  build_lesson(new)
 }
