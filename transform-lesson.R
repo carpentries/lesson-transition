@@ -81,9 +81,10 @@ library("purrr")
 library("xml2")
 library("here")
 
-src <- here()
+src <- old
 lsn <- tempfile()
-there <- function(...) path(lsn, ...)
+from <- function(...) path(old, ...)
+to   <- function(...) path(lsn, ...)
 
 cli::cli_h1("Reading in lesson with {.pkg pegboard}")
 old_lesson <- pegboard::Lesson$new(src, fix_liquid = arguments$fix_liquid)
@@ -128,13 +129,13 @@ set_config <- function(key, value, path = lsn) {
 
 # Create lesson
 cli::cli_h1("creating a new sandpaper lesson")
-suppressWarnings(cfg <- yaml::read_yaml(here("_config.yml")))
+suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
 create_lesson(lsn, name = cfg$title, open = FALSE)
-file_delete(there("episodes", "01-introduction.Rmd"))
-file_delete(there("index.md"))
+file_delete(to("episodes", "01-introduction.Rmd"))
+file_delete(to("index.md"))
 
 # appending our gitignore file
-file.append(there(".gitignore"), here(".gitignore"))
+file.append(to(".gitignore"), from(".gitignore"))
 
 # Modify config file to match as close as possible to the one we have
 cli::cli_h2("setting the configuration parameters in config.yaml")
@@ -177,23 +178,23 @@ if (length(idx)) {
 
 # write index and readme
 idx$write(path = path(lsn), format = "md")
-file_copy(here("README.md"), there("README.md"), overwrite = TRUE)
+file_copy(from("README.md"), to("README.md"), overwrite = TRUE)
 
 # Transform non-episode MD files
 cli::cli_h2("copying instructor and learner materials")
-rewrite(here("_extras", "design.md"), there("instructors"))
-rewrite(here("_extras", "guide.md"), there("instructors"))
-rewrite(here("_extras", "discuss.md"), there("learners"))
-rewrite(here("_extras", "exercises.md"), there("learners"))
-rewrite(here("_extras", "figures.md"), there("learners"))
-rewrite(here("reference.md"), there("learners"))
-rewrite(here("setup.md"), there("learners"))
+rewrite(from("_extras", "design.md"), to("instructors"))
+rewrite(from("_extras", "guide.md"), to("instructors"))
+rewrite(from("_extras", "discuss.md"), to("learners"))
+rewrite(from("_extras", "exercises.md"), to("learners"))
+rewrite(from("_extras", "figures.md"), to("learners"))
+rewrite(from("reference.md"), to("learners"))
+rewrite(from("setup.md"), to("learners"))
 
 # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
 cli::cli_h2("copying figures, files, and data")
-fs::dir_copy(here("fig"), there("episodes/fig"), overwrite = TRUE)
-fs::dir_copy(here("files"), there("episodes/files"), overwrite = TRUE)
-fs::dir_copy(here("data"), there("episodes/data"), overwrite = TRUE)
+fs::dir_copy(from("fig"), to("episodes/fig"), overwrite = TRUE)
+fs::dir_copy(from("files"), to("episodes/files"), overwrite = TRUE)
+fs::dir_copy(from("data"), to("episodes/data"), overwrite = TRUE)
 
 cli::cli_h1("Copying transformed lesson to {new}")
 dir_copy(lsn, new)
