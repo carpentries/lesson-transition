@@ -25,7 +25,7 @@ Usage:
   transform-lesson.R -o <dir> <repo> [<script>]
   transform-lesson.R -h | --help
   transform-lesson.R -v | --version
-  transform-lesson.R [-qnf] [-s <dir>] -o <dir> <repo> [<script>]
+  transform-lesson.R [-qnfb] [-s <dir>] -o <dir> <repo> [<script>]
 
 -h, --help                Show this information and exit
 -v, --version             Print the version information of this script
