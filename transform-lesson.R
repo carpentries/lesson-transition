@@ -99,7 +99,7 @@ old_lesson <- pegboard::Lesson$new(old, fix_liquid = arguments$fix_liquid)
 # Script to transform the episodes via pegboard with traces
 transform <- function(e, out = lsn) {
   outdir <- fs::path(out, "episodes/")
-  cli::cli_process_start("Converting {.file {fs::path_rel(e$name, out)}} to {.emph sandpaper}")
+  cli::cli_process_start("Converting {.file {e$path}} to {.emph sandpaper}")
   cli::cli_status_update("converting block quotes to pandoc fenced div")
   e$unblock()
 
@@ -140,7 +140,7 @@ new_established <- length(old_commits) && old_commits[2] == new_commits[2]
 suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
 
 if (new_established) {
-  cli::cli_h1("using existing lesson in {.file new}")
+  cli::cli_h1("using existing lesson in {.file {new}}")
   lsn <- new
 } else {
   # Create lesson

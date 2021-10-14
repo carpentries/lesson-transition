@@ -16,7 +16,7 @@ all: $(TARGETS)
 	  --build \
 	  --save   ../$(@D)/ \
 	  --output ../$(@D)/sandpaper/ \
-	    $(@D)/$* \
+	    $* \
 	    $<
 	touch $@
 
