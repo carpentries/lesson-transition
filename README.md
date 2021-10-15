@@ -32,37 +32,39 @@ if there are no changes you wish to make
 If your lesson is in a repository that does not belong to an official carpentries
 account, you will need to append the `DIRS` varaible in the makefile.
 
+## Requirements
 
+The packages used in this script are the same packages that are used in 
+{sandpaper}, you can [follow the setup instructions to get this script working
+](https://carpentries.github.io/sandpaper-docs/setup) with the following 
+exceptions (which may update):
+
+1. install the {docopt} package: `install.pacakges("docopt")`
+2. install [{tinkr} pull request 57](https://github.com/ropensci/tinkr/pull/57): `remotes::install_github("ropensci/tinkr#57")`
+
+## Post translation
+
+After a lesson is translated it lives in a brand new repository that will have
+three commits:
+
+1. the bootstrap of the new lesson
+2. the first pass of `transform-lesson.R`
+3. Any other changes dictated by your custom script. 
+
+To get this to GitHub, I like to use the {usethis} package:
+
+```r
+# In the directory of the new lesson
+library(usethis)
+use_github(organization = "data-lessons")
 ```
-Transform a lesson from styles template to sandpaper infrastructure
 
-This script will download a lesson repository from GitHub, translate it to the
-new lesson infrastructure, {sandpaper}, and apply any post-translation scripts
-that need to be applied in order to fix any issues that occurred in the
-process.
+After a few minutes, the lesson will be sent to GitHub and build the site, but
+the pages need to be activated, which you can do via usethis:
 
-Usage: 
-  transform-lesson.R -o <dir> <repo> [<script>]
-  transform-lesson.R -h | --help
-  transform-lesson.R -v | --version
-  transform-lesson.R [-qnfb] [-s <dir>] -o <dir> <repo> [<script>]
-
--h, --help                Show this information and exit
--v, --version             Print the version information of this script
--q, --quiet               Do not print any progress messages
--n, --dry-run             Perform the translation, but do not create the output
-                          directory.
--f, --fix-liquid          Fix liquid tags that may not be processed normally
--b, --build               Build the lesson after translation. This can be useful
-                          when writing scripts to see what needs to be fixed.
--s <dir>, --save=<dir>    The directory to save the repository for later use,
-                          defaults to a temporary directory
--o <dir>, --output=<dir>  The output directory for the new sandpaper repository
-<repo>                    The GitHub repository that contains the lesson. E.g.
-                          carpentries/lesson-example
-<script>                  Additional script to run after the transformation.
-                          Important variables to use will be `old` = path to the
-                          lesson we just downloaded and `new` = path to the new
-                          sandpaper lesson. `old_lesson` = the Lesson object 
-
+```r
+# In the directory of the new lesson
+library(usethis)
+use_github_pages()
 ```
+
