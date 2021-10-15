@@ -244,9 +244,10 @@ if (arguments$build) {
 
 stat <- gert::git_status(repo = new)
 if (length(last) && nrow(stat) > 0) {
+  msg <- getOption("custom.transformation.message", default = "[custom] fix lesson contents")
   cli::cli_alert_info("Committing new changes...")
   git_add(".", repo = new)
-  git_commit("[custom] fix lesson contents",
+  git_commit(msg,
     committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
     repo = new
   )

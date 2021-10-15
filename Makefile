@@ -20,3 +20,6 @@ all: $(TARGETS)
 	    $<
 	touch $@
 
+datacarpentry/R-ecology-lesson.txt : datacarpentry/R-ecology-lesson.R
+	@echo $<
+
