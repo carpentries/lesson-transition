@@ -50,7 +50,8 @@ old <- path(this_repo, path_file(arguments$repo))
 new <- path(new, path_file(arguments$repo))
 # Record status of previous attempt
 if (length(arguments$script)) {
-  old_commits <- readLines(gsub(".R$", ".txt", arguments$script))
+  f <- gsub(".R$", ".txt", arguments$script)
+  old_commits <- if (file_exists(f)) readLines(f) else character(0)
 } else {
   old_commits <- character(0)
 }
@@ -112,8 +113,11 @@ transform <- function(e, out = lsn) {
   e$move_keypoints()
   cli::cli_process_done()
 
+  cli::cli_status_update("fixing math blocks")
+  e$protect_math()
+
   cli::cli_process_start("Writing {.file {outdir}/{e$name}}")
-  e$write(outdir, format = "Rmd", edit = FALSE)
+  e$write(outdir, format = path_ext(e$name), edit = FALSE)
   cli::cli_process_done()
 }
 
