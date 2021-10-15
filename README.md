@@ -51,7 +51,22 @@ three commits:
 2. the first pass of `transform-lesson.R`
 3. Any other changes dictated by your custom script. 
 
-To get this to GitHub, I like to use the {usethis} package:
+To get this to GitHub, I like to use the {usethis} package. For this operation,
+you _will need_ to set up your GitHub PAT. [I wrote up a tutorial to set up your
+PAT via R that may be helpful](https://carpentries.github.io/sandpaper-docs/github-pat.html).
+
+If, however, you are on Linux and find yourself in credentials hell, you might
+find solace in [Danielle Navarro's blog post from August on setting up credentials for Ubuntu](https://blog.djnavarro.net/posts/2021-08-08_git-credential-helpers/)
+
+
+### Steps for uploading the lesson and activating github pages
+
+Here, I'm using the [data-lessons](https://github.com/data-lessons), which was
+the organisation that eventually migrated to DataCarpentry and now serves as a
+kind of sandbox for The Carpentries. 
+
+You should use your own account for this as you will likely not have access to
+the data-lessons organisation.
 
 ```r
 # In the directory of the new lesson
