@@ -13,9 +13,12 @@ all: repos.md
 
 repos.md : $(TARGETS)
 	rm -f repos.md
-	for i in $^; do echo "- [$$i](https://github.com/data-lessons/$$i)" |\
-	  sed -r -e "s_.com/([^/]+)/[^/]+_.com/\1_" |\
-	  sed -e "s/.txt//g" >> $@; done
+	for i in $^;\
+	 do repo=$$(echo $$i | sed -e 's/.txt//');\
+	 slug=$$(basename $${repo});\
+	 account=$$(dirname $${repo});\
+	 echo "- [$${repo}](https://github.com/$${repo}) -> [data-lessons/$${slug}](https://github.com/data-lessons/$${slug})" >> $@;\
+	 done
 
 %.txt : %.R transform-lesson.R
 	Rscript transform-lesson.R \
