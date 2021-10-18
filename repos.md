@@ -1,3 +1,3 @@
-- [swcarpentry/r-novice-gapminder](https://github.com/data-lessons/r-novice-gapminder.txt)
-- [datacarpentry/R-ecology-lesson](https://github.com/data-lessons/R-ecology-lesson.txt)
-- [carpentries-incubator/simple-linear-regression-public-health](https://github.com/data-lessons/simple-linear-regression-public-health.txt)
+- [swcarpentry/r-novice-gapminder](https://github.com/data-lessons/r-novice-gapminder)
+- [datacarpentry/R-ecology-lesson](https://github.com/data-lessons/R-ecology-lesson)
+- [carpentries-incubator/simple-linear-regression-public-health](https://github.com/data-lessons/simple-linear-regression-public-health)
