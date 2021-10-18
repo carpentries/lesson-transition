@@ -49,7 +49,6 @@ arguments <- docopt(doc, version = "R Ecology Converter 2021-10", help = TRUE)
 # TODO: write code handout extractor
 # see https://github.com/ropensci/tinkr/pull/52 for details on how to do this
 
-options(error = recover)
 library("sandpaper")
 library("usethis")
 # NOTE: this version of pegboard needs this PR from tinkr: 
@@ -208,8 +207,8 @@ idx$write(path = lsn, format = "Rmd")
 rdm$write(path = lsn, format = "md")
 
 # hack: copy the included file in both places
-file_copy(from("_page_built_on.Rmd"), to("episodes"))
-file_copy(from("_page_built_on.Rmd"), lsn)
+file_copy(from("_page_built_on.Rmd"), to("episodes"), overwrite = TRUE)
+file_copy(from("_page_built_on.Rmd"), lsn, overwrite = TRUE)
 
 # copy setup.R script and make modifications to avoid our folder preferences
 SEQ <- function(a) a[1]:a[2]
@@ -226,19 +225,25 @@ ref$yaml <- c("---", "title: Learners' Reference", "---")
 ref$write(to("learners"), format = "md")
 set_learners(lsn, order = "reference.md", write = TRUE)
 
-# copy instructor notes
-file_copy(from("instructor-notes.md"), to("instructors"), overwrite = TRUE)
+# copy instructor notes and modify links
+ino <- Episode$new(from("instructor-notes.md"))
+ino$confirm_sandpaper()
+ilinks <- xml2::xml_attr(ino$links, "destination")
+ilinks[grepl("code-handout.R", ilinks)] <- "files/code-handout.R"
+ilinks <- sub("datacarpentry", "data-lessons", ilinks)
+xml2::xml_set_attr(ino$links, "destination", ilinks)
+ino$write(path = to("instructors"), format = "md")
 set_instructors(lsn, order = "instructor-notes.md", write = TRUE)
 
 # copy AUTHORS file
-file_copy(from("AUTHORS"), lsn)
+file_copy(from("AUTHORS"), lsn, overwrite = TRUE)
 
 # ignore the index.Rmd (which contains the sandpaper::sandpaper_site)
 writeLines("index.Rmd", to(".renvignore"))
 
 # copy over images
 dir_delete(to("episodes", "fig"))
-dir_copy(from("img"), to("episodes", "fig"))
+dir_copy(from("img"), to("episodes", "fig"), overwrite = TRUE)
 
 # Fix config items
 set_config <- function(key, value, path = lsn) {
@@ -249,6 +254,7 @@ set_config <- function(key, value, path = lsn) {
   writeLines(l, cfg)
 }
 set_config("carpentry", "dc")
+set_config("contact", "zkamvar@carpentries.org")
 set_config("title", "Data Analysis and Visualisation in R for Ecologists")
 set_config("life_cycle", "stable")
 set_config("source", "https://github.com/data-lessons/R-ecology-lesson")
@@ -271,11 +277,14 @@ if (!new_established) {
     repo = new
   )
 }
-cli::cli_alert_info("The lesson is ready in {.file {new}}")
 
-manage_deps(path = new)
-git_add(".", repo = new)
-git_commit("update dependencies", repo = new)
+yaml <- readLines(to(".github/workflows/sandpaper-main.yaml"))
+l <- grep("sandpaper:::ci_deploy", yaml, fixed = TRUE)
+pad <- gsub("(^[[:space:]]+).+$", "\\1", yaml[l])
+yaml <- c(yaml[1:(l - 1L)],
+  paste0(pad, "options(sandpaper.handout = TRUE)"), 
+  yaml[l:length(yaml)]
+)
 
 if (arguments$build) {
   build_lesson(new, quiet = FALSE)
@@ -295,3 +304,5 @@ if (nrow(stat) > 0) {
 cli::cli_alert_info("writing commit statuses")
 new_commits[2] <- git_info(repo = new)$commit
 writeLines(new_commits, "datacarpentry/R-ecology-lesson.txt")
+
+cli::cli_alert_info("The lesson is ready in {.file {new}}")
