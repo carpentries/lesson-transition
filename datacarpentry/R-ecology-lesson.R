@@ -1,8 +1,43 @@
+#!/usr/bin/env Rscript
+r'{Transform a lesson from styles template to sandpaper infrastructure
+
+This script will download a lesson repository from GitHub, translate it to the
+new lesson infrastructure, {sandpaper}, and apply any post-translation scripts
+that need to be applied in order to fix any issues that occurred in the
+process.
+
+Usage: 
+  transform-lesson.R -o <dir> <repo> [<script>]
+  transform-lesson.R -h | --help
+  transform-lesson.R -v | --version
+  transform-lesson.R [-qnfb] [-s <dir>] -o <dir> <repo> [<script>]
+
+-h, --help                Show this information and exit
+-v, --version             Print the version information of this script
+-q, --quiet               Do not print any progress messages
+-n, --dry-run             Perform the translation, but do not create the output
+                          directory.
+-f, --fix-liquid          Fix liquid tags that may not be processed normally
+-b, --build               Build the lesson after translation. This can be useful
+                          when writing scripts to see what needs to be fixed.
+-s <dir>, --save=<dir>    The directory to save the repository for later use,
+                          defaults to a temporary directory
+-o <dir>, --output=<dir>  The output directory for the new sandpaper repository
+<repo>                    The GitHub repository that contains the lesson. E.g.
+                          carpentries/lesson-example
+<script>                  Additional script to run after the transformation.
+                          Important variables to use will be `old` = path to the
+                          lesson we just downloaded and `new` = path to the new
+                          sandpaper lesson. `old_lesson` = the Lesson object
+}' -> doc
+library("docopt")
+
+arguments <- docopt(doc, version = "R Ecology Converter 2021-10", help = TRUE)
 # Convert DataCarpentry R-ecology lesson to use the {sandpaper} infrastructure
 # ============================================================================
 #
 # author: Zhian N. Kamvar
-# date: 2021-09-15
+# date: 2021-09-15 (updated 2021-10-18 to auto-download and update)
 #
 # This script will do _most_ of the work to convert this lesson into something
 # that can be deployed immediately. There are a couple of quirks that need to
@@ -14,7 +49,9 @@
 # TODO: write code handout extractor
 # see https://github.com/ropensci/tinkr/pull/52 for details on how to do this
 
+options(error = recover)
 library("sandpaper")
+library("usethis")
 # NOTE: this version of pegboard needs this PR from tinkr: 
 #  https://github.com/ropensci/tinkr/pull/54 
 library("pegboard")
@@ -24,9 +61,42 @@ library("xml2")
 library("gert")
 library("fs")
 
-repo_path <- "../R-ecology-lesson"
+this_repo <- if (length(arguments$save)) path_abs(arguments$save) else tempfile()
+new  <- path_abs(arguments$out)
 
-eps <- dir_ls(".", regexp = "^0.+?Rmd$")
+if (!dir_exists(this_repo)) {
+  dir_create(this_repo, recurse = TRUE)
+}
+old <- path(this_repo, path_file(arguments$repo))
+new <- path(new, path_file(arguments$repo))
+# Record status of previous attempt
+f <- "datacarpentry/R-ecology-lesson.txt"
+old_commits <- if (file_exists(f)) readLines(f) else character(0)
+new_commits <- character(2)
+# Download a carpentries lesson
+#
+we_have_local_copy <- dir_exists(old)
+if (we_have_local_copy) {
+  cli::cli_alert("switching to local copy of {.file {arguments$repo}} and pulling changes")
+  git_pull(repo = old)
+} else {
+  cli::cli_alert("Downloading {.file {arguments$repo}} with {.fn usethis::create_from_github}")
+  create_from_github(arguments$repo, destdir = this_repo, fork = FALSE, open = FALSE)
+}
+
+new_commits[1] <- git_info(repo = old)$commit
+
+if (dir_exists(new)) {
+  new_commits[2] <- git_info(repo = new)$commit
+}
+
+lsn  <- tempfile()
+from <- function(...) path(old, ...)
+to   <- function(...) path(lsn, ...)
+
+cli::cli_h1("Reading in lesson with {.pkg pegboard}")
+
+eps <- dir_ls(old, regexp = "[/]0.+?Rmd$")
 names(eps) <- eps
 eps <- map(eps, Episode$new)
 
@@ -107,60 +177,68 @@ ea_txt <- xml_text(extra_alligator)
 invisible(xml_set_text(extra_alligator, sub("\\n[>]\\n$", "\n", ea_txt)))
 
 # Modify the index to include our magic header
-idx <- Episode$new("index.Rmd")
+idx <- Episode$new(from("index.Rmd"))
 idx$add_md(experiment, 0L)
 idx$yaml[length(idx$yaml) + 0:1] <- c("site: sandpaper::sandpaper_site", "---")
 idx$label_divs() # fee our image from it's HTML prison
 invisible(fix_images(idx))
 
 # add notice in README
-rdm <- Episode$new("README.md")
+rdm <- Episode$new(from("README.md"))
 rdm$add_md(experiment, 0L)
 
 # Create lesson
-lsn <- tempfile()
-create_lesson(lsn, open = FALSE)
-file_delete(path(lsn, "episodes", "01-introduction.Rmd"))
-file_delete(path(lsn, "index.md"))
+new_established <- length(old_commits) && old_commits[2] == new_commits[2]
+
+if (new_established) {
+  cli::cli_h1("using existing lesson in {.file {new}}")
+  lsn <- new
+} else {
+  # Create lesson
+  cli::cli_h1("creating a new sandpaper lesson")
+  create_lesson(lsn, name = 'Data Analysis and Visualisation in R for Ecologists', open = FALSE)
+  file_delete(to("episodes", "01-introduction.Rmd"))
+  file_delete(to("index.md"))
+}
 
 # write episodes, index, and readme
-walk(eps, ~.x$write(path = path(lsn, "episodes"), format = "Rmd"))
-set_episodes(lsn, order = names(eps), write = TRUE)
-idx$write(path = path(lsn), format = "Rmd")
-rdm$write(path = path(lsn), format = "md")
+walk(eps, ~.x$write(path = to("episodes"), format = "Rmd"))
+set_episodes(lsn, order = path_file(names(eps)), write = TRUE)
+idx$write(path = lsn, format = "Rmd")
+rdm$write(path = lsn, format = "md")
 
 # hack: copy the included file in both places
-file_copy("_page_built_on.Rmd", path(lsn, "episodes"))
-file_copy("_page_built_on.Rmd", lsn)
+file_copy(from("_page_built_on.Rmd"), to("episodes"))
+file_copy(from("_page_built_on.Rmd"), lsn)
 
 # copy setup.R script and make modifications to avoid our folder preferences
 SEQ <- function(a) a[1]:a[2]
-setup <- readLines("setup.R")
+setup <- readLines(from("setup.R"))
 answers <- grep("^(knitr::knit_hook|\\}\\))", setup)
 setup[SEQ(answers)] <- paste("#", setup[SEQ(answers)])
 setup <- sub("fig.path", "# fig.path", setup, fixed = TRUE)
-writeLines(setup, path(lsn, "episodes", "setup.R"))
+writeLines(setup, to("episodes", "setup.R"))
 
 
 # copy learner reference
-ref <- Episode$new("reference.md")
+ref <- Episode$new(from("reference.md"))
 ref$yaml <- c("---", "title: Learners' Reference", "---")
-ref$write(path(lsn, "learners"), format = "md")
+ref$write(to("learners"), format = "md")
 set_learners(lsn, order = "reference.md", write = TRUE)
 
 # copy instructor notes
-file_copy("instructor-notes.md", path(lsn, "instructors"), overwrite = TRUE)
+file_copy(from("instructor-notes.md"), to("instructors"), overwrite = TRUE)
 set_instructors(lsn, order = "instructor-notes.md", write = TRUE)
 
 # copy AUTHORS file
-file_copy("AUTHORS", lsn)
+file_copy(from("AUTHORS"), lsn)
 
 # ignore the index.Rmd (which contains the sandpaper::sandpaper_site)
-writeLines("index.Rmd", path(lsn, ".renvignore"))
+writeLines("index.Rmd", to(".renvignore"))
 
 # copy over images
-dir_delete(path(lsn, "episodes", "fig"))
-dir_copy("img", path(lsn, "episodes", "fig"))
+dir_delete(to("episodes", "fig"))
+dir_copy(from("img"), to("episodes", "fig"))
 
 # Fix config items
 set_config <- function(key, value, path = lsn) {
@@ -176,13 +254,44 @@ set_config("life_cycle", "stable")
 set_config("source", "https://github.com/data-lessons/R-ecology-lesson")
 
 # delete detritus
-detritus <- dir_ls(path(lsn, "episodes", "fig"), regexp = "R-ecology-*")
+detritus <- dir_ls(to("episodes", "fig"), regexp = "R-ecology-*")
 file_delete(detritus)
 
 # move over temporary lesson
-dir_copy(lsn, repo_path)
-git_add(".", repo = repo_path)
-git_commit("migrate DC R-ecology", repo = repo_path)
-manage_deps(path = repo_path)
-git_add(".", repo = repo_path)
-git_commit("update dependencies", repo = repo_path)
+if (!new_established) {
+  if (dir_exists(new)) {
+    dir_delete(new)
+  }
+  cli::cli_h1("Copying transformed lesson to {new}")
+  dir_copy(lsn, new)
+  cli::cli_alert_info("Committing...")
+  git_add(".", repo = new)
+  git_commit("Transfer lesson to sandpaper",
+    committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
+    repo = new
+  )
+}
+cli::cli_alert_info("The lesson is ready in {.file {new}}")
+
+manage_deps(path = new)
+git_add(".", repo = new)
+git_commit("update dependencies", repo = new)
+
+if (arguments$build) {
+  build_lesson(new, quiet = FALSE)
+}
+
+stat <- gert::git_status(repo = new)
+if (nrow(stat) > 0) {
+  msg <- getOption("custom.transformation.message", default = "[custom] fix lesson contents")
+  cli::cli_alert_info("Committing new changes...")
+  git_add(".", repo = new)
+  git_commit(msg,
+    committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
+    repo = new
+  )
+}
+
+cli::cli_alert_info("writing commit statuses")
+new_commits[2] <- git_info(repo = new)$commit
+writeLines(new_commits, "datacarpentry/R-ecology-lesson.txt")

@@ -18,8 +18,12 @@ all: $(TARGETS)
 	  --output ../$(@D)/sandpaper/ \
 	    $* \
 	    $<
-	touch $@
 
 datacarpentry/R-ecology-lesson.txt : datacarpentry/R-ecology-lesson.R
-	@echo $<
+	Rscript $< \
+	  --build \
+	  --save ../$(@D)/ \
+	  --output ../$(@D)/sandpaper/ \
+	    datacarpentry/R-ecology-lesson
+
 
