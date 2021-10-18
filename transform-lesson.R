@@ -231,7 +231,6 @@ if (!new_established) {
     repo = new
   )
 }
-cli::cli_alert_info("The lesson is ready in {.file {new}}")
 
 if (length(last)) {
   cli::cli_alert_info("Running {last}")
@@ -256,3 +255,7 @@ if (length(last) && nrow(stat) > 0) {
 cli::cli_alert_info("writing commit statuses")
 new_commits[2] <- git_info(repo = new)$commit
 writeLines(new_commits, sub("R$", "txt", arguments$script))
+
+cli::cli_rule("Conversion finished")
+cli::cli_alert_info("Browse the old lesson in {.file {old}}")
+cli::cli_alert_info("The converted lesson is ready in {.file {new}}")
