@@ -9,7 +9,11 @@ TARGETS := $(patsubst %.R, %.txt, $(INPUTS))
 
 .PHONY = all
 
-all: $(TARGETS)
+all: repos.md
+
+repos.md : $(TARGETS)
+	rm -f repos.md
+	for i in $^; do echo "- [$$i](https://github.com/$$i)" | sed -e 's/.txt//' >> $@; done
 
 %.txt : %.R transform-lesson.R
 	Rscript transform-lesson.R \

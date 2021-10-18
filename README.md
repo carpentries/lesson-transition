@@ -9,6 +9,8 @@ Infrastructure").
 These scripts require a setup with R and access to the internet. It is currently
 a work in progress and may evolve in the future.
 
+The repositories that have previously been transferred can be found in [repos.md].
+
 ## Usage
 
 To add a lesson for translation, there are two steps:
