@@ -243,7 +243,7 @@ writeLines("index.Rmd", to(".renvignore"))
 
 # copy over images
 dir_delete(to("episodes", "fig"))
-dir_copy(from("img"), to("episodes", "fig"), overwrite = TRUE)
+dir_copy(from("img"), to("episodes", "fig"))
 
 # Fix config items
 set_config <- function(key, value, path = lsn) {
