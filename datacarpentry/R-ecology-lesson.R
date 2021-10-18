@@ -280,7 +280,7 @@ set_config("life_cycle", "stable")
 set_config("source", "https://github.com/data-lessons/R-ecology-lesson")
 
 # delete detritus
-detritus <- dir_ls(to("episodes", "fig"), regexp = "R-ecology-*")
+detritus <- dir_ls(to("episodes", "fig"), regexp = "R-ecology-[^/]+$")
 file_delete(detritus)
 
 # move over temporary lesson
