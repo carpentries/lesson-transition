@@ -13,7 +13,9 @@ all: repos.md
 
 repos.md : $(TARGETS)
 	rm -f repos.md
-	for i in $(^F); do echo "- [$$i](https://github.com/data-lessons/$$i)" | sed -e 's/.txt//g' >> $@; done
+	for i in $^; do echo "- [$$i](https://github.com/data-lessons/$$i)" |\
+	  sed -r -e "s_.com/([^/]+)/[^/]+_.com/\1_" |\
+	  sed -e "s/.txt//" >> $@; done
 
 %.txt : %.R transform-lesson.R
 	Rscript transform-lesson.R \
