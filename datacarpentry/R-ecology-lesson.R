@@ -164,10 +164,14 @@ experiment <- "> **ATTENTION** This is an experimental test of the [{sandpaper}]
 If anything seems off, please contact Zhian Kamvar <zkamvar@carpentries.org>
 "
 # Convert information in Episodes
+cli::cli_h2("Converting block quotes")
 walk(eps, convert_blocks)
+cli::cli_h2("Converting solutions")
 walk(eps, wrap_solutions)
+cli::cli_h2("fixing image paths")
 walk(eps, fix_images)
 
+cli::cli_h2("Fixing error in episode 5")
 # Fix an error in episode 5 where there is a stray `>` at the end of the code
 # block.
 cb <- eps[[6]]$code
@@ -187,7 +191,7 @@ rdm <- Episode$new(from("README.md"))
 rdm$add_md(experiment, 0L)
 
 # Create lesson
-new_established <- length(old_commits) && old_commits[2] == new_commits[2]
+new_established <- length(old_commits) && !is.na(old_commits[2]) && old_commits[2] != ""
 
 if (new_established) {
   exists_on_our_computer <- !is.na(new_commits[2]) && new_commits[2] != ""
