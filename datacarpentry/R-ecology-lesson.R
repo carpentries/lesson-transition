@@ -190,8 +190,28 @@ rdm$add_md(experiment, 0L)
 new_established <- length(old_commits) && old_commits[2] == new_commits[2]
 
 if (new_established) {
-  cli::cli_h1("using existing lesson in {.file {new}}")
-  lsn <- new
+  exists_on_our_computer <- !is.na(new_commits[2]) && new_commits[2] != ""
+  if (exists_on_our_computer) {
+    cli::cli_h1("using existing lesson in {.file {new}}")
+    lsn <- new
+    tryCatch(git_pull(repo = new), error = function(e) {})
+  } else {
+    base <- path_file(path_ext_remove(new))
+    new_dir  <- path_abs(arguments$out)
+    if (!dir_exists(new_dir)) dir_create(new_dir)
+    rmt <- paste0("data-lessons/", base)
+    cli::cli_alert_info("local repo not found, attempting to use {.url https://github.com/{rmt}}")
+    res <- tryCatch({
+      create_from_github(rmt, destdir = new_dir, open = FALSE)
+    },
+      error = function(e) {
+        cli::cli_alert_danger("{e$message}")
+        cli::cli_alert_danger("Could not find {.url https://github.com/{rmt}}")
+        cli::cli_alert_warning("Defaulting to temporary lesson")
+        FALSE
+    })
+    lsn <- if (isFALSE(res)) lsn else new
+  }
 } else {
   # Create lesson
   cli::cli_h1("creating a new sandpaper lesson")
