@@ -6,6 +6,9 @@ new lesson infrastructure, {sandpaper}, and apply any post-translation scripts
 that need to be applied in order to fix any issues that occurred in the
 process.
 
+If a lesson has been previously archived on the `data-lessons` repo, then the
+new lesson will gain a `new-` prefix 
+
 Usage: 
   transform-lesson.R -o <dir> <repo> [<script>]
   transform-lesson.R -h | --help
@@ -47,7 +50,11 @@ if (!dir_exists(this_repo)) {
   dir_create(this_repo, recurse = TRUE)
 }
 old <- path(this_repo, path_file(arguments$repo))
-new <- path(new, path_file(arguments$repo))
+if (endsWith(new, "-")) {
+  new <- paste0(new, path_file(arguments$repo))
+} else {
+  new <- path(new, path_file(arguments$repo))
+}
 # Record status of previous attempt
 if (length(arguments$script)) {
   f <- gsub(".R$", ".txt", arguments$script)
@@ -97,6 +104,26 @@ to   <- function(...) path(lsn, ...)
 
 cli::cli_h1("Reading in lesson with {.pkg pegboard}")
 old_lesson <- pegboard::Lesson$new(old, fix_liquid = arguments$fix_liquid)
+
+# Script to transform the image links to be local
+fix_images <- function(episode, from = "([.][.][/])?(img|fig)/", to = "fig/") {
+  blocks <- xml_find_all(episode$body, 
+    ".//md:code_block[contains(text(), 'knitr::include_graphics')]",
+    ns = episode$ns
+  )
+  if (length(blocks)) {
+    txt <- xml_text(blocks)
+    xml_set_text(blocks, sub(from, to, txt))
+  }
+  images <- episode$get_images(process = TRUE)
+  images <- episode$images
+  if (length(images)) {
+    dest <- xml_attr(images, "destination")
+    xml_set_attr(images, "destination", sub(from, to, dest))
+  }
+  episode
+}
+
 # Script to transform the episodes via pegboard with traces
 transform <- function(e, out = lsn) {
   outdir <- fs::path(out, "episodes/")
@@ -114,7 +141,15 @@ transform <- function(e, out = lsn) {
   cli::cli_process_done()
 
   cli::cli_status_update("fixing math blocks")
-  e$protect_math()
+  tryCatch(e$protect_math(),
+    error = function(e) {
+      cli::cli_alert_warning("Some math could not be parsed... likely because of shell variable examples")
+      cli::cli_alert_info("Below is the error")
+      cli::cli_alert_warning(e$message)
+    })
+  
+  cli::cli_status_update("fixing image links") 
+  fix_images(e)
 
   cli::cli_process_start("Writing {.file {outdir}/{e$name}}")
   e$write(outdir, format = path_ext(e$name), edit = FALSE)
@@ -131,6 +166,14 @@ rewrite <- function(x, out) {
   })
 }
 
+copy_dir <- function(x, out) {
+  tryCatch(fs::dir_copy(x, out, overwrite = TRUE),
+    error = function(e) {
+      cli::cli_alert_warning("Could not copy {.file {x}}")
+      cli::cli_alert_warning(e$message)
+    })
+}
+
 set_config <- function(key, value, path = lsn) {
   cfg <- sandpaper:::path_config(path)
   l <- readLines(cfg)
@@ -142,6 +185,13 @@ set_config <- function(key, value, path = lsn) {
 new_established <- length(old_commits) && !is.na(old_commits[2]) && old_commits[2] != ""
 
 suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
+
+make_lesson <- function(lesson = lsn, title = cfg$title) {
+  cli::cli_h1("creating a new sandpaper lesson")
+  create_lesson(lesson, name = title, open = FALSE)
+  file_delete(to("episodes", "01-introduction.Rmd"))
+  file_delete(to("index.md"))
+}
 
 if (new_established) {
   exists_on_our_computer <- !is.na(new_commits[2]) && new_commits[2] != ""
@@ -162,16 +212,18 @@ if (new_established) {
         cli::cli_alert_danger("{e$message}")
         cli::cli_alert_danger("Could not find {.url https://github.com/{rmt}}")
         cli::cli_alert_warning("Defaulting to temporary lesson")
+        make_lesson()
         FALSE
     })
-    lsn <- if (isFALSE(res)) lsn else new
+    if (isFALSE(res)) {
+      lsn <- lsn
+      new_established <- FALSE
+    } else {
+      lsn <- new
+    }
   }
 } else {
-  # Create lesson
-  cli::cli_h1("creating a new sandpaper lesson")
-  create_lesson(lsn, name = cfg$title, open = FALSE)
-  file_delete(to("episodes", "01-introduction.Rmd"))
-  file_delete(to("index.md"))
+  make_lesson(lsn, cfg$title)
 }
 
 # appending our gitignore file
@@ -234,9 +286,16 @@ rewrite(from("setup.md"), to("learners"))
 
 # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
 cli::cli_h2("copying figures, files, and data")
-fs::dir_copy(from("fig"), to("episodes/fig"), overwrite = TRUE)
-fs::dir_copy(from("files"), to("episodes/files"), overwrite = TRUE)
-fs::dir_copy(from("data"), to("episodes/data"), overwrite = TRUE)
+if (fs::dir_exists(from("fig"))) {
+  fs::dir_copy(from("fig"), to("episodes/fig"), overwrite = TRUE)
+} else if (dir_exists(from("img"))) {
+  fs::dir_copy(from("img"), to("episodes/img"), overwrite = TRUE)
+} else {
+  cli::cli_alert_danger("Could not find {.file fig/} or {.file img/} in {.file {old}}")
+}
+  
+copy_dir(from("files"), to("episodes/files"))
+copy_dir(from("data"), to("episodes/data"))
 
 if (!new_established) {
   if (dir_exists(new)) {
@@ -257,11 +316,21 @@ if (length(last)) {
   source(last)
 }
 
-if (arguments$build) {
-  build_lesson(new, quiet = FALSE)
+if (old_lesson$rmd) {
+  cli::cli_h2("managing R dependencies")
+  manage_deps(new)
+} else {
+  no_package_cache()
 }
 
 stat <- gert::git_status(repo = new)
+
+if (arguments$build && nrow(stat) > 0 && !is.na(new_commits[2]) && new_commits[2] != '') {
+  build_lesson(new, quiet = FALSE)
+} else {
+  cli::cli_h2("no changes to lesson, no preview to be generated")
+}
+
 if (length(last) && nrow(stat) > 0) {
   msg <- getOption("custom.transformation.message", default = "[custom] fix lesson contents")
   cli::cli_alert_info("Committing new changes...")

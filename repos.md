@@ -1,3 +1,4 @@
 - [swcarpentry/r-novice-gapminder](https://github.com/swcarpentry/r-novice-gapminder) -> [data-lessons/r-novice-gapminder](https://github.com/data-lessons/r-novice-gapminder)
 - [datacarpentry/R-ecology-lesson](https://github.com/datacarpentry/R-ecology-lesson) -> [data-lessons/R-ecology-lesson](https://github.com/data-lessons/R-ecology-lesson)
+- [datacarpentry/wrangling-genomics](https://github.com/datacarpentry/wrangling-genomics) -> [data-lessons/new-wrangling-genomics](https://github.com/data-lessons/new-wrangling-genomics)
 - [carpentries-incubator/simple-linear-regression-public-health](https://github.com/carpentries-incubator/simple-linear-regression-public-health) -> [data-lessons/simple-linear-regression-public-health](https://github.com/data-lessons/simple-linear-regression-public-health)
