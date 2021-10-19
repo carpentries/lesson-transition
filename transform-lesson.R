@@ -67,6 +67,7 @@ new_commits <- character(2)
 #
 library("usethis")
 library("gert")
+options(usethis.protocol = "https")
 we_have_local_copy <- dir_exists(old)
 if (we_have_local_copy) {
   cli::cli_alert("switching to local copy of {.file {arguments$repo}} and pulling changes")
@@ -174,14 +175,6 @@ copy_dir <- function(x, out) {
     })
 }
 
-set_config <- function(key, value, path = lsn) {
-  cfg <- sandpaper:::path_config(path)
-  l <- readLines(cfg)
-  what <- grep(glue::glue("^{key}:"), l)
-  l[what] <- glue::glue("{key}: {shQuote(value)}")
-  writeLines(l, cfg)
-}
-
 new_established <- length(old_commits) && !is.na(old_commits[2]) && old_commits[2] != ""
 
 suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
@@ -231,31 +224,6 @@ tgi <- readLines(to(".gitignore"))
 fgi <- readLines(from(".gitignore"))
 writeLines(unique(c(tgi, fgi)), to(".gitignore"))
 
-# Modify config file to match as close as possible to the one we have
-cli::cli_h2("setting the configuration parameters in config.yaml")
-set_config("title", cfg$title)
-set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
-set_config("contact", cfg$email)
-
-if (length(gert::git_remote_list(repo = old)) == 0) {
-  message("Cannot automatically set the following configuration values:\n source: <GITHUB URL>\n carpentry: <CARPENTRY ABBREVIATION>\n\nPlease edit config.yaml to set these values")
-} else {
-  rmt <- gert::git_remote_list(repo = old)
-  i <- if (any(i <- rmt$name == "upstream")) which(i) else 1L
-  url <- rmt$url[[i]]
-  rmt <- gh:::github_remote_parse(rmt$url[[i]])$username
-  set_config("source", url)
-  set_config("carpentry",
-    switch(rmt,
-      swcarpentry = "swc",
-      datacarpentry = "dc",
-      librarycarpentry = "lc",
-      "carpentries-incubator" = "incubator",
-      "cp" # default
-  ))
-}
-
-
 # Transform and write to our episodes folder
 cli::cli_h1("Transforming Episodes")
 purrr::walk(old_lesson$episodes, ~try(transform(.x)))
@@ -286,16 +254,34 @@ rewrite(from("setup.md"), to("learners"))
 
 # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
 cli::cli_h2("copying figures, files, and data")
-if (fs::dir_exists(from("fig"))) {
-  fs::dir_copy(from("fig"), to("episodes/fig"), overwrite = TRUE)
-} else if (dir_exists(from("img"))) {
-  fs::dir_copy(from("img"), to("episodes/img"), overwrite = TRUE)
-} else {
-  cli::cli_alert_danger("Could not find {.file fig/} or {.file img/} in {.file {old}}")
-}
-  
+copy_dir(from("fig"), to("episodes/fig"))
+copy_dir(from("img"), to("episodes/fig"))
 copy_dir(from("files"), to("episodes/files"))
 copy_dir(from("data"), to("episodes/data"))
+# Modify config file to match as close as possible to the one we have
+set_config <- function(key, value, path = lsn) {
+  cfg <- sandpaper:::path_config(path)
+  l <- readLines(cfg)
+  what <- grep(glue::glue("^{key}:"), l)
+  l[what] <- glue::glue("{key}: {shQuote(value)}")
+  writeLines(l, cfg)
+}
+
+cli::cli_h1("Setting the configuration parameters in config.yaml")
+set_config("title", cfg$title)
+set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
+set_config("contact", cfg$email)
+
+set_config("source", paste0("https://github.com/data-lessons/", path_file(new), "/"))
+set_config("carpentry",
+  switch(strsplit(arguments$repo, "/")[[1]][1],
+    swcarpentry = "swc",
+    datacarpentry = "dc",
+    librarycarpentry = "lc",
+    "carpentries-incubator" = "incubator",
+    "cp" # default
+  )
+)
 
 if (!new_established) {
   if (dir_exists(new)) {
@@ -325,8 +311,14 @@ if (old_lesson$rmd) {
 
 stat <- gert::git_status(repo = new)
 
-if (arguments$build && nrow(stat) > 0 && !is.na(new_commits[2]) && new_commits[2] != '') {
-  build_lesson(new, quiet = FALSE)
+if (arguments$build) {
+  tryCatch(build_lesson(new, quiet = FALSE),
+    error = function(e) {
+      f <- sub("R$", "err", arguments$script)
+      writeLines(e$message, f)
+      cli::cli_alert_danger("There were issues with the lesson build process, see {.file {f} for details}")
+    }
+  )
 } else {
   cli::cli_h2("no changes to lesson, no preview to be generated")
 }
