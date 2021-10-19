@@ -26,15 +26,15 @@ repos.md : $(TARGETS)
 	  --save   ../$(@D)/ \
 	  --output ../$(@D)/sandpaper/ \
 	    $* \
-	    $<
+	    $< || echo "\n\n---\nErrors Occurred\n---\n\n"
 
 datacarpentry/%.txt : datacarpentry/%.R transform-lesson.R
 	Rscript transform-lesson.R \
 	  --build \
 	  --save   ../$(@D)/ \
 	  --output ../$(@D)/sandpaper/new- \
-	    $* \
-	    $<
+	    datacarpentry/$* \
+	    $< || echo "\n\n---\nErrors Occurred\n---\n\n"
 
 datacarpentry/R-ecology-lesson.txt : datacarpentry/R-ecology-lesson.R
 	Rscript $< \
