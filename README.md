@@ -42,7 +42,8 @@ The packages used in this script are the same packages that are used in
 exceptions (which may update):
 
 1. install the {docopt} package: `install.pacakges("docopt")`
-2. install [{tinkr} pull request 57](https://github.com/ropensci/tinkr/pull/57): `remotes::install_github("ropensci/tinkr#57")`
+1. install the {sandpaper} package
+1. set up your GitHub PAT or SSH key
 
 ## Post translation
 
