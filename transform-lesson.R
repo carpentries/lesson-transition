@@ -163,7 +163,7 @@ rewrite <- function(x, out) {
   ref <- Episode$new(x, process_tags = TRUE, fix_links = TRUE, fix_liquid = TRUE)
   ref$unblock()$use_sandpaper()$write(out)
   }, error = function(e) {
-    cli::cli_alert_warning("Error in transformation: {e$message}")
+    cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")
   })
 }
 
@@ -206,7 +206,7 @@ if (new_established) {
         cli::cli_alert_danger("{e$message}")
         cli::cli_alert_danger("Could not find {.url https://github.com/{rmt}}")
         cli::cli_alert_warning("Defaulting to temporary lesson")
-        make_lesson()
+        make_lesson(lsn, cfg$title)
         FALSE
     })
     if (isFALSE(res)) {
@@ -224,17 +224,6 @@ if (new_established) {
 tgi <- readLines(to(".gitignore"))
 fgi <- readLines(from(".gitignore"))
 writeLines(unique(c(tgi, fgi)), to(".gitignore"))
-
-# Transform and write to our episodes folder
-cli::cli_h1("Transforming Episodes")
-purrr::walk(old_lesson$episodes, ~try(transform(.x)))
-if (length(cfg$episode_order)) {
-  eps <- names(old_lesson$episodes)
-  ord <- map_chr(paste0("^", cfg$episode_order, "\\.R?md$"), ~grep(.x, eps, value = TRUE))
-  set_episodes(lsn, order = ord, write = TRUE)
-} else {
-  set_episodes(lsn, order = names(old_lesson$episodes), write = TRUE)
-}
 
 # Modify the index to include our magic header
 idx <- list.files(old, pattern = "^index.R?md")
@@ -270,15 +259,17 @@ set_config <- function(key, value, path = lsn) {
   cfg <- sandpaper:::path_config(path)
   l <- readLines(cfg)
   what <- grep(glue::glue("^{key}:"), l)
-  l[what] <- glue::glue("{key}: {shQuote(value)}")
+  line <- glue::glue("{key}: {shQuote(value)}")
+  cli::cli_alert("Writing {.code {line}}")
+  l[what] <- line
   writeLines(l, cfg)
 }
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
-set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
-set_config("contact", cfg$email)
-
+set_config("title", cfg$title)
 set_config("source", paste0("https://github.com/data-lessons/", path_file(new), "/"))
+set_config("contact", cfg$email)
+set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
 set_config("carpentry",
   switch(strsplit(arguments$repo, "/")[[1]][1],
     swcarpentry = "swc",
@@ -288,6 +279,18 @@ set_config("carpentry",
     "cp" # default
   )
 )
+
+# Transform and write to our episodes folder
+cli::cli_h1("Transforming Episodes")
+purrr::walk(old_lesson$episodes, ~try(transform(.x)))
+if (length(cfg$episode_order)) {
+  eps <- names(old_lesson$episodes)
+  ord <- map_chr(paste0("^", cfg$episode_order, "\\.R?md$"), ~grep(.x, eps, value = TRUE))
+  set_episodes(lsn, order = ord, write = TRUE)
+} else {
+  set_episodes(lsn, order = names(old_lesson$episodes), write = TRUE)
+}
+
 
 if (!new_established) {
   if (dir_exists(new)) {
@@ -318,7 +321,7 @@ if (old_lesson$rmd) {
 stat <- gert::git_status(repo = new)
 
 if (arguments$build) {
-  tryCatch(build_lesson(new, quiet = FALSE),
+  tryCatch(build_lesson(new, quiet = FALSE, preview = FALSE),
     error = function(e) {
       f <- sub("R$", "err", arguments$script)
       writeLines(e$message, f)
