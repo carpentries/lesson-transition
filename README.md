@@ -6,6 +6,8 @@ from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka
 infrastructure](https://carpentries.github.io/sandpaper-docs) (aka "The Lesson
 Infrastructure"). 
 
+**Note: Not all of the repositories represented here are official Carpentries Lessons. Only swcarpentry, datacarpentry, librarycarpentry, and carpentries lessons are official**
+
 These scripts require a setup with R and access to the internet. It is currently
 a work in progress and may evolve in the future.
 
