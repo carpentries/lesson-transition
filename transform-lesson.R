@@ -181,6 +181,7 @@ suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
 
 make_lesson <- function(lesson = lsn, title = cfg$title) {
   cli::cli_h1("creating a new sandpaper lesson")
+  title <- if (grepl(":", title, fixed = TRUE)) shQuote(title) else title
   create_lesson(lesson, name = title, open = FALSE)
   file_delete(to("episodes", "01-introduction.Rmd"))
   file_delete(to("index.md"))
