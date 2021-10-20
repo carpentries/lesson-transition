@@ -4,7 +4,14 @@ This repository will contain scripts for transitioning Carpentries lessons built
 from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka 
 "The Lesson Template") to [the decoupled/centralised 
 infrastructure](https://carpentries.github.io/sandpaper-docs) (aka "The Lesson
-Infrastructure"). 
+Infrastructure"). The process works in the following steps:
+
+1. download/pull the lesson repository from github
+2. apply transformations in `transform-lesson.R` to create a new repository (or download existing)
+3. apply additional needed transformations in `program/lesson.R`
+4. push the new changes to data-lessons (coming soon)
+
+![workflow to download, transform, and upload a lesson](path.png)
 
 **Note: Not all of the repositories represented here are official Carpentries Lessons. Only swcarpentry, datacarpentry, librarycarpentry, and carpentries lessons are official**
 

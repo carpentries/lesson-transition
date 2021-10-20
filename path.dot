@@ -1,0 +1,19 @@
+digraph G {
+node   [style="filled" color="grey20"];
+repo_old[label="https://github.com/<program>/<lesson>", fillcolor="powderblue", shape="cylinder"];
+repo_new[label="https://github.com/data-lessons/<lesson>", fillcolor="lavender", shape="cylinder"];
+old[label="../program/lesson/", fillcolor="powderblue", shape="folder"];
+new[label="../program/sandpaper/lesson/", fillcolor="lavender", shape="folder"];
+transform[label="transform-lesson.R", shape="note", color="wheat"];
+script[label="program/lesson.R", shape="note", color="wheat"];
+{rank="same"; repo_old, repo_new};
+{rank="same"; old, transform, script, new};
+
+repo_old -> old;
+old -> transform;
+transform -> script;
+script -> new;
+new -> repo_new;
+
+
+}
