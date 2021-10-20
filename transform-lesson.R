@@ -228,7 +228,13 @@ writeLines(unique(c(tgi, fgi)), to(".gitignore"))
 # Transform and write to our episodes folder
 cli::cli_h1("Transforming Episodes")
 purrr::walk(old_lesson$episodes, ~try(transform(.x)))
-set_episodes(lsn, order = names(old_lesson$episodes), write = TRUE)
+if (length(cfg$episode_order)) {
+  eps <- names(old_lesson$episodes)
+  ord <- map_chr(paste0("^", cfg$episode_order, "\\.R?md$"), ~grep(.x, eps, value = TRUE))
+  set_episodes(lsn, order = ord, write = TRUE)
+} else {
+  set_episodes(lsn, order = names(old_lesson$episodes), write = TRUE)
+}
 
 # Modify the index to include our magic header
 idx <- list.files(old, pattern = "^index.R?md")
@@ -269,7 +275,6 @@ set_config <- function(key, value, path = lsn) {
 }
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
-set_config("title", cfg$title)
 set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
 set_config("contact", cfg$email)
 
