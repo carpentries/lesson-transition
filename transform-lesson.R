@@ -62,6 +62,8 @@ if (length(arguments$script)) {
 } else {
   old_commits <- character(0)
 }
+# determin if the new repository has previously been established
+new_established <- length(old_commits) && !is.na(old_commits[2]) && old_commits[2] != ""
 new_commits <- character(2)
 # Download a carpentries lesson
 #
@@ -78,12 +80,9 @@ if (we_have_local_copy) {
 }
 
 new_commits[1] <- git_info(repo = old)$commit
-
 if (dir_exists(new)) {
   new_commits[2] <- git_info(repo = new)$commit
 }
-
-
 # Transfom a carpentries lesson to a sandpaper lesson
 #
 # This script will start in a lesson repository and take the steps to convert
@@ -105,8 +104,14 @@ to   <- function(...) path(lsn, ...)
 
 cli::cli_h1("Reading in lesson with {.pkg pegboard}")
 old_lesson <- pegboard::Lesson$new(old, fix_liquid = arguments$fix_liquid)
+cli::cli_h2("Reading configuration file")
+suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
 
-# Script to transform the image links to be local
+# Functions --------------------------------------------------------------------
+#
+# The following lines are functions that I need to transform the lessons
+#
+# transform the image links to be local
 fix_images <- function(episode, from = "([.][.][/])?(img|fig)/", to = "fig/") {
   blocks <- xml_find_all(episode$body, 
     ".//md:code_block[contains(text(), 'knitr::include_graphics')]",
@@ -125,7 +130,7 @@ fix_images <- function(episode, from = "([.][.][/])?(img|fig)/", to = "fig/") {
   episode
 }
 
-# Script to transform the episodes via pegboard with traces
+# transform the episodes via pegboard with reporters
 transform <- function(e, out = lsn) {
   outdir <- fs::path(out, "episodes/")
   cli::cli_process_start("Converting {.file {e$path}} to {.emph sandpaper}")
@@ -167,58 +172,63 @@ rewrite <- function(x, out) {
   })
 }
 
+# Copy a directory if it exists
 copy_dir <- function(x, out) {
+  root <- fs::path_common(c(x, out))
   tryCatch(fs::dir_copy(x, out, overwrite = TRUE),
     error = function(e) {
-      cli::cli_alert_warning("Could not copy {.file {x}}")
+      cli::cli_alert_warning("Could not copy {.file {fs::path_rel(x, root)}}")
       cli::cli_alert_warning(e$message)
     })
 }
 
-new_established <- length(old_commits) && !is.na(old_commits[2]) && old_commits[2] != ""
-
-suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
-
+# Bootstrap a lesson and remove components we will not need/overwrite
 make_lesson <- function(lesson = lsn, title = cfg$title) {
   cli::cli_h1("creating a new sandpaper lesson")
-  title <- if (grepl(":", title, fixed = TRUE)) shQuote(title) else title
   create_lesson(lesson, name = title, open = FALSE)
   file_delete(to("episodes", "01-introduction.Rmd"))
   file_delete(to("index.md"))
 }
 
-if (new_established) {
-  exists_on_our_computer <- !is.na(new_commits[2]) && new_commits[2] != ""
-  if (exists_on_our_computer) {
+fetch_new_lesson <- function(new, new_dir, exists = TRUE) {
+  if (exists) {
     cli::cli_h1("using existing lesson in {.file {new}}")
     lsn <- new
     tryCatch(git_pull(repo = new), error = function(e) {})
+    return(TRUE)
   } else {
     base <- path_file(path_ext_remove(new))
-    new_dir  <- path_abs(arguments$out)
     if (!dir_exists(new_dir)) dir_create(new_dir)
     rmt <- paste0("data-lessons/", base)
     cli::cli_alert_info("local repo not found, attempting to use {.url https://github.com/{rmt}}")
-    res <- tryCatch({
+    tryCatch({
       create_from_github(rmt, destdir = new_dir, open = FALSE)
+      TRUE
     },
       error = function(e) {
         cli::cli_alert_danger("{e$message}")
         cli::cli_alert_danger("Could not find {.url https://github.com/{rmt}}")
         cli::cli_alert_warning("Defaulting to temporary lesson")
-        make_lesson(lsn, cfg$title)
         FALSE
     })
-    if (isFALSE(res)) {
-      lsn <- lsn
-      new_established <- FALSE
-    } else {
-      lsn <- new
-    }
+  }
+}
+# END Functions ----------------------------------------------------------------
+
+if (new_established) {
+  exists_on_our_computer <- !is.na(new_commits[2]) && new_commits[2] != ""
+  new_dir <- path_abs(arguments$out)
+  res <- fetch_new_lesson(new, new_dir = new_dir, exists_on_our_computer)
+  if (isFALSE(res)) {
+    make_lesson(lsn, cfg$title)
+    new_established <- FALSE
+  } else {
+    lsn <- new
   }
 } else {
   make_lesson(lsn, cfg$title)
 }
+
 
 # appending our gitignore file
 tgi <- readLines(to(".gitignore"))
@@ -266,7 +276,6 @@ set_config <- function(key, value, path = lsn) {
 }
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
-set_config("title", cfg$title)
 set_config("source", paste0("https://github.com/data-lessons/", path_file(new), "/"))
 set_config("contact", cfg$email)
 set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
