@@ -331,15 +331,15 @@
     },
     "pegboard": {
       "Package": "pegboard",
-      "Version": "0.0.0.9030",
+      "Version": "0.0.0.9031",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "9ee5e063139c29d60af437685442c7f60ee6a2db",
-      "Hash": "ceb63b47922c2213a0bd2927191ccf25"
+      "RemoteSha": "7f7b1d8d82307debea337894e318b74c8f3552a8",
+      "RemoteHost": "api.github.com",
+      "Hash": "e8090d4c4c77e34c98309362c6941668"
     },
     "pillar": {
       "Package": "pillar",
@@ -534,10 +534,10 @@
     },
     "usethis": {
       "Package": "usethis",
-      "Version": "2.1.0",
+      "Version": "2.1.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "90e84e0a3cd3851442c9af04a74c2d5a"
+      "Hash": "8c152095c84a49268d6daa7d277703d1"
     },
     "utf8": {
       "Package": "utf8",
