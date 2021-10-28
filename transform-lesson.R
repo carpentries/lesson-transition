@@ -264,30 +264,21 @@ copy_dir(from("fig"), to("episodes/fig"))
 copy_dir(from("img"), to("episodes/fig"))
 copy_dir(from("files"), to("episodes/files"))
 copy_dir(from("data"), to("episodes/data"))
-# Modify config file to match as close as possible to the one we have
-set_config <- function(key, value, path = lsn) {
-  cfg <- sandpaper:::path_config(path)
-  l <- readLines(cfg)
-  what <- grep(glue::glue("^{key}:"), l)
-  line <- glue::glue("{key}: {shQuote(value)}")
-  cli::cli_alert("Writing {.code {line}}")
-  l[what] <- line
-  writeLines(l, cfg)
-}
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
-set_config("source", paste0("https://github.com/data-lessons/", path_file(new), "/"))
-set_config("contact", cfg$email)
-set_config("life_cycle", if (length(cfg$life_cycle)) cfg$life_cycle else "stable") 
-set_config("carpentry",
-  switch(strsplit(arguments$repo, "/")[[1]][1],
-    swcarpentry = "swc",
-    datacarpentry = "dc",
-    librarycarpentry = "lc",
+params <- c(
+  source     = paste0("https://github.com/data-lessons/", path_file(new), "/"),
+  contact    = cfg$email,
+  life_cycle = if (length(cfg$life_cycle)) cfg$life_cycle else "stable",
+  carpentry  = switch(strsplit(arguments$repo, "/")[[1]][1],
+    swcarpentry             = "swc",
+    datacarpentry           = "dc",
+    librarycarpentry        = "lc",
     "carpentries-incubator" = "incubator",
     "cp" # default
   )
 )
+set_config(params, path = lsn, write = TRUE)
 
 # Transform and write to our episodes folder
 cli::cli_h1("Transforming Episodes")

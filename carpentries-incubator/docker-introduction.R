@@ -1,2 +1,2 @@
 # script
-set_config("title", cfg$title)
+set_config(c("title" = cfg$title), write = TRUE)
