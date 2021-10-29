@@ -10,7 +10,11 @@ REPOS   := $(patsubst %.R, %.hash, $(INPUTS))
 
 .PHONY = all
 
-all: $(REPOS) repos.md
+all: template/ $(REPOS) repos.md
+
+template/ : 
+	Rscript establish-template.R \
+	  template/
 
 repos.md : $(TARGETS) 
 	rm -f repos.md
@@ -26,7 +30,7 @@ repos.md : $(TARGETS)
 	  --save ../$(@D)/ \
 	  $(@D)/$(*F)
 
-%.txt : %.R transform-lesson.R %.hash
+%.txt : %.R transform-lesson.R %.hash template/
 	@ echo hello
 	# Rscript transform-lesson.R \
 	#   --build \
