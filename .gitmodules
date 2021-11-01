@@ -1,3 +1,39 @@
 [submodule "swcarpentry/r-novice-inflammation"]
 	path = swcarpentry/r-novice-inflammation
 	url = https://github.com/swcarpentry/r-novice-inflammation
+[submodule "swcarpentry/python-novice-inflammation"]
+	path = swcarpentry/python-novice-inflammation
+	url = https://github.com/swcarpentry/python-novice-inflammation/
+[submodule "swcarpentry/r-novice-gapminder"]
+	path = swcarpentry/r-novice-gapminder
+	url = https://github.com/swcarpentry/r-novice-gapminder/
+[submodule "datacarpentry/astronomy-python"]
+	path = datacarpentry/astronomy-python
+	url = https://github.com/datacarpentry/astronomy-python/
+[submodule "datacarpentry/R-ecology-lesson"]
+	path = datacarpentry/R-ecology-lesson
+	url = https://github.com/datacarpentry/R-ecology-lesson/
+[submodule "carpentries-incubator/python-packaging-publishing"]
+	path = carpentries-incubator/python-packaging-publishing
+	url = https://github.com/carpentries-incubator/python-packaging-publishing/
+[submodule "carpentries-incubator/docker-introduction"]
+	path = carpentries-incubator/docker-introduction
+	url = https://github.com/carpentries-incubator/docker-introduction/
+[submodule "carpentries-incubator/citable-software"]
+	path = carpentries-incubator/citable-software
+	url = https://github.com/carpentries-incubator/citable-software/
+[submodule "carpentries-incubator/jekyll-pages-novice"]
+	path = carpentries-incubator/jekyll-pages-novice
+	url = https://github.com/carpentries-incubator/jekyll-pages-novice/
+[submodule "datacarpentry/wrangling-genomics"]
+	path = datacarpentry/wrangling-genomics
+	url = https://github.com/datacarpentry/wrangling-genomics/
+[submodule "carpentries-incubator/simple-linear-regression-public-health"]
+	path = carpentries-incubator/simple-linear-regression-public-health
+	url = https://github.com/carpentries-incubator/simple-linear-regression-public-health/
+[submodule "carpentries-incubator/SDC-BIDS-dMRI"]
+	path = carpentries-incubator/SDC-BIDS-dMRI
+	url = https://github.com/carpentries-incubator/SDC-BIDS-dMRI/
+[submodule "datacarpentry/r-raster-vector-geospatial"]
+	path = datacarpentry/r-raster-vector-geospatial
+	url = https://github.com/datacarpentry/r-raster-vector-geospatial/
