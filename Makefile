@@ -32,11 +32,12 @@ sandpaper/%/ : %/ %.R transform-lesson.R
 	@cd $@ && \
 	git-filter-repo \
 	--invert-paths \
-	--path _includes \
-	--path _layouts \
-	--path assets \
-	--path js \
-	--path bin/boilerplate \
+	--path _includes/ \
+	--path _layouts/ \
+	--path assets/ \
+	--path js/ \
+	--path tools/ \
+	--path bin/boilerplate/ \
 	--path bin/chunk-options.R \
 	--path bin/dependencies.R \
 	--path bin/generate_md_episodes.R \
@@ -58,8 +59,8 @@ sandpaper/%/ : %/ %.R transform-lesson.R
 	--path .gitignore \
 	--path .github \
 	--path .travis.yml \
-	--path-glob *.gitkeep \
-	--path-regex '.*-[0-9]{1,2}.png$$'
+	--path-glob '*.gitkeep' \
+	--path-regex 'fig/rmd[-].*[-][0-9]{1,2}.png$$'
 	@echo "... done"
 
 repos.md : $(TARGETS)
