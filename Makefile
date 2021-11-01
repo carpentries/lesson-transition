@@ -12,7 +12,7 @@ REPOS   := $(patsubst %.R, %.hash, $(INPUTS))
 
 all: template/ $(REPOS) repos.md
 
-template/ : 
+template/ : renv.lock
 	Rscript --no-init-file establish-template.R \
 	  template/
 
