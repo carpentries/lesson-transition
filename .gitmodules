@@ -1,0 +1,3 @@
+[submodule "swcarpentry/r-novice-inflammation"]
+	path = swcarpentry/r-novice-inflammation
+	url = https://github.com/swcarpentry/r-novice-inflammation

@@ -16,7 +16,7 @@ template/ : renv.lock
 	Rscript --no-init-file establish-template.R \
 	  template/
 
-repos.md : $(TARGETS) 
+repos.md : $(TARGETS)
 	rm -f repos.md
 	for i in $^;\
 	 do repo=$$(echo $$i | sed -e 's/.txt//');\
@@ -25,7 +25,7 @@ repos.md : $(TARGETS)
 	 echo "- [$${repo}](https://github.com/$${repo}) -> [data-lessons/$${slug}](https://github.com/data-lessons/$${slug})" >> $@;\
 	 done
 
-%.hash: 
+%.hash :
 	Rscript fetch-repo.R \
 	  --save ../$(@D)/ \
 	  $(@D)/$(*F)
