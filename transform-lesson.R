@@ -13,7 +13,7 @@ Usage:
   transform-lesson.R -o <dir> -t <dir> <repo> [<script>]
   transform-lesson.R -h | --help
   transform-lesson.R -v | --version
-  transform-lesson.R [-qnfb] [-s <dir>] -o <dir> -t <dir> <repo> [<script>]
+  transform-lesson.R [-qnfb] -o <dir> -t <dir> <repo> [<script>]
 
 -h, --help                Show this information and exit
 -v, --version             Print the version information of this script
@@ -24,11 +24,11 @@ Usage:
 -b, --build               Build the lesson after translation. This can be useful
                           when writing scripts to see what needs to be fixed.
 -t <dir>, --template=<dir>  The path to the template repo.
--s <dir>, --save=<dir>    The directory to save the repository for later use,
-                          defaults to a temporary directory
 -o <dir>, --output=<dir>  The output directory for the new sandpaper repository
 <repo>                    The GitHub repository that contains the lesson. E.g.
-                          carpentries/lesson-example
+                          carpentries/lesson-example. This doubles as the
+                          relative path to the existing lesson previously cloned
+                          from github.
 <script>                  Additional script to run after the transformation.
                           Important variables to use will be `old` = path to the
                           lesson we just downloaded and `new` = path to the new
@@ -37,25 +37,28 @@ Usage:
 library("fs")
 library("docopt")
 
-arguments <- docopt(doc, version = "Stunning Barnacle 2021-10", help = TRUE)
-
+arguments <- docopt(doc, version = "Stunning Barnacle 2021-11", help = TRUE)
 if (arguments$quiet) {
   sink()
 }
 
 old  <- path_abs(arguments$repo)
-new  <- path_abs(arguments$out)
+new  <- path_abs(arguments$output)
 last <- if (length(arguments$script)) path_abs(arguments$script) else NULL
 
+cli::cli_h1("OLD: {.file {path_rel(old)}}")
+cli::cli_h1("NEW: {.file {path_rel(new)}}")
+
 if (!dir_exists(old)) {
+  cli::cli_h1("Submodule not yet added... adding...")
   system(glue::glue("git submodule add https://github.com/{arguments$repo}"))
 }
 
-if (endsWith(new, "-")) {
-  new <- paste0(new, path_file(arguments$repo))
-} else {
-  new <- path(new, path_file(arguments$repo))
-}
+# if (endsWith(new, "-")) {
+#   new <- paste0(new, path_file(arguments$repo))
+# } else {
+#   new <- path(new, path_file(arguments$repo))
+# }
 # # Record status of previous attempt
 # if (length(arguments$script)) {
 #   f <- gsub(".R$", ".txt", arguments$script)
@@ -90,10 +93,9 @@ library("purrr")
 library("xml2")
 library("here")
 
-lsn  <- fs::path_abs(arguments$template)
 from <- function(...) path(old, ...)
-to   <- function(...) path(old, ...)
-template <- function(...) path(lsn, ...)
+to   <- function(...) path(new, ...)
+template <- function(...) path(path_abs(arguments$template), ...)
 
 cli::cli_h1("Reading in lesson with {.pkg pegboard}")
 old_lesson <- pegboard::Lesson$new(old, fix_liquid = arguments$fix_liquid)
@@ -124,7 +126,7 @@ fix_images <- function(episode, from = "([.][.][/])?(img|fig)/", to = "fig/") {
 }
 
 # transform the episodes via pegboard with reporters
-transform <- function(e, out = lsn) {
+transform <- function(e, out = new) {
   outdir <- fs::path(out, "episodes/")
   cli::cli_process_start("Converting {.file {e$path}} to {.emph sandpaper}")
   cli::cli_status_update("converting block quotes to pandoc fenced div")
@@ -167,53 +169,21 @@ rewrite <- function(x, out) {
 
 # Copy a directory if it exists
 copy_dir <- function(x, out) {
-  root <- fs::path_common(c(x, out))
   tryCatch(fs::dir_copy(x, out, overwrite = TRUE),
     error = function(e) {
-      cli::cli_alert_warning("Could not copy {.file {fs::path_rel(x, root)}}")
+      cli::cli_alert_warning("Could not copy {.file {x}}")
       cli::cli_alert_warning(e$message)
     })
 }
 
-# fetch_new_lesson <- function(new, new_dir, exists = TRUE) {
-#   if (exists) {
-#     cli::cli_h1("using existing lesson in {.file {new}}")
-#     lsn <- new
-#     tryCatch(git_pull(repo = new), error = function(e) {})
-#     return(TRUE)
-#   } else {
-#     base <- path_file(path_ext_remove(new))
-#     if (!dir_exists(new_dir)) dir_create(new_dir)
-#     rmt <- paste0("data-lessons/", base)
-#     cli::cli_alert_info("local repo not found, attempting to use {.url https://github.com/{rmt}}")
-#     tryCatch({
-#       create_from_github(rmt, destdir = new_dir, open = FALSE)
-#       TRUE
-#     },
-#       error = function(e) {
-#         cli::cli_alert_danger("{e$message}")
-#         cli::cli_alert_danger("Could not find {.url https://github.com/{rmt}}")
-#         cli::cli_alert_warning("Defaulting to temporary lesson")
-#         FALSE
-#     })
-#   }
-# }
-# # END Functions ----------------------------------------------------------------
-
-# if (new_established) {
-#   exists_on_our_computer <- !is.na(new_commits[2]) && new_commits[2] != ""
-#   new_dir <- path_abs(arguments$out)
-#   res <- fetch_new_lesson(new, new_dir = new_dir, exists_on_our_computer)
-#   if (isFALSE(res)) {
-#     make_lesson(lsn, cfg$title)
-#     new_established <- FALSE
-#   } else {
-#     lsn <- new
-#   }
-# } else {
-#   make_lesson(lsn, cfg$title)
-# }
-
+# copy new directories
+copy_dir(template("instructors"), to("instructors"))
+copy_dir(template("learners"), to("learners"))
+copy_dir(template("profiles"), to("profiles"))
+if (old_lesson$rmd) {
+  copy_dir(template("renv"), to("renv"))
+}
+file_copy(template("config.yaml"), to("config.yaml"))
 
 # appending our gitignore file
 tgi <- readLines(template(".gitignore"))
@@ -230,7 +200,7 @@ if (length(idx)) {
 }
 
 # write index and readme
-idx$write(path = path(lsn), format = "md")
+idx$write(path = path(new), format = "md")
 
 # Transform non-episode MD files
 cli::cli_h2("copying instructor and learner materials")
@@ -241,6 +211,7 @@ rewrite(from("_extras", "exercises.md"), to("learners"))
 rewrite(from("_extras", "figures.md"), to("learners"))
 rewrite(from("reference.md"), to("learners"))
 rewrite(from("setup.md"), to("learners"))
+tryCatch(dir_delete(to("_extras")), error = function(e) {})
 
 # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
 cli::cli_h2("copying figures, files, and data")
@@ -251,6 +222,7 @@ copy_dir(from("data"), to("episodes/data"))
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
 params <- c(
+  title      = cfg$title,
   source     = paste0("https://github.com/data-lessons/", path_file(new), "/"),
   contact    = cfg$email,
   life_cycle = if (length(cfg$life_cycle)) cfg$life_cycle else "stable",
@@ -262,7 +234,8 @@ params <- c(
     "cp" # default
   )
 )
-set_config(params, path = lsn, write = TRUE)
+set_config(params, path = new, write = TRUE)
+file_move(to("_config.yml"), to("gifnoc_.yml"))
 
 # Transform and write to our episodes folder
 cli::cli_h1("Transforming Episodes")
@@ -270,25 +243,18 @@ purrr::walk(old_lesson$episodes, ~try(transform(.x)))
 if (length(cfg$episode_order)) {
   eps <- names(old_lesson$episodes)
   ord <- map_chr(paste0("^", cfg$episode_order, "\\.R?md$"), ~grep(.x, eps, value = TRUE))
-  set_episodes(lsn, order = ord, write = TRUE)
+  set_episodes(new, order = ord, write = TRUE)
 } else {
-  set_episodes(lsn, order = names(old_lesson$episodes), write = TRUE)
+  set_episodes(new, order = names(old_lesson$episodes), write = TRUE)
 }
 
 
-if (!new_established) {
-  if (dir_exists(new)) {
-    dir_delete(new)
-  }
-  cli::cli_h1("Copying transformed lesson to {new}")
-  dir_copy(lsn, new)
-  cli::cli_alert_info("Committing...")
-  git_add(".", repo = new)
-  git_commit("Transfer lesson to sandpaper",
-    committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
-    repo = new
-  )
-}
+cli::cli_alert_info("Committing...")
+git_add(".", repo = new)
+git_commit("[automation] transform lesson to sandpaper",
+  committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
+  repo = new
+)
 
 if (length(last)) {
   cli::cli_alert_info("Running {last}")
@@ -327,9 +293,9 @@ if (length(last) && nrow(stat) > 0) {
 }
 
 cli::cli_alert_info("writing commit statuses")
-new_commits[2] <- git_info(repo = new)$commit
-writeLines(new_commits, sub("R$", "txt", arguments$script))
+# new_commits[2] <- git_info(repo = new)$commit
+# writeLines(new_commits, sub("R$", "txt", arguments$script))
 
 cli::cli_rule("Conversion finished")
-cli::cli_alert_info("Browse the old lesson in {.file {old}}")
-cli::cli_alert_info("The converted lesson is ready in {.file {new}}")
+cli::cli_alert_info("Browse the old lesson in {.file {path_rel(old)}}")
+cli::cli_alert_info("The converted lesson is ready in {.file {path_rel(new)}}")

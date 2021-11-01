@@ -25,10 +25,11 @@ template/ : renv.lock
 	echo -e "... \033[1mUpdating \033[38;5;208m$@\033[0;00m...\033[22m" && \
 	git submodule update $@ && echo "... done"
 
-sandpaper/%/ : %/ %.R transform-lesson.R
+sandpaper/%/ : %.R %/ transform-lesson.R template/
+	@mv $@site/ $@../site-$(*F) || echo "" > /dev/null
 	@rm -rf $@
-	@git clone https://github.com/$< $@
-	@echo -e "\t\033[1mConverting \033[38;5;208m$@\033[0;00m...\033[22m"
+	@git clone https://github.com/$* $@
+	@echo -e "\033[1mConverting \033[38;5;208m$@\033[0;00m...\033[22m"
 	@cd $@ && \
 	git-filter-repo \
 	--path-rename _episodes:episodes \
@@ -63,7 +64,15 @@ sandpaper/%/ : %/ %.R transform-lesson.R
 	--path .travis.yml \
 	--path-glob '*.gitkeep' \
 	--path-regex 'fig/rmd[-].*[-][0-9]{1,2}.png$$'
-	@echo "... done"
+	@echo -e "... \033[1m\033[38;5;208mdone\033[0;00m\033[22m"
+	@ls $@../site-$(*F) > /dev/null && mv $@../site-$(*F) $@site/ || echo "" > /dev/null
+	Rscript transform-lesson.R \
+	--build \
+	--template template/ \
+	--output $@ \
+	$* \
+	$< || echo "\n\n---\nErrors Occurred\n---\n\n"
+
 
 repos.md : $(TARGETS)
 	rm -f repos.md
