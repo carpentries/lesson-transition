@@ -21,18 +21,21 @@ template/ : renv.lock
 %/ : 
 	@echo -e "\033[1mChecking \033[38;5;208m$@\033[0;00m...\033[22m" && \
 	git submodule add https://github.com/$@ $@ 2> /dev/null && \
-	echo -e "\t\033[1mNew submodule added in \033[38;5;208m$@\033[0;00m\033[22m"|| \
-	echo -e "\t\033[1mUpdating \033[38;5;208m$@\033[0;00m...\033[22m" && \
-	git submodule update $@
+	echo -e "... \033[1mNew submodule added in \033[38;5;208m$@\033[0;00m\033[22m"|| \
+	echo -e "... \033[1mUpdating \033[38;5;208m$@\033[0;00m...\033[22m" && \
+	git submodule update $@ && echo "... done"
 
 sandpaper/%/ : %/ %.R transform-lesson.R
 	@rm -rf $@
 	@git clone https://github.com/$< $@
+	@echo -e "\t\033[1mConverting \033[38;5;208m$@\033[0;00m...\033[22m"
 	@cd $@ && \
 	git-filter-repo \
 	--invert-paths \
 	--path _includes \
 	--path _layouts \
+	--path assets \
+	--path js \
 	--path bin/boilerplate \
 	--path bin/chunk-options.R \
 	--path bin/dependencies.R \
@@ -54,8 +57,10 @@ sandpaper/%/ : %/ %.R transform-lesson.R
 	--path Gemfile \
 	--path .gitignore \
 	--path .github \
-	--path-glob *.gitkeep
-	pwd
+	--path .travis.yml \
+	--path-glob *.gitkeep \
+	--path-regex '.*-[0-9]{1,2}.png$$'
+	@echo "... done"
 
 repos.md : $(TARGETS)
 	rm -f repos.md
@@ -66,8 +71,8 @@ repos.md : $(TARGETS)
 	 echo "- [$${repo}](https://github.com/$${repo}) -> [data-lessons/$${slug}](https://github.com/data-lessons/$${slug})" >> $@;\
 	 done
 
-%.txt : %.R transform-lesson.R %.hash template/
-	@echo hello
+# %.txt : %.R transform-lesson.R %.hash template/
+# 	@echo hello
 
 
 # Rscript transform-lesson.R \
