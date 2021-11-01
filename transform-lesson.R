@@ -92,7 +92,8 @@ library("here")
 
 lsn  <- fs::path_abs(arguments$template)
 from <- function(...) path(old, ...)
-to   <- function(...) path(lsn, ...)
+to   <- function(...) path(old, ...)
+template <- function(...) path(lsn, ...)
 
 cli::cli_h1("Reading in lesson with {.pkg pegboard}")
 old_lesson <- pegboard::Lesson$new(old, fix_liquid = arguments$fix_liquid)
@@ -215,7 +216,7 @@ copy_dir <- function(x, out) {
 
 
 # appending our gitignore file
-tgi <- readLines(to(".gitignore"))
+tgi <- readLines(template(".gitignore"))
 fgi <- readLines(from(".gitignore"))
 writeLines(unique(c(tgi, fgi)), to(".gitignore"))
 
@@ -230,7 +231,6 @@ if (length(idx)) {
 
 # write index and readme
 idx$write(path = path(lsn), format = "md")
-file_copy(from("README.md"), to("README.md"), overwrite = TRUE)
 
 # Transform non-episode MD files
 cli::cli_h2("copying instructor and learner materials")

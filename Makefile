@@ -31,6 +31,8 @@ sandpaper/%/ : %/ %.R transform-lesson.R
 	@echo -e "\t\033[1mConverting \033[38;5;208m$@\033[0;00m...\033[22m"
 	@cd $@ && \
 	git-filter-repo \
+	--path-rename _episodes:episodes \
+	--path-rename _episodes_rmd:episodes \
 	--invert-paths \
 	--path _includes/ \
 	--path _layouts/ \
