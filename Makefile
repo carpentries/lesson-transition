@@ -6,11 +6,12 @@ DIRS := swcarpentry \
 	carpentries
 INPUTS  := $(foreach dir, $(DIRS), $(wildcard $(dir)/*R))
 MODULE  := $(patsubst %.R, %/, $(INPUTS))
+CONVERT := $(patsubst %.R, sandpaper/%/, $(INPUTS))
 TARGETS := $(patsubst %.R, %.txt, $(INPUTS))
 
 .PHONY = all
 
-all: template/ $(MODULE) repos.md
+all: template/ $(CONVERT) repos.md
 
 template/ : renv.lock
 	Rscript --no-init-file establish-template.R \
@@ -23,6 +24,38 @@ template/ : renv.lock
 	echo -e "\t\033[1mNew submodule added in \033[38;5;208m$@\033[0;00m\033[22m"|| \
 	echo -e "\t\033[1mUpdating \033[38;5;208m$@\033[0;00m...\033[22m" && \
 	git submodule update $@
+
+sandpaper/%/ : %/ %.R transform-lesson.R
+	@rm -rf $@
+	@git clone https://github.com/$< $@
+	@cd $@ && \
+	git-filter-repo \
+	--invert-paths \
+	--path _includes \
+	--path _layouts \
+	--path bin/boilerplate \
+	--path bin/chunk-options.R \
+	--path bin/dependencies.R \
+	--path bin/generate_md_episodes.R \
+	--path bin/install_r_deps.sh \
+	--path bin/knit_lessons.sh \
+	--path bin/lesson_check.py \
+	--path bin/lesson_initialize.py \
+	--path bin/markdown_ast.rb \
+	--path bin/repo_check.py \
+	--path bin/reporter.py \
+	--path bin/run-make-docker-serve.sh \
+	--path bin/test_lesson_check.py \
+	--path bin/util.py \
+	--path bin/workshop_check.py \
+	--path 404.md \
+	--path aio.md \
+	--path Makefile \
+	--path Gemfile \
+	--path .gitignore \
+	--path .github \
+	--path-glob *.gitkeep
+	pwd
 
 repos.md : $(TARGETS)
 	rm -f repos.md

@@ -10,10 +10,10 @@ If a lesson has been previously archived on the `data-lessons` repo, then the
 new lesson will gain a `new-` prefix 
 
 Usage: 
-  transform-lesson.R -o <dir> <repo> [<script>]
+  transform-lesson.R -o <dir> -t <dir> <repo> [<script>]
   transform-lesson.R -h | --help
   transform-lesson.R -v | --version
-  transform-lesson.R [-qnfb] [-s <dir>] -o <dir> <repo> [<script>]
+  transform-lesson.R [-qnfb] [-s <dir>] -o <dir> -t <dir> <repo> [<script>]
 
 -h, --help                Show this information and exit
 -v, --version             Print the version information of this script
@@ -23,6 +23,7 @@ Usage:
 -f, --fix-liquid          Fix liquid tags that may not be processed normally
 -b, --build               Build the lesson after translation. This can be useful
                           when writing scripts to see what needs to be fixed.
+-t <dir>, --template=<dir>  The path to the template repo.
 -s <dir>, --save=<dir>    The directory to save the repository for later use,
                           defaults to a temporary directory
 -o <dir>, --output=<dir>  The output directory for the new sandpaper repository
@@ -42,47 +43,38 @@ if (arguments$quiet) {
   sink()
 }
 
-this_repo <- if (length(arguments$save)) path_abs(arguments$save) else tempfile()
+old  <- path_abs(arguments$repo)
 new  <- path_abs(arguments$out)
 last <- if (length(arguments$script)) path_abs(arguments$script) else NULL
 
-if (!dir_exists(this_repo)) {
-  dir_create(this_repo, recurse = TRUE)
+if (!dir_exists(old)) {
+  system(glue::glue("git submodule add https://github.com/{arguments$repo}"))
 }
-old <- path(this_repo, path_file(arguments$repo))
+
 if (endsWith(new, "-")) {
   new <- paste0(new, path_file(arguments$repo))
 } else {
   new <- path(new, path_file(arguments$repo))
 }
-# Record status of previous attempt
-if (length(arguments$script)) {
-  f <- gsub(".R$", ".txt", arguments$script)
-  old_commits <- if (file_exists(f)) readLines(f) else character(0)
-} else {
-  old_commits <- character(0)
-}
+# # Record status of previous attempt
+# if (length(arguments$script)) {
+#   f <- gsub(".R$", ".txt", arguments$script)
+#   old_commits <- if (file_exists(f)) readLines(f) else character(0)
+# } else {
+#   old_commits <- character(0)
+# }
 # determin if the new repository has previously been established
-new_established <- length(old_commits) && !is.na(old_commits[2]) && old_commits[2] != ""
-new_commits <- character(2)
+# new_established <- length(old_commits) && !is.na(old_commits[2]) && old_commits[2] != ""
+# new_commits <- character(2)
 # Download a carpentries lesson
 #
 library("usethis")
 library("gert")
-options(usethis.protocol = "https")
-we_have_local_copy <- dir_exists(old)
-if (we_have_local_copy) {
-  cli::cli_alert("switching to local copy of {.file {arguments$repo}} and pulling changes")
-  git_pull(repo = old)
-} else {
-  cli::cli_alert("Downloading {.file {arguments$repo}} with {.fn usethis::create_from_github}")
-  create_from_github(arguments$repo, destdir = this_repo, fork = FALSE, open = FALSE)
-}
 
-new_commits[1] <- git_info(repo = old)$commit
-if (dir_exists(new)) {
-  new_commits[2] <- git_info(repo = new)$commit
-}
+# new_commits[1] <- git_info(repo = old)$commit
+# if (dir_exists(new)) {
+#   new_commits[2] <- git_info(repo = new)$commit
+# }
 # Transfom a carpentries lesson to a sandpaper lesson
 #
 # This script will start in a lesson repository and take the steps to convert
@@ -98,7 +90,7 @@ library("purrr")
 library("xml2")
 library("here")
 
-lsn  <- tempfile()
+lsn  <- fs::path_abs(arguments$template)
 from <- function(...) path(old, ...)
 to   <- function(...) path(lsn, ...)
 
@@ -182,52 +174,44 @@ copy_dir <- function(x, out) {
     })
 }
 
-# Bootstrap a lesson and remove components we will not need/overwrite
-make_lesson <- function(lesson = lsn, title = cfg$title) {
-  cli::cli_h1("creating a new sandpaper lesson")
-  create_lesson(lesson, name = title, open = FALSE)
-  file_delete(to("episodes", "01-introduction.Rmd"))
-  file_delete(to("index.md"))
-}
+# fetch_new_lesson <- function(new, new_dir, exists = TRUE) {
+#   if (exists) {
+#     cli::cli_h1("using existing lesson in {.file {new}}")
+#     lsn <- new
+#     tryCatch(git_pull(repo = new), error = function(e) {})
+#     return(TRUE)
+#   } else {
+#     base <- path_file(path_ext_remove(new))
+#     if (!dir_exists(new_dir)) dir_create(new_dir)
+#     rmt <- paste0("data-lessons/", base)
+#     cli::cli_alert_info("local repo not found, attempting to use {.url https://github.com/{rmt}}")
+#     tryCatch({
+#       create_from_github(rmt, destdir = new_dir, open = FALSE)
+#       TRUE
+#     },
+#       error = function(e) {
+#         cli::cli_alert_danger("{e$message}")
+#         cli::cli_alert_danger("Could not find {.url https://github.com/{rmt}}")
+#         cli::cli_alert_warning("Defaulting to temporary lesson")
+#         FALSE
+#     })
+#   }
+# }
+# # END Functions ----------------------------------------------------------------
 
-fetch_new_lesson <- function(new, new_dir, exists = TRUE) {
-  if (exists) {
-    cli::cli_h1("using existing lesson in {.file {new}}")
-    lsn <- new
-    tryCatch(git_pull(repo = new), error = function(e) {})
-    return(TRUE)
-  } else {
-    base <- path_file(path_ext_remove(new))
-    if (!dir_exists(new_dir)) dir_create(new_dir)
-    rmt <- paste0("data-lessons/", base)
-    cli::cli_alert_info("local repo not found, attempting to use {.url https://github.com/{rmt}}")
-    tryCatch({
-      create_from_github(rmt, destdir = new_dir, open = FALSE)
-      TRUE
-    },
-      error = function(e) {
-        cli::cli_alert_danger("{e$message}")
-        cli::cli_alert_danger("Could not find {.url https://github.com/{rmt}}")
-        cli::cli_alert_warning("Defaulting to temporary lesson")
-        FALSE
-    })
-  }
-}
-# END Functions ----------------------------------------------------------------
-
-if (new_established) {
-  exists_on_our_computer <- !is.na(new_commits[2]) && new_commits[2] != ""
-  new_dir <- path_abs(arguments$out)
-  res <- fetch_new_lesson(new, new_dir = new_dir, exists_on_our_computer)
-  if (isFALSE(res)) {
-    make_lesson(lsn, cfg$title)
-    new_established <- FALSE
-  } else {
-    lsn <- new
-  }
-} else {
-  make_lesson(lsn, cfg$title)
-}
+# if (new_established) {
+#   exists_on_our_computer <- !is.na(new_commits[2]) && new_commits[2] != ""
+#   new_dir <- path_abs(arguments$out)
+#   res <- fetch_new_lesson(new, new_dir = new_dir, exists_on_our_computer)
+#   if (isFALSE(res)) {
+#     make_lesson(lsn, cfg$title)
+#     new_established <- FALSE
+#   } else {
+#     lsn <- new
+#   }
+# } else {
+#   make_lesson(lsn, cfg$title)
+# }
 
 
 # appending our gitignore file
