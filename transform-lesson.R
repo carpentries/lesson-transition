@@ -251,11 +251,10 @@ if (!dir_exists(path(new, "site"))) {
 
 cli::cli_alert_info("Committing...")
 chchchchanges <- git_add(".", repo = new)
-id <- git_commit("[automation] transform lesson to sandpaper",
+change_id <- git_commit("[automation] transform lesson to sandpaper",
   committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
   repo = new
 )
-chchchchanges$id <- id
 
 
 if (length(last)) {
@@ -288,7 +287,7 @@ if (length(last) && nrow(stat) > 0) {
   msg <- getOption("custom.transformation.message", default = "[custom] fix lesson contents")
   cli::cli_alert_info("Committing new changes...")
   custom <- git_add(".", repo = new)
-  custom$id <- git_commit(msg,
+  custom_id <- git_commit(msg,
     committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
     repo = new
   )
@@ -298,10 +297,11 @@ if (length(last) && nrow(stat) > 0) {
 
 json <- path_ext_set(new, "json")
 cli::cli_alert("Writing list of modified files to {.file {json}}")
-outs <- list(transform = chchchchanges, custom = custom)
+outs <- list(chchchchanges, custom)
+names(outs) <- c(change_id, custom_id)
+outs <- list(outs)
 names(outs) <- arguments$repo
 write_json(outs, path = json)
-toJSON(outs, pretty = TRUE)
 
 cli::cli_rule("Conversion finished")
 cli::cli_alert_info("Browse the old lesson in {.file {path_rel(old)}}")
