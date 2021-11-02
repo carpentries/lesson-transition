@@ -46,38 +46,17 @@ old  <- path_abs(arguments$repo)
 new  <- path_abs(arguments$output)
 last <- if (length(arguments$script)) path_abs(arguments$script) else NULL
 
-cli::cli_h1("OLD: {.file {path_rel(old)}}")
-cli::cli_h1("NEW: {.file {path_rel(new)}}")
+cli::cli_rule("OLD: {.file {path_rel(old)}}")
+cli::cli_rule("NEW: {.file {path_rel(new)}}")
 
 if (!dir_exists(old)) {
   cli::cli_h1("Submodule not yet added... adding...")
   system(glue::glue("git submodule add https://github.com/{arguments$repo}"))
 }
 
-# if (endsWith(new, "-")) {
-#   new <- paste0(new, path_file(arguments$repo))
-# } else {
-#   new <- path(new, path_file(arguments$repo))
-# }
-# # Record status of previous attempt
-# if (length(arguments$script)) {
-#   f <- gsub(".R$", ".txt", arguments$script)
-#   old_commits <- if (file_exists(f)) readLines(f) else character(0)
-# } else {
-#   old_commits <- character(0)
-# }
-# determin if the new repository has previously been established
-# new_established <- length(old_commits) && !is.na(old_commits[2]) && old_commits[2] != ""
-# new_commits <- character(2)
-# Download a carpentries lesson
-#
 library("usethis")
 library("gert")
 
-# new_commits[1] <- git_info(repo = old)$commit
-# if (dir_exists(new)) {
-#   new_commits[2] <- git_info(repo = new)$commit
-# }
 # Transfom a carpentries lesson to a sandpaper lesson
 #
 # This script will start in a lesson repository and take the steps to convert
@@ -89,6 +68,7 @@ library("gert")
 # lesson-specific transformations
 library("sandpaper")
 library("pegboard")
+library("jsonlite")
 library("purrr")
 library("xml2")
 library("here")
@@ -176,6 +156,14 @@ copy_dir <- function(x, out) {
     })
 }
 
+del_dir <- function(x) {
+  tryCatch(dir_delete(to("_extras")), 
+    error = function(e) {
+      cli::cli_alert_warning("Could not delete {.file {x}}")
+      cli::cli_alert_warning(e$message)
+    })
+}
+
 # copy new directories
 copy_dir(template("instructors"), to("instructors"))
 copy_dir(template("learners"), to("learners"))
@@ -211,14 +199,19 @@ rewrite(from("_extras", "exercises.md"), to("learners"))
 rewrite(from("_extras", "figures.md"), to("learners"))
 rewrite(from("reference.md"), to("learners"))
 rewrite(from("setup.md"), to("learners"))
-tryCatch(dir_delete(to("_extras")), error = function(e) {})
+del_dir("_extras")
+
 
 # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
 cli::cli_h2("copying figures, files, and data")
-copy_dir(from("fig"), to("episodes/fig"))
-copy_dir(from("img"), to("episodes/fig"))
-copy_dir(from("files"), to("episodes/files"))
-copy_dir(from("data"), to("episodes/data"))
+copy_dir(to("fig"), to("episodes/fig"))
+del_dir("fig")
+copy_dir(to("img"), to("episodes/fig"))
+del_dir("img")
+copy_dir(to("files"), to("episodes/files"))
+del_dir("files")
+copy_dir(to("data"), to("episodes/data"))
+del_dir("data")
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
 params <- c(
@@ -248,13 +241,20 @@ if (length(cfg$episode_order)) {
   set_episodes(new, order = names(old_lesson$episodes), write = TRUE)
 }
 
+# Remembering to provision the site folder
+if (!dir_exists(path(new, "site"))) {
+  copy_dir(template("site"), to("site"))
+}
+
 
 cli::cli_alert_info("Committing...")
-git_add(".", repo = new)
-git_commit("[automation] transform lesson to sandpaper",
+chchchchanges <- git_add(".", repo = new)
+id <- git_commit("[automation] transform lesson to sandpaper",
   committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
   repo = new
 )
+chchchchanges$id <- id
+
 
 if (length(last)) {
   cli::cli_alert_info("Running {last}")
@@ -285,16 +285,21 @@ if (arguments$build) {
 if (length(last) && nrow(stat) > 0) {
   msg <- getOption("custom.transformation.message", default = "[custom] fix lesson contents")
   cli::cli_alert_info("Committing new changes...")
-  git_add(".", repo = new)
-  git_commit(msg,
+  custom <- git_add(".", repo = new)
+  custom$id <- git_commit(msg,
     committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
     repo = new
   )
+} else {
+  custom <- list()
 }
 
-cli::cli_alert_info("writing commit statuses")
-# new_commits[2] <- git_info(repo = new)$commit
-# writeLines(new_commits, sub("R$", "txt", arguments$script))
+json <- path_ext_set(new, "json")
+cli::cli_alert("Writing list of modified files to {.file {json}}")
+outs <- list(transform = chchchchanges, custom = custom)
+names(outs) <- arguments$repo
+write_json(outs, path = json)
+toJSON(outs, pretty = TRUE)
 
 cli::cli_rule("Conversion finished")
 cli::cli_alert_info("Browse the old lesson in {.file {path_rel(old)}}")
