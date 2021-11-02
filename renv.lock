@@ -183,13 +183,6 @@
       "Repository": "CRAN",
       "Hash": "77bd60a6157420d4ffa93b27cf6a58b8"
     },
-    "files": {
-      "Package": "files",
-      "Version": "0.0.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "cbb6858b0e4bbff4b267d80cb2d667a9"
-    },
     "fs": {
       "Package": "fs",
       "Version": "1.5.0",
@@ -331,15 +324,15 @@
     },
     "pegboard": {
       "Package": "pegboard",
-      "Version": "0.0.0.9031",
+      "Version": "0.0.0.9032",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "7f7b1d8d82307debea337894e318b74c8f3552a8",
+      "RemoteSha": "0e3cff29cb01a32360c0314642b65ffe28da96b2",
       "RemoteHost": "api.github.com",
-      "Hash": "e8090d4c4c77e34c98309362c6941668"
+      "Hash": "2eae11d1c1f1148e7bb62c42ed38cb7a"
     },
     "pillar": {
       "Package": "pillar",
