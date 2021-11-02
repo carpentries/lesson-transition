@@ -157,10 +157,9 @@ copy_dir <- function(x, out) {
 }
 
 del_dir <- function(x) {
-  tryCatch(dir_delete(to("_extras")), 
+  tryCatch(dir_delete(x), 
     error = function(e) {
       cli::cli_alert_warning("Could not delete {.file {x}}")
-      cli::cli_alert_warning(e$message)
     })
 }
 

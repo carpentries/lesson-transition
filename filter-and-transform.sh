@@ -50,7 +50,7 @@ git-filter-repo \
   --path .github \
   --path .travis.yml \
   --path-glob '*.gitkeep' \
-  --path-regex 'fig/rmd[-].*[-][0-9]{1,2}.png$'
+  --path-regex '^fig/.*[-][0-9]{1,2}.png$'
 echo -e "... \033[1m\033[38;5;208mdone\033[0;00m\033[22m"
 
 # Back to our home and move the site back where it belongs

@@ -1,2 +1,1 @@
-# script
-set_config(c("title" = cfg$title), write = TRUE)
+set_config(c("title" = cfg$title), path = new, write = TRUE)
