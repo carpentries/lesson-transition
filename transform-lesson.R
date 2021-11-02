@@ -168,6 +168,9 @@ del_dir <- function(x) {
 copy_dir(template("instructors"), to("instructors"))
 copy_dir(template("learners"), to("learners"))
 copy_dir(template("profiles"), to("profiles"))
+copy_dir(template("episodes/data"), to("episodes/data"))
+copy_dir(template("episodes/fig"), to("episodes/fig"))
+copy_dir(template("episodes/files"), to("episodes/files"))
 if (old_lesson$rmd) {
   copy_dir(template("renv"), to("renv"))
 }
@@ -205,13 +208,13 @@ del_dir("_extras")
 # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
 cli::cli_h2("copying figures, files, and data")
 copy_dir(to("fig"), to("episodes/fig"))
-del_dir("fig")
+del_dir(to("fig"))
 copy_dir(to("img"), to("episodes/fig"))
-del_dir("img")
+del_dir(to("img"))
 copy_dir(to("files"), to("episodes/files"))
-del_dir("files")
+del_dir(to("files"))
 copy_dir(to("data"), to("episodes/data"))
-del_dir("data")
+del_dir(to("data"))
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
 params <- c(
