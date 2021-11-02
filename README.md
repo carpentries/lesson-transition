@@ -6,12 +6,15 @@ from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka
 infrastructure](https://carpentries.github.io/sandpaper-docs) (aka "The Lesson
 Infrastructure"). The process works in the following steps:
 
-1. download/pull the lesson repository from github
-2. apply transformations in `transform-lesson.R` to create a new repository (or download existing)
-3. apply additional needed transformations in `program/lesson.R`
-4. push the new changes to data-lessons (coming soon)
+1. (manual step) create file named `program/lesson.R` (e.g. `swcarpentry/r-novice-gapminder.R`)
+1. provision template with `establish-template.R`
+1. add/fetch git submodule of the repository for reference with `fetch-submodule.sh`
+1. run `filter-and-transform.sh`, which does the following
+   i. performs a fresh clone of the repository
+   ii. filter commits with [`git-filter-repo`](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html)
+   iii. apply transformations in `transform-lesson.R`
+   iv. apply additional needed transformations in `program/lesson.R`
 
-![workflow to download, transform, and upload a lesson](path.png)
 
 **Note: Not all of the repositories represented here are official Carpentries Lessons. Only swcarpentry, datacarpentry, librarycarpentry, and carpentries lessons are official**
 
