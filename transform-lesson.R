@@ -256,6 +256,9 @@ change_id <- git_commit("[automation] transform lesson to sandpaper",
   repo = new
 )
 
+json_out <- list(chchchchanges)
+names(json_out) <- change_id
+
 
 if (length(last)) {
   cli::cli_alert_info("Running {last}")
@@ -291,17 +294,15 @@ if (length(last) && nrow(stat) > 0) {
     committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
     repo = new
   )
-} else {
-  custom <- list()
+  json_out <- c(json_out, custom)
+  names(json_out)[2] <- custom_id
 }
 
 json <- path_ext_set(new, "json")
 cli::cli_alert("Writing list of modified files to {.file {json}}")
-outs <- list(chchchchanges, custom)
-names(outs) <- c(change_id, custom_id)
-outs <- list(outs)
-names(outs) <- arguments$repo
-write_json(outs, path = json)
+json_out <- list(json_out)
+names(json_out) <- arguments$repo
+write_json(json_out, path = json)
 
 cli::cli_rule("Conversion finished")
 cli::cli_alert_info("Browse the old lesson in {.file {path_rel(old)}}")
