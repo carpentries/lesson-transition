@@ -64,6 +64,21 @@ git-filter-repo \
   --path-regex '^fig/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/R-ecology-*$'
+
+# Update our branch and remote
+ORIGIN=https://github.com/data-lessons/${BASE}.git
+CURRENT_BRANCH=$(git branch --show-current)
+echo -e "\033[1mSetting origin to \033[38;5;208m${ORIGIN}\033[0;00m...\033[22m"
+if [[ $(git remote -v) ]]; then
+  git remote set-url origin ${ORIGIN}
+else
+  git remote add origin ${ORIGIN}
+fi
+if [[ ${CURRENT_BRANCH} != 'main' ]]; then 
+  echo -e "\033[1mSetting default branch from \033[38;5;208m${CURRENT_BRANCH}\033[0;00m to \033[38;5;208mmain\033[0;00m...\033[22m"
+fi
+git branch -m main
+
 # Back to our home and move the site back where it belongs
 cd ${CWD}
 if [[ -d ${OUT}../site-${BASE} ]]; then
@@ -90,13 +105,3 @@ else
     ${SCRIPT} || echo "\n\n---\nErrors Occurred\n---\n\n"
 fi
 
-cd ${OUT}
-ORIGIN=https://github.com/data-lessons/${BASE}.git
-CURRENT_BRANCH=$(git branch --show-current)
-echo -e "\033[1mSetting origin to \033[38;5;208m${ORIGIN}\033[0;00m...\033[22m"
-git remote set-url origin ${ORIGIN}
-if [[ ${CURRENT_BRANCH} != 'main' ]]; then 
-  echo -e "\033[1mSetting default branch from \033[38;5;208m${CURRENT_BRANCH}\033[0;00m to \033[38;5;208mmain\033[0;00m...\033[22m"
-fi
-git branch -m main
-cd ${CWD}
