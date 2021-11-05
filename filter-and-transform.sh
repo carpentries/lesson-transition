@@ -9,6 +9,7 @@ SCRIPT=${2}
 
 REPO=$(sed -e 's/\.R$//' <<< ${SCRIPT})
 BASE=$(basename ${REPO})
+GHP="$(./pat.sh)"
 
 # Move out the site/ directory in case it has previously been built (keeping the memory alive)
 if [[ -d ${OUT}site/ ]]; then
@@ -88,14 +89,14 @@ fi
 echo -e "... \033[1m\033[38;5;208mdone\033[0;00m\033[22m"
 
 if [[ ${SCRIPT} == 'datacarpentry/R-ecology-lesson.R' ]]; then
-  Rscript ${SCRIPT} \
+  GITHUB_PAT="${GHP}" Rscript ${SCRIPT} \
     --build \
     --funs functions.R \
     --template template/ \
     --output ${OUT} \
     ${REPO} 
 else
-  Rscript transform-lesson.R \
+  GITHUB_PAT="${GHP}" Rscript transform-lesson.R \
     --build \
     --fix-liquid \
     --funs functions.R \

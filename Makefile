@@ -19,13 +19,13 @@ all: template/ $(TARGETS) repos.md
 modules: $(MODULE)
 template: template/
 update:
-	Rscript -e 'renv::update(library = renv::paths$$library()); renv::snapshot()'
+	GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::update(library = renv::paths$$library()); renv::snapshot()'
 
 renv/library/ :
-	Rscript -e 'renv::restore()'
+	GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'
 
 template/ : establish-template.R renv.lock renv/library/
-	Rscript --no-init-file $< $@
+	RGITHUB_PAT=$$(./pat.sh) script --no-init-file $< $@
 
 # $(MODULE) Get a submodule of a repository
 %/.git : %.R
