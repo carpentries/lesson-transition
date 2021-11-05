@@ -60,6 +60,7 @@ git-filter-repo \
   --path-glob '*html' \
   --path-glob '*.css' \
   --path-glob '*.gitkeep' \
+  --path-glob '*.ico' \
   --path-regex '^fig/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/R-ecology-*$'
