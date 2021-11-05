@@ -13,11 +13,13 @@ PREREQS := renv/library/ template/ filter-and-transform.sh functions.R
 .PHONY = all
 .PHONY = modules
 .PHONY = template
-.PHONY = 
+.PHONY = update
 
 all: template/ $(TARGETS) repos.md
 modules: $(MODULE)
 template: template/
+update:
+	Rscript -e 'renv::update(library = renv::paths$$library()); renv::snapshot()'
 
 renv/library/ :
 	Rscript -e 'renv::restore()'

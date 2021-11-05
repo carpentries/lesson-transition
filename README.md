@@ -47,6 +47,10 @@ make template modules
 This will bootstrap the packages used for the scripts, create the sandpaper 
 template, and update the git submodules
 
+### Updating R packages
+
+To update the R packages used for translation, you can run `make update`
+
 ### Individual targets
 
 To make an individual target, run 
