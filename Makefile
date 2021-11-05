@@ -11,8 +11,13 @@ TARGETS := $(patsubst sandpaper/datacarpentry/new-%, sandpaper/datacarpentry/%, 
 PREREQS := renv/library/ template/ filter-and-transform.sh functions.R
 
 .PHONY = all
+.PHONY = modules
+.PHONY = template
+.PHONY = 
 
 all: template/ $(TARGETS) repos.md
+modules: $(MODULE)
+template: template/
 
 renv/library/ :
 	Rscript -e 'renv::restore()'
