@@ -6,12 +6,16 @@ from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka
 infrastructure](https://carpentries.github.io/sandpaper-docs) (aka "The Lesson
 Infrastructure"). The process works in the following steps:
 
-1. download/pull the lesson repository from github
-2. apply transformations in `transform-lesson.R` to create a new repository (or download existing)
-3. apply additional needed transformations in `program/lesson.R`
-4. push the new changes to data-lessons (coming soon)
+1. (manual step) create file named `program/lesson.R` (e.g. `swcarpentry/r-novice-gapminder.R`)
+1. provision template with `establish-template.R`
+1. add/fetch git submodule of the repository for reference with `fetch-submodule.sh`
+1. run `filter-and-transform.sh`, which does the following
+   i. performs a fresh clone of the repository into `sandpaper/program/lesson/`
+   ii. filter commits with [`git-filter-repo`](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html)
+   iii. apply transformations in `transform-lesson.R`
+   iv. apply additional needed transformations in `program/lesson.R`
+   v. creates commits and records them in `sandpaper/program/lesson.json`
 
-![workflow to download, transform, and upload a lesson](path.png)
 
 **Note: Not all of the repositories represented here are official Carpentries Lessons. Only swcarpentry, datacarpentry, librarycarpentry, and carpentries lessons are official**
 
@@ -29,6 +33,24 @@ To add a lesson for translation, there are two steps:
   `datacarpentry/R-ecology-lesson.R`). 
 2. run `make`
 
+To make an individual target, run 
+
+```bash
+make sandpaper/datacarpentry/new-R-ecology-lesson.json
+```
+
+To run everything from scratch with 7 threads
+
+```bash
+rm -rf sandpaper/
+make -j7
+```
+
+For the curious, this is the path of the makefile for a single target:
+
+![an example of the target sandpaper/swcarpentry/r-novice-gapminder.json](example-path.png)
+
+
 ### Notes
 
 The `transform-lesson.R` script is meant to serve as a generalized method for
@@ -45,14 +67,19 @@ account, you will need to append the `DIRS` varaible in the makefile.
 
 ## Requirements
 
+This repository has package management via {renv} and you can install the 
+package via {renv} by opening R and running:
+
+```r
+renv::restore()
+```
+
+This will restore the renv session to the correct state so that you can convert
+the lessons contained. 
+
 The packages used in this script are the same packages that are used in 
 {sandpaper}, you can [follow the setup instructions to get this script working
-](https://carpentries.github.io/sandpaper-docs/setup) with the following 
-exceptions (which may update):
-
-1. install the {docopt} package: `install.pacakges("docopt")`
-1. install the {sandpaper} package
-1. set up your GitHub PAT or SSH key
+](https://carpentries.github.io/sandpaper-docs/setup).
 
 ## Post translation
 

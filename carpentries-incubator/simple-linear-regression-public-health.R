@@ -1,8 +1,8 @@
 # Use the accurate source for this lesson
 set_config(c("source" = "https://github.com/data-lessons/simple-linear-regression-public-health"), new, write = TRUE)
 # copy over the necessary data files and modify the setup chunks
-file_copy(path(old, "bin", "data.RData"), path(new, 'episodes', 'data'), overwrite = TRUE)
-file_copy(path(old, "bin", "obtain_data.R"), path(new, 'episodes', 'files'), overwrite = TRUE)
+file_copy(path(old, "bin", "data.RData"), path(new, 'episodes', 'data', 'data.RData'), overwrite = TRUE)
+file_copy(path(old, "bin", "obtain_data.R"), path(new, 'episodes', 'files', 'obtain_data.R'), overwrite = TRUE)
 l <- Lesson$new(new, jekyll = FALSE)
 fix_setup <- function(ep) {
   setup <- ep$code[[1]]
