@@ -67,15 +67,14 @@ account, you will need to append the `DIRS` varaible in the makefile.
 
 ## Requirements
 
-This repository has package management via {renv} and you can install the 
-package via {renv} by opening R and running:
+This repository has package management via {renv}, so there are two steps to
+getting set up:
 
-```r
-renv::restore()
-```
-
+1. install R
+2. Run `make renv/library/`
+ 
 This will restore the renv session to the correct state so that you can convert
-the lessons contained. 
+the lessons contained with `make`
 
 The packages used in this script are the same packages that are used in 
 {sandpaper}, you can [follow the setup instructions to get this script working
