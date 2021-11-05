@@ -26,6 +26,8 @@ The repositories that have previously been transferred can be found in [repos.md
 
 ## Usage
 
+### Adding a new lesson
+
 To add a lesson for translation, there are two steps:
 
 1. add an R script with the repository name under a folder with the organisation
@@ -33,11 +35,27 @@ To add a lesson for translation, there are two steps:
   `datacarpentry/R-ecology-lesson.R`). 
 2. run `make`
 
+### Bootstrapping infrastructure
+
+To bootstrap the infrastructure without converting lessons, you can run the
+following targets:
+
+```bash
+make template modules
+```
+
+This will bootstrap the packages used for the scripts, create the sandpaper 
+template, and update the git submodules
+
+### Individual targets
+
 To make an individual target, run 
 
 ```bash
 make sandpaper/datacarpentry/new-R-ecology-lesson.json
 ```
+
+### Parallel processing
 
 To run everything from scratch with 7 threads
 
