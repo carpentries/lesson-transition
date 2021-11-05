@@ -4,7 +4,7 @@
     "Repositories": [
       {
         "Name": "CRAN",
-        "URL": "https://cran.rstudio.com"
+        "URL": "https://cloud.r-project.org"
       }
     ]
   },
@@ -148,13 +148,6 @@
       "Repository": "CRAN",
       "Hash": "ba63dc9ab5a31f3209892437e40c5f60"
     },
-    "dplyr": {
-      "Package": "dplyr",
-      "Version": "1.0.7",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "36f1ae62f026c8ba9f9b5c9a08c03297"
-    },
     "ellipsis": {
       "Package": "ellipsis",
       "Version": "0.3.2",
@@ -189,13 +182,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "44594a07a42e5f91fac9f93fda6d0109"
-    },
-    "generics": {
-      "Package": "generics",
-      "Version": "0.1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "3f6bcfb0ee5d671d9fd1893d2faa79cb"
     },
     "gert": {
       "Package": "gert",
@@ -455,7 +441,10 @@
       "Package": "stringi",
       "Version": "1.7.5",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://carpentries.r-universe.dev",
+      "RemoteUrl": "https://github.com/gagolews/stringi",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "dfc45538a25f2379e70d6c15aa44df644d2bb4e1",
       "Hash": "cd50dc9b449de3d3b47cdc9976886999"
     },
     "stringr": {
@@ -492,13 +481,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "36eb05ad4cfdfeaa56f5a9b2a1311efd"
-    },
-    "tidyselect": {
-      "Package": "tidyselect",
-      "Version": "1.1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "7243004a708d06d4716717fa1ff5b2fe"
     },
     "tinkr": {
       "Package": "tinkr",
@@ -538,6 +520,18 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "c9c462b759a5cc844ae25b5942654d13"
+    },
+    "varnish": {
+      "Package": "varnish",
+      "Version": "0.0.0.9006",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "carpentries",
+      "RemoteRepo": "varnish",
+      "RemoteRef": "main",
+      "RemoteSha": "6e98855aba6f098287a6a3f62a8d313148e2b271",
+      "Hash": "c6655e7db948eb361d82b6b44a382855"
     },
     "vctrs": {
       "Package": "vctrs",

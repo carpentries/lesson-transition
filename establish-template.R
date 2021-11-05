@@ -18,6 +18,7 @@ library("fs")
 library("cli")
 library("docopt")
 library("sandpaper")
+library("varnish")
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2021-10", help = TRUE)
 

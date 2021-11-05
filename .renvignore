@@ -1,2 +1,6 @@
 sandpaper/*
-*/*/*
+swcarpentry/*
+datacarpentry/*
+data-lessons/*
+carpentries/*
+carpentries-incubator/*
