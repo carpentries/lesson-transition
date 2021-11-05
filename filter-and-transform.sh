@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-OUT=${1}
+# for the makefile, the output is a json file, but we want to make it a directory,
+# so we are using parameter expansion
+# https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+OUT=${1%.*} # No file extension
 CWD=$(pwd)
 SCRIPT=${2}
 
@@ -22,10 +25,12 @@ git-filter-repo \
   --path-rename _episodes:episodes \
   --path-rename _episodes_rmd:episodes \
   --invert-paths \
+  --path _site/ \
   --path _includes/ \
   --path _layouts/ \
   --path assets/ \
   --path js/ \
+  --path favicon/ \
   --path tools/ \
   --path bin/boilerplate/ \
   --path bin/chunk-options.R \
@@ -49,19 +54,37 @@ git-filter-repo \
   --path .gitignore \
   --path .github \
   --path .travis.yml \
+  --path tic.R \
+  --path build_lesson.R \
+  --path _site.yml \
+  --path-glob '*html' \
+  --path-glob '*.css' \
   --path-glob '*.gitkeep' \
-  --path-regex '^fig/.*[-][0-9]{1,2}.png$'
-echo -e "... \033[1m\033[38;5;208mdone\033[0;00m\033[22m"
-
+  --path-regex '^fig/.*[-][0-9]{1,2}.png$' \
+  --path-regex '^img/.*[-][0-9]{1,2}.png$' \
+  --path-regex '^img/R-ecology-*$'
 # Back to our home and move the site back where it belongs
 cd ${CWD}
 if [[ -d ${OUT}../site-${BASE} ]]; then
   mv ${OUT}../site-${BASE} ${OUT}site/ || echo "" > /dev/null
 fi
 
-Rscript transform-lesson.R \
---build \
---template template/ \
---output ${OUT} \
-${REPO} \
-${SCRIPT} || echo "\n\n---\nErrors Occurred\n---\n\n"
+echo -e "... \033[1m\033[38;5;208mdone\033[0;00m\033[22m"
+
+if [[ ${SCRIPT} == 'datacarpentry/R-ecology-lesson.R' ]]; then
+  Rscript ${SCRIPT} \
+    --build \
+    --funs functions.R \
+    --template template/ \
+    --output ${OUT} \
+    ${REPO} 
+else
+  Rscript transform-lesson.R \
+    --build \
+    --fix-liquid \
+    --funs functions.R \
+    --template template/ \
+    --output ${OUT} \
+    ${REPO} \
+    ${SCRIPT} || echo "\n\n---\nErrors Occurred\n---\n\n"
+fi

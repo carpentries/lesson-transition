@@ -1,28 +1,31 @@
 #!/usr/bin/env Rscript
 r'{Transform a lesson from styles template to sandpaper infrastructure
 
-This script will download a lesson repository from GitHub, translate it to the
-new lesson infrastructure, {sandpaper}, and apply any post-translation scripts
-that need to be applied in order to fix any issues that occurred in the
-process.
+This script will transform a lesson from the former Jekyll infrastructure to the
+new sandpaper infrastructure after it has been filtered with git-filter-repo.
 
-If a lesson has been previously archived on the `data-lessons` repo, then the
-new lesson will gain a `new-` prefix 
+ASSUMPTIONS
+
+This script assumes that the repo you are transforming exists in the current
+working directory as <organisation>/<lesson-name>. It also assumes that a 
+template sandpaper lesson has been created with `establish-template.R`.
 
 Usage: 
-  transform-lesson.R -o <dir> -t <dir> <repo> [<script>]
+  transform-lesson.R -f <script> -t <dir> -o <dir> <repo> [<script>]
   transform-lesson.R -h | --help
   transform-lesson.R -v | --version
-  transform-lesson.R [-qnfb] -o <dir> -t <dir> <repo> [<script>]
+  transform-lesson.R [-qnlb] -f <script> -t <dir> -o <dir> <repo> [<script>]
 
 -h, --help                Show this information and exit
 -v, --version             Print the version information of this script
 -q, --quiet               Do not print any progress messages
 -n, --dry-run             Perform the translation, but do not create the output
                           directory.
--f, --fix-liquid          Fix liquid tags that may not be processed normally
+-l, --fix-liquid          Fix liquid tags that may not be processed normally
 -b, --build               Build the lesson after translation. This can be useful
                           when writing scripts to see what needs to be fixed.
+-f <script> --funs=<script>  The path to the script that contains the custom
+                             functions for this script to work.
 -t <dir>, --template=<dir>  The path to the template repo.
 -o <dir>, --output=<dir>  The output directory for the new sandpaper repository
 <repo>                    The GitHub repository that contains the lesson. E.g.
@@ -41,6 +44,10 @@ arguments <- docopt(doc, version = "Stunning Barnacle 2021-11", help = TRUE)
 if (arguments$quiet) {
   sink()
 }
+
+# Load the functions needed to transform the repository
+
+source(arguments$funs)
 
 old  <- path_abs(arguments$repo)
 new  <- path_abs(arguments$output)
@@ -81,88 +88,6 @@ cli::cli_h1("Reading in lesson with {.pkg pegboard}")
 old_lesson <- pegboard::Lesson$new(old, fix_liquid = arguments$fix_liquid)
 cli::cli_h2("Reading configuration file")
 suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
-
-# Functions --------------------------------------------------------------------
-#
-# The following lines are functions that I need to transform the lessons
-#
-# transform the image links to be local
-fix_images <- function(episode, from = "([.][.][/])?(img|fig)/", to = "fig/") {
-  blocks <- xml_find_all(episode$body, 
-    ".//md:code_block[contains(text(), 'knitr::include_graphics')]",
-    ns = episode$ns
-  )
-  if (length(blocks)) {
-    txt <- xml_text(blocks)
-    xml_set_text(blocks, sub(from, to, txt))
-  }
-  images <- episode$get_images(process = TRUE)
-  images <- episode$images
-  if (length(images)) {
-    dest <- xml_attr(images, "destination")
-    xml_set_attr(images, "destination", sub(from, to, dest))
-  }
-  episode
-}
-
-# transform the episodes via pegboard with reporters
-transform <- function(e, out = new) {
-  outdir <- fs::path(out, "episodes/")
-  cli::cli_process_start("Converting {.file {e$path}} to {.emph sandpaper}")
-  cli::cli_status_update("converting block quotes to pandoc fenced div")
-  e$unblock()
-
-  cli::cli_status_update("removing Jekyll syntax")
-  e$use_sandpaper()
-
-  cli::cli_status_update("moving yaml items to body")
-  e$move_questions()
-  e$move_objectives()
-  e$move_keypoints()
-  cli::cli_process_done()
-
-  cli::cli_status_update("fixing math blocks")
-  tryCatch(e$protect_math(),
-    error = function(e) {
-      cli::cli_alert_warning("Some math could not be parsed... likely because of shell variable examples")
-      cli::cli_alert_info("Below is the error")
-      cli::cli_alert_warning(e$message)
-    })
-  
-  cli::cli_status_update("fixing image links") 
-  fix_images(e)
-
-  cli::cli_process_start("Writing {.file {outdir}/{e$name}}")
-  e$write(outdir, format = path_ext(e$name), edit = FALSE)
-  cli::cli_process_done()
-}
-
-# Read and and transform additional files
-rewrite <- function(x, out) {
-  tryCatch({
-  ref <- Episode$new(x, process_tags = TRUE, fix_links = TRUE, fix_liquid = TRUE)
-  ref$unblock()$use_sandpaper()$write(out)
-  }, error = function(e) {
-    cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")
-  })
-}
-
-# Copy a directory if it exists
-copy_dir <- function(x, out) {
-  tryCatch(fs::dir_copy(x, out, overwrite = TRUE),
-    error = function(e) {
-      cli::cli_alert_warning("Could not copy {.file {x}}")
-      cli::cli_alert_warning(e$message)
-    })
-}
-
-del_dir <- function(x) {
-  tryCatch(dir_delete(x), 
-    error = function(e) {
-      cli::cli_alert_warning("Could not delete {.file {x}}")
-    })
-}
-
 # copy new directories
 copy_dir(template("instructors"), to("instructors"))
 copy_dir(template("learners"), to("learners"))
@@ -185,12 +110,19 @@ idx <- list.files(old, pattern = "^index.R?md")
 if (length(idx)) {
   idx <- if (length(idx) == 2) "index.Rmd" else idx
   idx <- Episode$new(from(idx), fix_liquid = TRUE)
+  add_experiment_info(idx)
   idx$yaml[length(idx$yaml) + 0:1] <- c("site: sandpaper::sandpaper_site", "---")
   idx$unblock()$use_sandpaper()
 }
 
+# modify readme to include experiment info
+rdm <- Episode$new(to("README.md"))
+rdm$confirm_sandpaper()
+add_experiment_info(rdm)
+
 # write index and readme
-idx$write(path = path(new), format = "md")
+idx$write(path = new, format = "md")
+rdm$write(path = new, format = "md")
 
 # Transform non-episode MD files
 cli::cli_h2("copying instructor and learner materials")
@@ -307,3 +239,4 @@ write_json(json_out, path = json)
 cli::cli_rule("Conversion finished")
 cli::cli_alert_info("Browse the old lesson in {.file {path_rel(old)}}")
 cli::cli_alert_info("The converted lesson is ready in {.file {path_rel(new)}}")
+

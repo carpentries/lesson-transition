@@ -88,10 +88,10 @@
     },
     "cpp11": {
       "Package": "cpp11",
-      "Version": "0.4.0",
+      "Version": "0.4.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "40ba3fd26c8f61d8d14d334bc7761df9"
+      "Hash": "70976176dfd7f179f212783aab2547b1"
     },
     "crayon": {
       "Package": "crayon",
@@ -199,10 +199,10 @@
     },
     "gert": {
       "Package": "gert",
-      "Version": "1.4.1",
+      "Version": "1.4.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "8e54ffecc152da9e1e366ff1a4012bb1"
+      "Hash": "88765e4d319707aac2bd0f7679c2c51c"
     },
     "gh": {
       "Package": "gh",
@@ -562,10 +562,10 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.27",
+      "Version": "0.28",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "12b69332f085d350fc1f2ea6cca58397"
+      "Hash": "f7f3a61ab62cd046d307577a8ae12999"
     },
     "xml2": {
       "Package": "xml2",
