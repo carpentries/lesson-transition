@@ -25,7 +25,7 @@ renv/library/ :
 	GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'
 
 template/ : establish-template.R renv.lock renv/library/
-	RGITHUB_PAT=$$(./pat.sh) script --no-init-file $< $@
+	GITHUB_PAT=$$(./pat.sh) Rscript --no-init-file $< $@
 
 # $(MODULE) Get a submodule of a repository
 %/.git : %.R
