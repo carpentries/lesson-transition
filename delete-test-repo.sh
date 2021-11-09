@@ -37,6 +37,7 @@ if [[ ${TIME} == ${CREATED} ]]; then
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token ${DEL_TOKEN}" \
     https://api.github.com/repos/${REPOSITORY}
+  rm -f ${FILE}
 else
   echo "The time ${REPOSITORY} was created does not match the time we have recorded in ${FILE}"
   echo ""

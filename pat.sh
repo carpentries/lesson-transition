@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
-if [[ ${GITHUB_PAT} ]]; then
-  echo ${GITHUB_PAT}
+set -euo pipefail
+
+NAME=${1:-new}
+
+if [[ $(vault kv get -field=${NAME} tr/auth 2> /dev/null) ]]; then
+  vault kv get -field=${NAME} tr/auth
+elif [[ ${NAME} == 'new' ]]; then
+  printf "url=https://github.com\n" | git credential fill | grep password | awk -F= '{print $2}'
 else
-  printf "protocol=https\nhost=github.com\n" | git credential fill | grep password | awk -F= '{print $2}'
+  exit 1
 fi

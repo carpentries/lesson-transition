@@ -35,3 +35,4 @@ curl \
 # 3. push the repository to the new lesson
 cd sandpaper/${REPOSITORY}
 git push -u origin main
+Rscript -e "usethis::use_github_pages()"

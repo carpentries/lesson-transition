@@ -73,6 +73,49 @@ For the curious, this is the path of the makefile for a single target:
 ![an example of the target sandpaper/swcarpentry/r-novice-gapminder.json](example-path.png)
 
 
+### Sending lessons to GitHub
+
+Because my changes will be stacked on top of the last commit of the previous
+lesson, every time a new commit is added or I change something in the build
+process, I will need to burn it all down and rebuild these lessons so that I do
+not end up with weird merge conflicts or a force-pushed history, thus I need to
+be able to do the following from the command line:
+
+1. create repositories 
+2. assign the repositories to bot teams.
+3. destroy repositories that are outdated in the past.
+
+I have created a sandbox organisation where I know I can break things if I need
+to set up or tear down things. I have given the 
+[Carpentries Apprentice](https://github.com/znk-machine) admin access so that I
+do not risk my own token being used to create and delete repositories.
+
+To send lessons to GitHub, you need to make sure you have the correct tokens
+set up from GitHub in addition to your GitHub PAT, which will give you repo
+access:
+
+ - [NEW\_TOKEN](https://github.com/settings/tokens/new?scopes=repo,workflow&description=GITHUB_NEW) to create and push the new repository
+ - [BOT\_TOKEN](https://github.com/settings/tokens/new?scopes=admin:org&description=GITHUB_BOT) to assign the bots team to the repository
+ - [DEL\_TOKEN](https://github.com/settings/tokens/new?scopes=delete_repo&description=GITHUB_DEL) to delete a repository.
+
+Because I do not want to keep these hanging around my BASH environment, and 
+because I want to be difficult, I am using a [vault secrets engine called
+tr](https://learn.hashicorp.com/tutorials/vault/getting-started-secrets-engines?in=vault/getting-started) by running `vault server -dev` in a separate window and then:
+
+```bash
+vault secrets enable -path=tr kv && \
+vault kv put tr/auth bot=<token> del=<token> new=<token>
+```
+
+From there, I can use [`./pat.sh bot`](pat.sh) to extract the bot token so that
+it can be used with the [`create-test-repo.sh`](create-test-repo.sh) script:
+
+```bash
+BOT_TOKEN=$(./pat.sh bot) NEW_TOKEN=$(./pat.sh new) \
+create-test-repo.sh carpentries-incubator/citable-software bots fishtree-attempt
+```
+
+
 ### Notes
 
 The `transform-lesson.R` script is meant to serve as a generalized method for
