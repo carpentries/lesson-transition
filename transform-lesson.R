@@ -95,6 +95,7 @@ copy_dir(template("profiles"), to("profiles"))
 copy_dir(template("episodes/data"), to("episodes/data"))
 copy_dir(template("episodes/fig"), to("episodes/fig"))
 copy_dir(template("episodes/files"), to("episodes/files"))
+copy_dir(template(".github"), to(".github"))
 if (old_lesson$rmd) {
   copy_dir(template("renv"), to("renv"))
 }
@@ -150,7 +151,7 @@ del_dir(to("data"))
 cli::cli_h1("Setting the configuration parameters in config.yaml")
 params <- c(
   title      = cfg$title,
-  source     = paste0("https://github.com/data-lessons/", path_file(new), "/"),
+  source     = paste0("https://github.com/fishtree-attempt/", path_file(new), "/"),
   contact    = cfg$email,
   life_cycle = if (length(cfg$life_cycle)) cfg$life_cycle else "stable",
   carpentry  = switch(strsplit(arguments$repo, "/")[[1]][1],

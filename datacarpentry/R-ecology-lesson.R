@@ -211,7 +211,7 @@ ino <- Episode$new(from("instructor-notes.md"))
 ino$confirm_sandpaper()
 ilinks <- xml2::xml_attr(ino$links, "destination")
 ilinks[grepl("code-handout.R", ilinks)] <- "files/code-handout.R"
-ilinks <- sub("datacarpentry", "data-lessons", ilinks)
+ilinks <- sub("datacarpentry", "fishtree-attempt", ilinks)
 xml2::xml_set_attr(ino$links, "destination", ilinks)
 ino$write(path = to("instructors"), format = "md")
 set_instructors(new, order = "instructor-notes.md", write = TRUE)
@@ -228,7 +228,7 @@ dir_copy(from("img"), to("episodes", "fig"))
 cli::cli_h1("Setting the configuration parameters in config.yaml")
 params <- c(
   title      = "Data Analysis and Visualisation in R for Ecologists",
-  source     = "https://github.com/data-lessons/new-R-ecology-lesson/",
+  source     = "https://github.com/fishtree-attempt/new-R-ecology-lesson/",
   contact    = "zkamvar@carpentries.org",
   life_cycle = "stable",
   carpentry  = "dc"

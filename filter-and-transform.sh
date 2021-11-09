@@ -67,7 +67,7 @@ git-filter-repo \
   --path-regex '^img/R-ecology-*$'
 
 # Update our branch and remote
-ORIGIN=https://github.com/data-lessons/${BASE}.git
+ORIGIN=https://github.com/fishtree-attempt/${BASE}.git
 CURRENT_BRANCH=$(git branch --show-current)
 echo -e "\033[1mSetting origin to \033[38;5;208m${ORIGIN}\033[0;00m...\033[22m"
 if [[ $(git remote -v) ]]; then

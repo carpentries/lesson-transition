@@ -41,4 +41,3 @@ xml2::xml_remove(the_fence)
 e$add_md(xml2::xml_text(the_fence), where = end_block)
 
 e$write(path = fs::path(new, "episodes"), format = "Rmd")
-set_config(c("source" = "https://github.com/data-lessons/r-novice-gapminder"), new, write = TRUE)

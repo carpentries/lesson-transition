@@ -21,6 +21,9 @@ template: template/
 update:
 	GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::update(library = renv::paths$$library()); renv::snapshot()'
 
+sandpaper/%-status.json : sandpaper/%.json
+	@NEW_TOKEN=$$(./pat.sh) bash create-test-repo.sh $* bots fishtree-attempt
+
 renv/library/ :
 	GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'
 
