@@ -98,6 +98,8 @@ access:
  - [BOT\_TOKEN](https://github.com/settings/tokens/new?scopes=admin:org&description=GITHUB_BOT) to assign the bots team to the repository
  - [DEL\_TOKEN](https://github.com/settings/tokens/new?scopes=delete_repo&description=GITHUB_DEL) to delete a repository.
 
+In testing, I set these tokens to expire the next day.
+
 Because I do not want to keep these hanging around my BASH environment, and 
 because I want to be difficult, I am using a [vault secrets engine called
 tr](https://learn.hashicorp.com/tutorials/vault/getting-started-secrets-engines?in=vault/getting-started) by running `vault server -dev` in a separate window and then:
