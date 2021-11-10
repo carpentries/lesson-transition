@@ -64,7 +64,8 @@ git-filter-repo \
   --path-glob '*.ico' \
   --path-regex '^fig/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/.*[-][0-9]{1,2}.png$' \
-  --path-regex '^img/R-ecology-*$'
+  --path-regex '^img/R-ecology-*$' \
+  --message-callback 'return message.replace(b" @", b" -at-")' # this is needed to avoid spamming folks when I test these
 
 # Update our branch and remote
 ORIGIN=https://github.com/fishtree-attempt/${BASE}.git
