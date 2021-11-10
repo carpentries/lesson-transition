@@ -20,6 +20,7 @@ rm -rf ${OUT}
 # the clones must be FRESH
 git clone .git/modules/${REPO} ${OUT}
 
+BLANK=""
 echo -e "\033[1mConverting \033[38;5;208m${OUT}\033[0;00m...\033[22m"
 cd ${OUT}
 git-filter-repo \
@@ -65,7 +66,7 @@ git-filter-repo \
   --path-regex '^fig/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/R-ecology-*$' \
-  --message-callback 'return message.replace(b" @", b" -at-")' # this is needed to avoid spamming folks when I test these
+  --message-callback 'return re.sub(b"#(\d+? ?)", b"'${BLANK}'/issues/\\1", message.replace(b" @", b" =at="))'
 
 # Update our branch and remote
 ORIGIN=https://github.com/fishtree-attempt/${BASE}.git

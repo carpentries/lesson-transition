@@ -32,7 +32,10 @@ curl \
   https://api.github.com/orgs/${ORG}/teams/${TEAM}/repos/${ORG}/${NAME} \
   -d '{"permission":"push"}'
 
+URL=$(jq -r .html_url < ${OUT})
 # 3. push the repository to the new lesson
 cd sandpaper/${REPOSITORY}
 git push -u origin main
 Rscript -e "usethis::use_github_pages()"
+
+echo "Browse the repository at ${URL}"
