@@ -30,6 +30,7 @@ git-filter-repo \
   --path _site/ \
   --path _includes/ \
   --path _layouts/ \
+  --path bootstrap/ \
   --path assets/ \
   --path css/ \
   --path js/ \
