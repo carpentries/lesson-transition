@@ -22,7 +22,7 @@ curl \
   -H "Accept: application/vnd.github.v3+json" \
   -H "Authorization: token ${NEW_TOKEN}" \
   https://api.github.com/orgs/${ORG}/repos \
-  -d "{\"name\":\"${NAME}\"}" > ${OUT}
+  -d "{\"name\":\"${NAME}\", \"homepage\":\"https://${ORG}.github.io/${NAME}/\"}" > ${OUT}
 
 # 2. assign the ${TEAM} to that repository 
 curl \
