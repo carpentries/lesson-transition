@@ -31,6 +31,7 @@ git-filter-repo \
   --path _includes/ \
   --path _layouts/ \
   --path assets/ \
+  --path css/ \
   --path js/ \
   --path favicon/ \
   --path tools/ \
