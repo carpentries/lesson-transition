@@ -199,10 +199,10 @@
     },
     "gert": {
       "Package": "gert",
-      "Version": "1.4.2",
+      "Version": "1.4.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "88765e4d319707aac2bd0f7679c2c51c"
+      "Hash": "3a3f29a74f8bd85ed8d53ab039b18bcd"
     },
     "gh": {
       "Package": "gh",
@@ -441,15 +441,15 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.0.0.9066",
+      "Version": "0.0.0.9067",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "f234083371e1a01809c97b49752c918ed04fffbc",
+      "RemoteSha": "831d7808c143d83cd1cedbe44cb00abf741b9bf3",
       "RemoteHost": "api.github.com",
-      "Hash": "6507d57d33075d09606569c06b2beeb8"
+      "Hash": "318ac7c9397cfb1147bd3a31675681a6"
     },
     "stringi": {
       "Package": "stringi",
