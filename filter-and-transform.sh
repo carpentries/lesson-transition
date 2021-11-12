@@ -27,6 +27,7 @@ git-filter-repo \
   --path-rename _episodes:episodes \
   --path-rename _episodes_rmd:episodes \
   --invert-paths \
+  --path _config_dev.yml \
   --path _site/ \
   --path _includes/ \
   --path _layouts/ \
@@ -39,12 +40,14 @@ git-filter-repo \
   --path bin/boilerplate/ \
   --path bin/chunk-options.R \
   --path bin/dependencies.R \
+  --path bin/extract_figures.py \
   --path bin/generate_md_episodes.R \
   --path bin/install_r_deps.sh \
   --path bin/knit_lessons.sh \
   --path bin/lesson_check.py \
   --path bin/lesson_initialize.py \
   --path bin/markdown_ast.rb \
+  --path bin/markdown-ast.rb \
   --path bin/repo_check.py \
   --path bin/reporter.py \
   --path bin/run-make-docker-serve.sh \
