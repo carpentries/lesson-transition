@@ -117,6 +117,13 @@ BOT_TOKEN=$(./pat.sh bot) NEW_TOKEN=$(./pat.sh new) \
 create-test-repo.sh carpentries-incubator/citable-software bots fishtree-attempt
 ```
 
+There is also the `github` target which will first delete any repositories you
+have created with this script and then re-create and upload them:
+
+```bash
+BOT_TOKEN=$(./pat.sh bot) DEL_TOKEN=$(./pat.sh del) \
+make github
+```
 
 ### Notes
 
