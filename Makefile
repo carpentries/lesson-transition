@@ -48,9 +48,9 @@ repos.md : $(TARGETS)
 	@rm -f repos.md
 	@for i in $^;\
 	 do repo=$$(echo $$i | sed -e 's/.json//');\
-	 slug=$$(basename $${repo}));\
+	 slug=$$(basename $${repo});\
 	 account=$$(dirname $${repo});\
-	 echo "- [$${repo}](https://github.com/$${repo}) -> [fishtree-attempt/$${slug}](https://github.com/fishtree-attempt/$${slug})" >> $@;\
+	 echo "- [$${repo##sandpaper/}](https://github.com/$${repo##sandpaper/}) -> [fishtree-attempt/$${slug}](https://github.com/fishtree-attempt/$${slug})" >> $@;\
 	 done
 
 

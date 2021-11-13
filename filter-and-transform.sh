@@ -71,7 +71,10 @@ git-filter-repo \
   --path-regex '^fig/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/.*[-][0-9]{1,2}.png$' \
   --path-regex '^img/R-ecology-*$' \
-  --message-callback 'return re.sub(b"#(\d+? ?)", b"'${BLANK}'/issues/\\1", message.replace(b" @", b" =at="))'
+  --message-callback 'return \
+re.sub(b"https://github.com/'${REPO%%${BASE}}'", b"=/='${REPO%%${BASE}}'=/=", \
+re.sub(b"#(\d+? ?)", b"'${BLANK}'/issues/\\1", \
+message.replace(b"@", b" =@=")))'
 
 # Update our branch and remote
 ORIGIN=https://github.com/fishtree-attempt/${BASE}.git
