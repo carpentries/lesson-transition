@@ -1,3 +1,4 @@
+SHELL = bash
 DIRS := swcarpentry \
 	datacarpentry \
 	librarycarpentry \
@@ -15,6 +16,7 @@ PREREQS := renv/library/ template/ filter-and-transform.sh functions.R
 .PHONY = template
 .PHONY = update
 .PHONY = github
+.PHONY = info
 
 all: template/ $(TARGETS) repos.md
 modules: $(MODULE)
@@ -23,7 +25,16 @@ github: $(GITHUB)
 update:
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::update(library = renv::paths$$library()); renv::snapshot()'
 
+info: 
+	@for i in $(GITHUB); \
+		do [[ -e $${i} ]] && printf "$${i##sandpaper/}:\t$$(jq .created_at < $${i})\n" || echo '$${i} does not exist'; \
+		done
+
+touchy:
+	@for i in $(TARGETS); do touch $${i}; done
+
 sandpaper/%-status.json : sandpaper/%.json create-test-repo.sh delete-test-repo.sh
+	@echo "Creating $@"
 	@bash delete-test-repo.sh $* || echo "No repository to delete"
 	@NEW_TOKEN=$$(./pat.sh) bash create-test-repo.sh $* bots fishtree-attempt
 
