@@ -441,15 +441,15 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.0.0.9067",
+      "Version": "0.0.0.9069",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "831d7808c143d83cd1cedbe44cb00abf741b9bf3",
+      "RemoteSha": "7a68cdf5d282d703880eee876f3d95b79291a5df",
       "RemoteHost": "api.github.com",
-      "Hash": "318ac7c9397cfb1147bd3a31675681a6"
+      "Hash": "7bc6361f599f004e7e51c92a159aec89"
     },
     "stringi": {
       "Package": "stringi",
