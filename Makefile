@@ -20,6 +20,8 @@ PREREQS := renv/library/ template/ filter-and-transform.sh functions.R
 
 all: template/ $(TARGETS) repos.md
 modules: $(MODULE)
+	git submodule update --remote --recursive
+
 template: template/
 github: $(GITHUB)
 update:
@@ -27,14 +29,13 @@ update:
 
 info: 
 	@for i in $(GITHUB); \
-		do [[ -e $${i} ]] && printf "$$(jq .created_at < $${i})\t$${i##sandpaper/}\n" || echo '$${i} does not exist'; \
+		do [[ -e $${i} ]] && printf "$$(jq .created_at < $${i})\t$${i##sandpaper/}\n" || echo "$${i} does not exist"; \
 		done
 
 status:
 	@for i in $(GITHUB); \
 		do [[ -e $${i} ]] && printf "$$(./page-status-test-repo.sh $${i/-status//})\t$${i##sandpaper/}\n" || echo '$${i} does not exist'; \
 		done
-
 
 touchy:
 	@for i in $(TARGETS); do touch $${i}; done
