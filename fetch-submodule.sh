@@ -11,6 +11,6 @@ elif [[ ! -f ${REPO}/.git ]]; then
     git submodule update --init https://github.com/${REPO} ${REPO} 2> /dev/null 
 else
     echo -e "... \033[1mUpdating \033[38;5;208m${REPO}\033[0;00m...\033[22m"
-    git submodule update ${REPO}
+    git submodule update --remote ${REPO}
 fi
 echo "... done"
