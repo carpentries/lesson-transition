@@ -20,7 +20,7 @@ PREREQS := renv/library/ template/ filter-and-transform.sh functions.R
 
 all: template/ $(TARGETS) repos.md
 modules: $(MODULE)
-	git submodule update --remote --recursive
+	git submodule foreach git pull
 
 template: template/
 github: $(GITHUB)
