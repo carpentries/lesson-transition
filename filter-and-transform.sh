@@ -18,7 +18,7 @@ fi
 # removing the directory to make a fresh clone for git-filter-repo
 rm -rf ${OUT}
 # the clones must be FRESH
-git clone .git/modules/${REPO} ${OUT}
+git clone --no-local .git/modules/${REPO} ${OUT}
 
 BLANK=""
 echo -e "\033[1mConverting \033[38;5;208m${OUT}\033[0;00m...\033[22m"
