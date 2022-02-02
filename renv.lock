@@ -275,10 +275,10 @@
     },
     "generics": {
       "Package": "generics",
-      "Version": "0.1.1",
+      "Version": "0.1.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "3f6bcfb0ee5d671d9fd1893d2faa79cb",
+      "Hash": "177475892cf4a55865868527654a7741",
       "Requirements": []
     },
     "gert": {
@@ -450,10 +450,10 @@
     },
     "magrittr": {
       "Package": "magrittr",
-      "Version": "2.0.1",
+      "Version": "2.0.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "41287f1ac7d28a92f0a286ed507928d3",
+      "Hash": "cdc87ecd81934679d1557633d8e1fe51",
       "Requirements": []
     },
     "memoise": {
@@ -493,22 +493,21 @@
     },
     "pegboard": {
       "Package": "pegboard",
-      "Version": "0.0.0.9034",
+      "Version": "0.1.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "2f3d3b1cb530310c3f789298c97aa41ded90d101",
+      "RemoteSha": "2f81ec4457aba4db6cb2675def8751f12ac79c30",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr",
-      "Hash": "c12b5c5511bcc7de8eb5bfb599a31db8",
+      "Hash": "d2c45a77c9a58a540e9e2f421f8bea2f",
       "Requirements": [
         "R6",
         "commonmark",
         "fs",
         "glue",
-        "lifecycle",
         "purrr",
         "tinkr",
         "xml2",
@@ -518,10 +517,10 @@
     },
     "pillar": {
       "Package": "pillar",
-      "Version": "1.6.5",
+      "Version": "1.7.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "464a3e015331eeb8efd1d239cad5128d",
+      "Hash": "51dfc97e1b7069e9f7e6f83f3589c22e",
       "Requirements": [
         "cli",
         "crayon",
@@ -644,10 +643,10 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "0.4.12",
+      "Version": "1.0.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0879f5388fe6e4d56d7ef0b7ccb031e5",
+      "Hash": "ec923a35ba44bc86fbf95dacaccf65da",
       "Requirements": []
     },
     "rmarkdown": {
@@ -686,16 +685,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.1.0",
+      "Version": "0.1.2",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "d6a757e9db9007ee1722063349c2dea4cff000ac",
+      "RemoteSha": "4ecabd07b1066838ba66425755ef458d962da44a",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "b2e21f05586ecd80a644bfcf4a261acd",
+      "Hash": "9d360024ce266498bfd6dd8bbe41d260",
       "Requirements": [
         "assertthat",
         "callr",
@@ -912,9 +911,9 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "78bf32e9faf0413d8159c2262a372913714ef41f",
+      "RemoteSha": "e1354261716ef6c5dff5aface4d0ece35087f621",
       "RemoteHost": "api.github.com",
-      "Hash": "38be4dc731e33a0fbce4c5811c9da1fa",
+      "Hash": "6812e95b5c67a5d8d6f0fbe7e2a94d1a",
       "Requirements": []
     },
     "vctrs": {
