@@ -50,3 +50,7 @@
 	branch = main
 	path = datacarpentry/r-raster-vector-geospatial
 	url = https://github.com/datacarpentry/r-raster-vector-geospatial/
+[submodule "carpentries/instructor-training"]
+	path = carpentries/instructor-training
+	url = https://github.com/carpentries/instructor-training
+	branch = gh-pages

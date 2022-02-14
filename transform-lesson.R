@@ -106,6 +106,8 @@ tgi <- readLines(template(".gitignore"))
 fgi <- readLines(from(".gitignore"))
 writeLines(unique(c(tgi, fgi)), to(".gitignore"))
 
+
+cli::cli_h2("Processing index")
 # Modify the index to include our magic header
 idx <- list.files(old, pattern = "^index.R?md")
 if (length(idx)) {
@@ -115,14 +117,15 @@ if (length(idx)) {
   idx$yaml[length(idx$yaml) + 0:1] <- c("site: sandpaper::sandpaper_site", "---")
   idx$unblock()$use_sandpaper()
 }
+idx$write(path = new, format = "md")
 
+cli::cli_h2("Processing README")
 # modify readme to include experiment info
 rdm <- Episode$new(to("README.md"))
 rdm$confirm_sandpaper()
 add_experiment_info(rdm)
 
 # write index and readme
-idx$write(path = new, format = "md")
 rdm$write(path = new, format = "md")
 
 # Transform non-episode MD files
