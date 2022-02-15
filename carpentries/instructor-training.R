@@ -20,6 +20,13 @@ write_out <- function(path) {
 purrr::walk(selfies$node, become_self_aware)
 purrr::walk(selfies$filepath, write_out)
 
+idx <- pegboard::Episode$new(fs::path(new, "index.md"))
+idx$confirm_sandpaper()
+ilinks <- idx$validate_links()
+iselfies <- ilinks[grep("carpentries.github.io/instructor-training/", ilinks$orig), , drop = FALSE]
+purrr::walk(iselfies$node, become_self_aware)
+idx$write(new, format = "md")
+
 oextra <- function(x) fs::path(new, "_extras", x)
 instr <- fs::path(new, "instructors")
 learn <- fs::path(new, "learners")
