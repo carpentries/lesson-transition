@@ -60,7 +60,7 @@ sandpaper/%.json : %.R %/.git $(PREREQS) transform-lesson.R
 	bash filter-and-transform.sh $@ $<
 
 sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
-	bash filter-and-transform.sh $@ $<
+	bash filter-and-transform.sh $@ $< || echo "UGH"
 
 repos.md : $(TARGETS)
 	@rm -f repos.md
