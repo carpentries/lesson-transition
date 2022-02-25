@@ -27,6 +27,12 @@ github: $(GITHUB)
 update:
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::update(library = renv::paths$$library()); renv::snapshot()'
 
+bump: 
+	@for i in $(GITHUB); \
+		do j="$${i%%-status.json}"; \
+			gh workflow run sandpaper-main.yaml --repo "fishtree-attempt/$${j##*/}" -f reset=true; \
+		done
+
 info: 
 	@for i in $(GITHUB); \
 		do [[ -e $${i} ]] && printf "$$(jq .created_at < $${i})\t$${i##sandpaper/}\n" || echo "$${i} does not exist"; \
