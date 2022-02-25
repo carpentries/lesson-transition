@@ -52,5 +52,17 @@
 	url = https://github.com/datacarpentry/r-raster-vector-geospatial/
 [submodule "carpentries/instructor-training"]
 	path = carpentries/instructor-training
-	url = https://github.com/carpentries/instructor-training
+	url = https://github.com/carpentries/instructor-training/
+	branch = gh-pages
+[submodule "carpentries-incubator/SDC-BIDS-sMRI"]
+	path = carpentries-incubator/SDC-BIDS-sMRI
+	url = https://github.com/carpentries-incubator/SDC-BIDS-sMRI/
+	branch = gh-pages
+[submodule "carpentries-incubator/SDC-BIDS-IntroMRI"]
+	path = carpentries-incubator/SDC-BIDS-IntroMRI
+	url = https://github.com/carpentries-incubator/SDC-BIDS-IntroMRI/
+	branch = gh-pages
+[submodule "carpentries-incubator/SDC-BIDS-fMRI"]
+	path = carpentries-incubator/SDC-BIDS-fMRI
+	url = https://github.com/carpentries-incubator/SDC-BIDS-fMRI/
 	branch = gh-pages
