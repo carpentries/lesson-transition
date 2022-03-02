@@ -21,6 +21,19 @@ fix_images <- function(episode, from = "([.][.][/])?(img|fig)/", to = "fig/") {
   episode
 }
 
+fix_html_indents <- function(episode) {
+  html <- xml_find_all(episode$body, ".//md:html_block", episode$ns)
+  if (length(html)) {
+    # we allow markdown in html blocks because it can be useful for folks to 
+    # express block-level html syntax. However, this can clash with the output
+    # of some python programs, so we replace all gaps greater than or equal to
+    # four spaces with three spaces.
+    txt <- gsub("[>]\\s{4,}[<]", ">   <", xml_text(html))
+    xml_set_text(html, txt)
+  }
+  episode
+}
+
 # transform the episodes via pegboard with reporters
 transform <- function(e, out = new) {
   outdir <- fs::path(out, "episodes/")
@@ -47,6 +60,9 @@ transform <- function(e, out = new) {
 
   cli::cli_status_update("fixing image links") 
   fix_images(e)
+
+  cli::cli_status_update("fixing html indents")
+  fix_html_indents(e)
 
   cli::cli_process_start("Writing {.file {outdir}/{e$name}}")
   e$write(outdir, format = path_ext(e$name), edit = FALSE)
