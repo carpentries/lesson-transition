@@ -1,4 +1,6 @@
 l <- pegboard::Lesson$new(new, jekyll = FALSE)
+
+# update links that are pointing to the old material
 links <- l$validate_links()
 have_this_url <- grep("carpentries.github.io/instructor-training/", links$orig)
 selfies <- links[have_this_url, , drop = FALSE]
@@ -27,6 +29,14 @@ iselfies <- ilinks[grep("carpentries.github.io/instructor-training/", ilinks$ori
 purrr::walk(iselfies$node, become_self_aware)
 idx$write(new, format = "md")
 
+# modify break episodes
+cli::cli_alert("modifying breaks episodes")
+breaks <- purrr::keep(l$episodes, ~length(xml2::xml_children(.x$body)) == 0)
+break_message <- "Take a break. If you can, move around and look at something away from your screen to give your eyes a rest.\n"
+purrr::walk(breaks, ~write_out(.x$add_md(break_message)$path))
+
+cli::cli_alert("arranging extras")
+# move over extras into learners and instructors
 oextra <- function(x) fs::path(new, "_extras", x)
 instr <- fs::path(new, "instructors")
 learn <- fs::path(new, "learners")
