@@ -634,10 +634,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.15.3",
+      "Version": "0.15.4",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "318c703b833089e1bc0c6a198362ca19",
+      "Hash": "c1078316e1d4f70275fc1ea60c0bc431",
       "Requirements": []
     },
     "rlang": {
@@ -650,11 +650,12 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "2.11",
+      "Version": "2.12",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "320017b52d05a943981272b295750388",
+      "Hash": "354da5088ddfdffb73c11cc952885d88",
       "Requirements": [
+        "bslib",
         "evaluate",
         "htmltools",
         "jquerylib",
@@ -904,15 +905,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.1.5",
+      "Version": "0.1.7",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "1312ba5ef851a3f052cae94f2adcfbb5e9318862",
+      "RemoteSha": "b19e6fa0694627c01e859253fc871e3360fb7da8",
       "RemoteHost": "api.github.com",
-      "Hash": "68876db0da4ffc7e6464adb23b3c75d1",
+      "Hash": "ff43dd97f06897563611d00e400864b2",
       "Requirements": []
     },
     "vctrs": {
@@ -945,10 +946,10 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.29",
+      "Version": "0.30",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "e2e5fb1a74fbb68b27d6efc5372635dc",
+      "Hash": "e83f48136b041845e50a6658feffb197",
       "Requirements": []
     },
     "xml2": {
