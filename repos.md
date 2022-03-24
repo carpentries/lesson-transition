@@ -1,6 +1,7 @@
 - [swcarpentry/python-novice-inflammation](https://github.com/swcarpentry/python-novice-inflammation) -> [fishtree-attempt/python-novice-inflammation](https://github.com/fishtree-attempt/python-novice-inflammation)
 - [swcarpentry/r-novice-gapminder](https://github.com/swcarpentry/r-novice-gapminder) -> [fishtree-attempt/r-novice-gapminder](https://github.com/fishtree-attempt/r-novice-gapminder)
 - [datacarpentry/astronomy-python](https://github.com/datacarpentry/astronomy-python) -> [fishtree-attempt/astronomy-python](https://github.com/fishtree-attempt/astronomy-python)
+- [datacarpentry/r-socialsci](https://github.com/datacarpentry/r-socialsci) -> [fishtree-attempt/r-socialsci](https://github.com/fishtree-attempt/r-socialsci)
 - [datacarpentry/R-ecology-lesson](https://github.com/datacarpentry/R-ecology-lesson) -> [fishtree-attempt/R-ecology-lesson](https://github.com/fishtree-attempt/R-ecology-lesson)
 - [datacarpentry/r-raster-vector-geospatial](https://github.com/datacarpentry/r-raster-vector-geospatial) -> [fishtree-attempt/r-raster-vector-geospatial](https://github.com/fishtree-attempt/r-raster-vector-geospatial)
 - [datacarpentry/wrangling-genomics](https://github.com/datacarpentry/wrangling-genomics) -> [fishtree-attempt/wrangling-genomics](https://github.com/fishtree-attempt/wrangling-genomics)

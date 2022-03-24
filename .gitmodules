@@ -66,3 +66,7 @@
 	path = carpentries-incubator/SDC-BIDS-fMRI
 	url = https://github.com/carpentries-incubator/SDC-BIDS-fMRI/
 	branch = gh-pages
+[submodule "datacarpentry/r-socialsci"]
+	path = datacarpentry/r-socialsci
+	url = https://github.com/datacarpentry/r-socialsci/
+	branch = main
