@@ -14,6 +14,14 @@ rewrite(to("_extras", "data-wrangling-handout.Rmd"), to("learners"))
 rewrite(to("_extras", "intro-R-handout.Rmd"), to("learners"))
 rewrite(to("_extras", "starting-with-data-handout.Rmd"), to("learners"))
 
+sandpaper::set_learners(new, 
+  c("reference.md",
+    "intro-R-handout.Rmd",
+    "starting-with-data-handout.Rmd",
+    "data-wrangling-handout.Rmd",
+    "data-visualisation-handout.Rmd"), 
+  write = TRUE)
+
 # We don't like to store things outside of their context, so we moved bin to
 # the episodes directory and are now sourcing it relative to there.
 fix_setup <- function(ep) {
@@ -42,8 +50,22 @@ protect_examples <- function(ep) {
     ep$ns)
   purrr::walk(ex, protect_example)
 }
+convert_blocks <- function(episode) {
+  blocks <- episode$get_blocks()
+  xml_set_attr(blocks, attr = "ktag", "{: .callout}")
+  # hack to force unblock to perform its work
+  episode$.__enclos_env__$private$mutations["unblock"] <- FALSE
+  episode$unblock()
+}
+
+sql <- pegboard::Episode$new(to("episodes/.ignore-05-databases.Rmd"))
+convert_blocks(sql)
+sql$confirm_sandpaper()
+sql$write(to("episodes"), format = "Rmd")
+
 l <- Lesson$new(new, jekyll = FALSE)
 purrr::walk(l$episodes, fix_setup)
+convert_blocks(l$episodes[["04-ggplot2.Rmd"]])
 protect_examples(l$episodes[["05-rmarkdown.Rmd"]])
 
 
