@@ -73,7 +73,7 @@ transform <- function(e, out = new) {
 rewrite <- function(x, out) {
   tryCatch({
     ref <- Episode$new(x, process_tags = TRUE, fix_links = TRUE, fix_liquid = TRUE)
-    ref$unblock()$use_sandpaper()$write(out)
+    ref$unblock()$use_sandpaper()$write(out, format = fs::path_ext(x))
   }, error = function(e) {
     cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")
   })
