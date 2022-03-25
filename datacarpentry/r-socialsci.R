@@ -84,8 +84,8 @@ prod_step$run <- sub("reset = reset", "reset = reset, site_branch = 'prod'",
 # deploy compatible setup 
 compatible_step$name <- "Deploy Compatible Site"
 compatible_step$run <- paste(
+  "remotes::install_github('carpentries/varnish@dc6ac9079fb3aacc4d1161ff0f063dc6b70c9d70')",
   "remotes::install_github('carpentries/sandpaper@ce6c33cdd9ad6db5a3813c7e9f787f91d893648d')",
-  "remotes::install_github('carpentries/varnsih@dc6ac9079fb3aacc4d1161ff0f063dc6b70c9d70')",
   compatible_step$run, sep = "\n")
 compatible_step$run <- sub("reset = reset", "reset = reset, site_branch = 'compat'", 
   compatible_step$run, fixed = TRUE)
@@ -95,3 +95,5 @@ main_yaml$jobs$"full-build"$steps[[6]] <- prod_step
 main_yaml$jobs$"full-build"$steps[[7]] <- compatible_step
 yaml::write_yaml(main_yaml, to(".github/workflows/sandpaper-main.yaml"))
 
+# Making sure we have the historic site available to us
+gert::git_fetch("https://github.com/datacarpentry/r-socialsci.git", refspec = "gh-pages:gh-pages", repo = new)
