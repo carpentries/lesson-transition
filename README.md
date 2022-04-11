@@ -4,7 +4,14 @@ This repository will contain scripts for transitioning Carpentries lessons built
 from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka 
 "The Lesson Template") to [the decoupled/centralised 
 infrastructure](https://carpentries.github.io/sandpaper-docs) (aka "The Lesson
-Infrastructure"). The process works in the following steps:
+Infrastructure"). 
+
+![A diagram showing the transition between the former lesson structure (styles) to the new lesson structure (workbench).
+It shows episodes flowing to episodes, extras flowing to learners and instructors, and figures, data, and files flowing
+to subfolders under episodes. Other folders are in grey with no arrows indicating that they are discarded.](fig/folder-flow.svg)
+
+
+The process works in the following steps:
 
 1. (manual step) create file named `program/lesson.R` (e.g. `swcarpentry/r-novice-gapminder.R`)
 1. provision template with [`establish-template.R`](establish-template.R)
