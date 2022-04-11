@@ -25,12 +25,12 @@ The process works in the following steps:
 1. (manual step) create file named `program/lesson.R` (e.g. `swcarpentry/r-novice-gapminder.R`)
 1. provision template with [`establish-template.R`](establish-template.R)
 1. add/fetch git submodule of the repository for reference with [`fetch-submodule.sh`](fetch-submodule.sh)
-1. run [`filter-and-transform.sh`](filter-and-transform.sh), which does the following
-   i. performs a fresh clone of the submodule into `sandpaper/program/lesson/`
-   ii. filter commits with [`git-filter-repo`](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html)
-   iii. apply transformations in [`transform-lesson.R`](transform-lesson.R)
-   iv. apply additional needed transformations in `program/lesson.R`
-   v. creates commits and records them in `sandpaper/program/lesson.json`
+1. run [`filter-and-transform.sh`](filter-and-transform.sh), which does the following    
+   i. performs a fresh clone of the submodule into `sandpaper/program/lesson/`    
+   ii. filter commits with [`git-filter-repo`](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html)    
+   iii. apply transformations in [`transform-lesson.R`](transform-lesson.R)    
+   iv. apply additional needed transformations in `program/lesson.R`    
+   v. creates commits and records them in `sandpaper/program/lesson.json`    
 
 ![a diagram demonstrating how git-filter-repo removes styles-specific commits](fig/git-filter-repo.svg)
 
