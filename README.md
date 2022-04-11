@@ -4,7 +4,13 @@ This repository will contain scripts for transitioning Carpentries lessons built
 from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka 
 "The Lesson Template") to [the decoupled/centralised 
 infrastructure](https://carpentries.github.io/sandpaper-docs) (aka "The Lesson
-Infrastructure"). 
+Infrastructure"). If you want to use this infrastructure, scroll to [the usage
+section](#usage). 
+
+**This transition process is one-way from 
+[carpentries/styles](https://carpentries.github.io/lesson-example) to 
+[The Carpentries Workbench](https://carpentries.github.io/sandpaper-docs).**
+Once a lesson is transitioned, it can not transition back. 
 
 ![A diagram showing the transition between the former lesson structure (styles) to the new lesson structure (workbench).
 It shows episodes flowing to episodes, extras flowing to learners and instructors, and figures, data, and files flowing
@@ -23,13 +29,20 @@ The process works in the following steps:
    iv. apply additional needed transformations in `program/lesson.R`
    v. creates commits and records them in `sandpaper/program/lesson.json`
 
-
 **Note: Not all of the repositories represented here are official Carpentries Lessons. Only swcarpentry, datacarpentry, librarycarpentry, and carpentries lessons are official**
 
 These scripts require a setup with R and access to the internet. It is currently
 a work in progress and may evolve in the future.
 
 The repositories that have previously been transferred can be found in [repos.md](repos.md).
+
+## Beta Phase
+
+(TBC)
+
+![Schematic of Beta Phase showing the relationship between branches and sites for
+the lesson. This particular example shows an R Markdown lesson. Markdown lessons
+will start from the gh-pages branch](fig/beta-phase.svg)
 
 ## Usage
 
