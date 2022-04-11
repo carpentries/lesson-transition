@@ -12,9 +12,12 @@ section](#usage).
 [The Carpentries Workbench](https://carpentries.github.io/sandpaper-docs).**
 Once a lesson is transitioned, it can not transition back. 
 
+
 ![A diagram showing the transition between the former lesson structure (styles) to the new lesson structure (workbench).
 It shows episodes flowing to episodes, extras flowing to learners and instructors, and figures, data, and files flowing
 to subfolders under episodes. Other folders are in grey with no arrows indicating that they are discarded.](fig/folder-flow.svg)
+
+## Process
 
 
 The process works in the following steps:
@@ -28,6 +31,8 @@ The process works in the following steps:
    iii. apply transformations in [`transform-lesson.R`](transform-lesson.R)
    iv. apply additional needed transformations in `program/lesson.R`
    v. creates commits and records them in `sandpaper/program/lesson.json`
+
+![a diagram demonstrating how git-filter-repo removes styles-specific commits](fig/git-filter-repo.svg)
 
 **Note: Not all of the repositories represented here are official Carpentries Lessons. Only swcarpentry, datacarpentry, librarycarpentry, and carpentries lessons are official**
 
