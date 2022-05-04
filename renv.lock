@@ -350,10 +350,10 @@
     },
     "httr": {
       "Package": "httr",
-      "Version": "1.4.2",
+      "Version": "1.4.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "a525aba14184fec243f9eaec62fbed43",
+      "Hash": "88d1b310583777edf01ccd1216fb0b2b",
       "Requirements": [
         "R6",
         "curl",
@@ -868,15 +868,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.1.9",
+      "Version": "0.1.10",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "de342b3bd92e91ecb51a09bcab9f7bb61985dd2a",
+      "RemoteSha": "ff953b71e1c1eb180ea690cea6aa42dbb024f847",
       "RemoteHost": "api.github.com",
-      "Hash": "b6071c2901b9c5edd0102fd438bba6c7",
+      "Hash": "2bcb5ed954b18be1b6637dc98cc849c1",
       "Requirements": []
     },
     "vctrs": {
