@@ -131,7 +131,7 @@ rdm$write(path = new, format = "md")
 # Transform non-episode MD files
 cli::cli_h2("copying instructor and learner materials")
 rewrite(from("_extras", "design.md"), to("instructors"))
-rewrite(from("_extras", "guide.md"), to("instructors"))
+rewrite(from("_extras", "guide.md"), to("instructors", "instructor-notes.md"))
 rewrite(from("_extras", "discuss.md"), to("learners"))
 rewrite(from("_extras", "exercises.md"), to("learners"))
 rewrite(from("_extras", "figures.md"), to("learners"))
