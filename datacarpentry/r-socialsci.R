@@ -71,29 +71,5 @@ protect_examples(l$episodes[["05-rmarkdown.Rmd"]])
 
 purrr::walk(l$episodes, ~.x$write(to("episodes"), format = "Rmd"))
 
-# Add testing build process --------------------------------------------------------
-main_yaml <- yaml::read_yaml(to(".github/workflows/sandpaper-main.yaml"))
-names(main_yaml)[2] <- "on" # fix mistake with github action yaml (https://yaml.org/type/bool.html)
-prod_step <- compatible_step <- main_yaml$jobs$"full-build"$steps[[6]]
-
-# deploy prod with current sandpaper
-prod_step$name <- "Deploy Dev Site"
-prod_step$run <- sub("reset = reset", "reset = reset, site_branch = 'prod'", 
-  prod_step$run, fixed = TRUE)
-
-# deploy compatible setup 
-compatible_step$name <- "Deploy Compatible Site"
-compatible_step$run <- paste(
-  "remotes::install_github('carpentries/varnish@dc6ac9079fb3aacc4d1161ff0f063dc6b70c9d70')",
-  "remotes::install_github('carpentries/sandpaper@ce6c33cdd9ad6db5a3813c7e9f787f91d893648d')",
-  compatible_step$run, sep = "\n")
-compatible_step$run <- sub("reset = reset", "reset = reset, site_branch = 'compat'", 
-  compatible_step$run, fixed = TRUE)
-
-# add both setups to file and write
-main_yaml$jobs$"full-build"$steps[[6]] <- prod_step
-main_yaml$jobs$"full-build"$steps[[7]] <- compatible_step
-yaml::write_yaml(main_yaml, to(".github/workflows/sandpaper-main.yaml"))
-
 # Making sure we have the historic site available to us
-gert::git_fetch("https://github.com/datacarpentry/r-socialsci.git", refspec = "gh-pages:gh-pages", repo = new)
+gert::git_fetch("https://github.com/datacarpentry/r-socialsci.git", refspec = "gh-pages:legacy", repo = new)
