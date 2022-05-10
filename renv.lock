@@ -475,10 +475,10 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "7f2fd25b9e814b5e6372298547d4609cb7c95cd5",
+      "RemoteSha": "7c5bacef98c1c25a82aa5d92c2bc13c5f0e57e47",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr",
-      "Hash": "2c68016304cc5fd0f56e673b00fb7cff",
+      "Hash": "183dfb0fa6cbd745f611969910859719",
       "Requirements": [
         "R6",
         "commonmark",
@@ -868,15 +868,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.1.10",
+      "Version": "0.1.11",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "ff953b71e1c1eb180ea690cea6aa42dbb024f847",
+      "RemoteSha": "1333c27055bdba512101fa31f10e972f0a068b74",
       "RemoteHost": "api.github.com",
-      "Hash": "2bcb5ed954b18be1b6637dc98cc849c1",
+      "Hash": "eae1e7718a2f6d1667fa29acac7c097a",
       "Requirements": []
     },
     "vctrs": {
