@@ -868,15 +868,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.1.11",
+      "Version": "0.1.12",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "1333c27055bdba512101fa31f10e972f0a068b74",
+      "RemoteSha": "e9f5f8764e5be0b422560981db5536633ee3c51b",
       "RemoteHost": "api.github.com",
-      "Hash": "eae1e7718a2f6d1667fa29acac7c097a",
+      "Hash": "6b58482f7f8f69743d86b5fdf78b97ba",
       "Requirements": []
     },
     "vctrs": {
@@ -909,10 +909,10 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.30",
+      "Version": "0.31",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "e83f48136b041845e50a6658feffb197",
+      "Hash": "a318c6f752b8dcfe9fb74d897418ab2b",
       "Requirements": []
     },
     "xml2": {
