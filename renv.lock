@@ -459,10 +459,13 @@
     },
     "openssl": {
       "Package": "openssl",
-      "Version": "2.0.0",
+      "Version": "2.0.1",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "cf4329aac12c2c44089974559c18e446",
+      "Repository": "https://carpentries.r-universe.dev",
+      "RemoteUrl": "https://github.com/jeroen/openssl",
+      "RemoteRef": "v2.0.1",
+      "RemoteSha": "47bf18beb8904dd2fb325eee27f3a40c9f5f0726",
+      "Hash": "edde731e84cf3d42aa9b7f04b8de5941",
       "Requirements": [
         "askpass"
       ]
@@ -658,16 +661,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.5.1",
+      "Version": "0.5.2",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "ba7ee3d4a7721d0c17b7caf80f58c4c46f24cbdd",
+      "RemoteSha": "f5b8cabf922a38e992de44742452c6be07c3c9e1",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "9fddeabcc727ac73a87343870fdd031f",
+      "Hash": "dbe13fdffc12fe7c5d92144c38e0b413",
       "Requirements": [
         "assertthat",
         "callr",
@@ -793,9 +796,9 @@
       "RemoteUsername": "ropensci",
       "RemoteRepo": "tinkr",
       "RemoteRef": "main",
-      "RemoteSha": "a64952cad975993833cd2b2adffd00c937daf82f",
+      "RemoteSha": "537d05983b6c2a1d0633600f4d092afefc9a60b4",
       "RemoteHost": "api.github.com",
-      "Hash": "24c91fa3f544d3fd744e27adac373b9a",
+      "Hash": "b45de03d8bf6fc86cb2b24e9a59d18d7",
       "Requirements": [
         "R6",
         "commonmark",
@@ -870,9 +873,9 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "e9f5f8764e5be0b422560981db5536633ee3c51b",
+      "RemoteSha": "0f888d2f7c6403bef87cd8d92f0688cd369bae95",
       "RemoteHost": "api.github.com",
-      "Hash": "6b58482f7f8f69743d86b5fdf78b97ba",
+      "Hash": "ab89dbef090770b50c3c32494a383da5",
       "Requirements": []
     },
     "vctrs": {

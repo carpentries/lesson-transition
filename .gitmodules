@@ -70,3 +70,7 @@
 	path = datacarpentry/r-socialsci
 	url = https://github.com/datacarpentry/r-socialsci/
 	branch = main
+[submodule "swcarpentry/shell-novice"]
+	path = swcarpentry/shell-novice
+	url = https://github.com/swcarpentry/shell-novice/
+	branch = gh-pages

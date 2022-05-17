@@ -1,3 +1,4 @@
+- [swcarpentry/shell-novice](https://github.com/swcarpentry/shell-novice) -> [fishtree-attempt/shell-novice](https://github.com/fishtree-attempt/shell-novice)
 - [swcarpentry/python-novice-inflammation](https://github.com/swcarpentry/python-novice-inflammation) -> [fishtree-attempt/python-novice-inflammation](https://github.com/fishtree-attempt/python-novice-inflammation)
 - [swcarpentry/r-novice-gapminder](https://github.com/swcarpentry/r-novice-gapminder) -> [fishtree-attempt/r-novice-gapminder](https://github.com/fishtree-attempt/r-novice-gapminder)
 - [datacarpentry/astronomy-python](https://github.com/datacarpentry/astronomy-python) -> [fishtree-attempt/astronomy-python](https://github.com/fishtree-attempt/astronomy-python)
