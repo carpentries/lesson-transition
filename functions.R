@@ -3,7 +3,7 @@
 # The following lines are functions that I need to transform the lessons
 #
 # transform the image links to be local
-fix_images <- function(episode, from = "([.][.][/])?(img|fig)/", to = "fig/") {
+fix_images <- function(episode, from = "([.][.][/])?(img|fig|images)/", to = "fig/") {
   blocks <- xml_find_all(episode$body, 
     ".//md:code_block[contains(text(), 'knitr::include_graphics')]",
     ns = episode$ns
