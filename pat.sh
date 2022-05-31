@@ -4,7 +4,7 @@ set -euo pipefail
 NAME=${1:-new}
 
 if [[ "${CI}" ]]; then
-  printf "${GITHUB_TOKEN}"
+  printf "${GITHUB_PAT}"
   exit 0
 fi
 
