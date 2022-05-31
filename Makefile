@@ -25,7 +25,7 @@ modules: $(MODULE)
 template: template/
 github: $(GITHUB)
 update:
-	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore(library = renv::paths$$library()); renv::update(library = renv::paths$$library()); renv::snapshot()'
+	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::record(paste0("renv@", packageVersion("renv"))); renv::restore(library = renv::paths$$library()); renv::update(library = renv::paths$$library()); renv::snapshot()'
 
 bump: 
 	@for i in $(GITHUB); \
