@@ -874,9 +874,9 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "98b83156958fc1d9c24af58190c79ea05fa1c56e",
+      "RemoteSha": "bcc8557ef5ce7817c1871a19056865147157bd06",
       "RemoteHost": "api.github.com",
-      "Hash": "ff3182083717d7ffd843eb81e4119754",
+      "Hash": "c59c43897d5660619f5dfe9c6ff50644",
       "Requirements": []
     },
     "vctrs": {
