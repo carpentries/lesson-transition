@@ -11,20 +11,6 @@ on:
         description: 'Repository to transform'
         required: false
         default: 'datacarpentry/r-socialsci'
-      logLevel:
-        description: 'Log level'
-        required: false
-        default: 'warning' 
-        type: choice
-        options:
-        - info
-        - warning
-        - debug 
-      tags:
-        description: 'Test scenario tags'
-        required: false 
-        type: boolean
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
