@@ -45,6 +45,10 @@ if (arguments$quiet) {
   sink()
 }
 
+sandpaper:::check_git_user(".", 
+  name = Sys.getenv("GITHUB_ACTOR"),
+  email = paste0(Sys.getenv("GITHUB_ACTOR"), "@users.noreply.github.com")
+)
 # Load the functions needed to transform the repository
 
 source(arguments$funs)
@@ -191,6 +195,10 @@ if (!dir_exists(path(new, "site"))) {
 
 
 cli::cli_alert_info("Committing...")
+sandpaper:::check_git_user(new, 
+  name = Sys.getenv("GITHUB_ACTOR"),
+  email = paste0(Sys.getenv("GITHUB_ACTOR"), "@users.noreply.github.com")
+)
 chchchchanges <- git_add(".", repo = new)
 change_id <- git_commit("[automation] transform lesson to sandpaper",
   committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
