@@ -70,26 +70,26 @@ jobs:
           if (dir_exists(lesson)) {
             dir_delete(lesson)
           }
-        cli::cli_alert_info("creating a new sandpaper lesson")
-        create_lesson(lesson, name = "FIXME", open = FALSE)
-        cli::cli_alert_info("Removing boilerplate")
-        file_delete(to("episodes", "01-introduction.Rmd"))
-        file_delete(to("index.md"))
-        file_delete(to("README.md"))
-        dir_delete(to(".git"))
-        dir_delete(to("renv/profiles/lesson-requirements/renv"))
+          cli::cli_alert_info("creating a new sandpaper lesson")
+          create_lesson(lesson, name = "FIXME", open = FALSE)
+          cli::cli_alert_info("Removing boilerplate")
+          file_delete(to("episodes", "01-introduction.Rmd"))
+          file_delete(to("index.md"))
+          file_delete(to("README.md"))
+          dir_delete(to(".git"))
+          dir_delete(to("renv/profiles/lesson-requirements/renv"))
 
-    - name: Transform Lesson
-      run: |
-        git config --local user.name "$GITHUB_ACTOR"
-        git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-        PATH="$(PWD)/gfr/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${THIS_LESSON}.json" "${THIS_LESSON}.R"
+      - name: Transform Lesson
+        run: |
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          PATH="$(PWD)/gfr/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${THIS_LESSON}.json" "${THIS_LESSON}.R"
 
-    - name: upload failed repo
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: lsn
-        path: ${{ github.workspace }}/sandpaper/${THIS_LESSON}
+      - name: upload failed repo
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: lsn
+          path: ${{ github.workspace }}/sandpaper/${THIS_LESSON}
 
 
