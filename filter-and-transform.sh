@@ -7,13 +7,13 @@ OUT=${1%.*} # No file extension
 CWD=$(pwd)
 SCRIPT=${2}
 
-REPO=$(sed -e 's/\.R$//' <<< ${SCRIPT})
-BASE=$(basename ${REPO})
+REPO="${SCRIPT%.*}"
+BASE="$(basename ${REPO})"
 GHP="$(./pat.sh)"
 
 # Move out the site/ directory in case it has previously been built (keeping the memory alive)
-if [[ -d ${OUT}site/ ]]; then
-  mv ${OUT}site/ ${OUT}../site-${BASE} || echo "" > /dev/null
+if [[ -d ${OUT}/site/ ]]; then
+  mv ${OUT}/site/ ${OUT}../site-${BASE} || echo "" > /dev/null
 fi
 # removing the directory to make a fresh clone for git-filter-repo
 rm -rf ${OUT}
