@@ -37,6 +37,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Update renv
+        shell: Rscript {0}
         run: |
           renv::record(paste0("renv@", packageVersion("renv")))
           renv::restore(library = renv::paths$library())
