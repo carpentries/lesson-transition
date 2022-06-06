@@ -106,14 +106,14 @@ if [[ ${SCRIPT} == 'datacarpentry/R-ecology-lesson.R' ]]; then
     --output ${OUT} \
     ${REPO} 
 else
-  if [[ -n $(GITHUB_PAT="${GHP}" Rscript transform-lesson.R \
+  if [[ ($(GITHUB_PAT="${GHP}" Rscript transform-lesson.R \
     --build \
     --fix-liquid \
     --funs functions.R \
     --template template/ \
     --output ${OUT} \
     ${REPO} \
-    ${SCRIPT}) ]]; then
+    ${SCRIPT})) ]]; then
     if [[ ${CI} ]]; then
         echo "OH SNAP"
         exit 1
