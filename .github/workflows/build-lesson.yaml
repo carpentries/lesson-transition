@@ -31,11 +31,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
       - uses: actions/checkout@v3
-        with:
-          repository: newren/git-filter-repo
-          path: ../gfr
 
       - uses: actions/checkout@v3
+        with:
+          repository: newren/git-filter-repo
+          path: gfr
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -78,5 +78,5 @@ jobs:
 
       - name: Transform Lesson
         run: |
-          PATH="gfr/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${THIS_LESSON}.json" "${THIS_LESSON}.R"
+          PATH="$(PWD)/gfr/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${THIS_LESSON}.json" "${THIS_LESSON}.R"
 
