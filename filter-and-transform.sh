@@ -106,13 +106,20 @@ if [[ ${SCRIPT} == 'datacarpentry/R-ecology-lesson.R' ]]; then
     --output ${OUT} \
     ${REPO} 
 else
-  GITHUB_PAT="${GHP}" Rscript transform-lesson.R \
+  if [[ -n $(GITHUB_PAT="${GHP}" Rscript transform-lesson.R \
     --build \
     --fix-liquid \
     --funs functions.R \
     --template template/ \
     --output ${OUT} \
     ${REPO} \
-    ${SCRIPT} || echo "\n\n---\nErrors Occurred\n---\n\n"
+    ${SCRIPT}) ]]; then
+    if [[ ${CI} ]]; then
+        echo "OH SNAP"
+        exit 1
+    else
+      echo "\n\n---\nErrors Occurred\n---\n\n"
+    fi
+  fi
 fi
 
