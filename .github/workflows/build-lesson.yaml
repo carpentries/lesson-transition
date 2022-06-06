@@ -5,9 +5,6 @@ name: Build a lesson
 # Controls when the workflow will run
 on:
   # Allows you to run this workflow manually from the Actions tab
-  workflow_run:
-    workflows: [ "Update Submodules and Components" ]
-    types: [ completed ]
   workflow_dispatch:
     inputs:
       repo:
