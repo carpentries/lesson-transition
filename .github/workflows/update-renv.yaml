@@ -35,10 +35,21 @@ jobs:
           install-r: false
           use-public-rspm: true
 
+      - name: Cache packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.RENV_PATHS_ROOT }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
       # Runs a single command using the runners shell
       - name: Update renv
         shell: Rscript {0}
         run: |
+          if (!requireNamespace("renv", quietly = TRUE)) {
+            install.packages("renv")
+          }
           renv::record(paste0("renv@", packageVersion("renv")))
           renv::restore(library = renv::paths$library())
           renv::update(library = renv::paths$library())
