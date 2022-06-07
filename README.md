@@ -16,6 +16,18 @@ Once a lesson is transitioned, it can not transition back.
 For details about the differences between styles and the workbench, you can
 [look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).
 
+## Submodules
+
+This repository uses submodules. To clone this repository, you will need to use
+the `--recurse-submodules` whenever you clone or pull
+
+```bash
+git clone --recurse-submodules https://github.com/data-lessons/lesson-transition.git
+
+git pull --recurse-submodules
+```
+
+
 ## Motivation
 
 There are over 100 lessons in The Carpentries, Carpentries Lab, and Carpentries
