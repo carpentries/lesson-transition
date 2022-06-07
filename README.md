@@ -4,14 +4,77 @@ This repository will contain scripts for transitioning Carpentries lessons built
 from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka 
 "The Lesson Template") to [the decoupled/centralised 
 infrastructure](https://carpentries.github.io/sandpaper-docs) (aka "The Lesson
-Infrastructure"). If you want to use this infrastructure, scroll to [the usage
+Infrastructure"). If you want to use this tool, scroll to [the usage
 section](#usage). 
 
-**This transition process is one-way from 
+**This transition process is necessarily destructive and can only be 
+perforemd one-way from 
 [carpentries/styles](https://carpentries.github.io/lesson-example) to 
 [The Carpentries Workbench](https://carpentries.github.io/sandpaper-docs).**
 Once a lesson is transitioned, it can not transition back. 
 
+For details about the differences between styles and the workbench, you can
+[look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).
+
+## Motivation
+
+There are over 100 lessons in The Carpentries, Carpentries Lab, and Carpentries
+Incubator combined and they are all built in a _slightly_ different way. 
+
+In addition to the difference between kramdown (Jekyll) syntax and Pandoc
+(Workbench/R Markdown) syntax, the styles lessons contain a lot of commit
+history that is unrelated to the lesson content itself. Some R-based lessons
+contain commits of generated output like images that bloat the repository.
+
+Transitioning the content to use Pandoc syntax and the Workbench folder
+structure is a _good enough_ approach, but we are still left with the previous
+commits that are not related to the lesson itself. These extra commits are a
+burden on the repository as they take up extra megabytes of space in the git
+database. Thus, we are going one step further and _removing all commits that
+are not strictly lesson content_. By removing these commits, we distill the
+commit history to those that are relevant so that it paints a clearer picture of
+the lesson development timeline and reduces the cognitive load needed to 
+understand how the lesson was created.
+
+Note: Excluding irrelevant commits from the history has precedent within The
+Carpentries! Prior to 2015, Software Carpentry lessons all lived in a [monorepo
+called `bc`](https://github.com/swcarpentry/DEPRECATED-bc). In 2015, there was
+a need to update the infrastructure, but it did not make sense to include the
+entire history of the shell lesson in the git lesson (and vice versa), so the
+new repositories were seeded from the initial commits for each relevant lesson.
+Take for example, the [initial commit with pages in
+swcarpentry/git-novice](https://github.com/swcarpentry/git-novice/commit/83ffd211a270e332d9e4baefe00ee37de84bd50e)
+and the [initial commit with pages for git-novice in the bc
+repo](https://github.com/swcarpentry/DEPRECATED-bc/commit/b90dfde1beb67c445743d1801cde27bcf13e1078). 
+Both of these commits were made on the same time, but one has a parent commit
+and the other one doesn't. 
+
+## Background
+
+Since 2016, Carpentries lessons were based on a custom template that used the
+Jekyll static site generator because this was by far the easiest and most
+reliable way to host a website using GitHub. Lessons built from the template
+also contained styling components in HTML, CSS, and JavaScript; validation
+scripts in Python, and workflow tooling in BASH, Make, and R. Because these
+components lived inside the lesson itself, the only way to update them was to
+make a pull request from the source repository, which would add commit history
+that was unrelated to the lesson itself. This brought in a number of issues:
+
+1. Lessons were often out of date in terms of styling and tooling because the 
+   process of merging in a separate repository is off-label use of git
+2. (idiomatic) The default branch had to be `gh-pages` to allow GitHub to deploy
+   the content to a website
+3. Lesson publications became arduous because authors to styles needed to be
+   filtered out from the history in order to compile the author list for the
+   lesson
+4. Jekyll was not built in a way that could be easily distributed across
+   multiple platforms to people who were not software developers
+5. Lessons based in R Markdown contained committed artefacts, which vastly
+   increased the size of the repository.
+
+The workbench separates the tools and styling from the content, so a lesson can
+be created and authored without the contributors worrying about keeping the
+lesson or tools up-to-date.
 
 ![A diagram showing the transition between the former lesson structure (styles) to the new lesson structure (workbench).
 It shows episodes flowing to episodes, extras flowing to learners and instructors, and figures, data, and files flowing
@@ -27,12 +90,19 @@ The process works in the following steps:
 1. add/fetch git submodule of the repository for reference with [`fetch-submodule.sh`](fetch-submodule.sh)
 1. run [`filter-and-transform.sh`](filter-and-transform.sh), which does the following    
    i. performs a fresh clone of the submodule into `sandpaper/program/lesson/`    
-   ii. filter commits with [`git-filter-repo`](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html)    
-   iii. apply transformations in [`transform-lesson.R`](transform-lesson.R)    
-   iv. apply additional needed transformations in `program/lesson.R`    
+   ii. use [`git-filter-repo`](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html) to exclude commits associated with [carpentries/styles](https://github.com/carpentries/styles)    
+   iii. apply transformations in [`transform-lesson.R`](transform-lesson.R) to modify kramdown syntax to pandoc syntax and move folders    
+   iv. apply additional needed transformations in `program/lesson.R` to fix any components that were not covered in the previous step    
    v. creates commits and records them in `sandpaper/program/lesson.json`    
 
-![a diagram demonstrating how git-filter-repo removes styles-specific commits](fig/git-filter-repo.svg)
+![a diagram demonstrating how git-filter-repo removes styles-specific commits
+(grey) from the lesson content commits (blue). The top git tree representing a
+styles lesson shows a git history that starts with styles and then branches to
+include lesson commits in parallel with styles commits with a merge commit. The
+bottom git tree representing a workbench lesson has the styles commits removed
+and the connections between commits are represented with orange lines. Two new
+commits in orange are added to the end of the tree that represent our automated
+commits.](fig/git-filter-repo.svg)
 
 **Note: Not all of the repositories represented here are official Carpentries Lessons. Only swcarpentry, datacarpentry, librarycarpentry, and carpentries lessons are official**
 
