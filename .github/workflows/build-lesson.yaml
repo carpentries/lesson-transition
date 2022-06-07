@@ -83,13 +83,13 @@ jobs:
         run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          PATH="$(PWD)/gfr/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${THIS_LESSON}.json" "${THIS_LESSON}.R"
+          PATH="$(PWD)/gfr/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${{ env.THIS_LESSON }}.json" "${{ env.THIS_LESSON }}.R"
 
       - name: upload failed repo
         uses: actions/upload-artifact@v2
         with:
           name: lsn
-          path: ${{ github.workspace }}/sandpaper/${THIS_LESSON}
+          path: ${{ github.workspace }}/sandpaper/${{ env.THIS_LESSON }}
           retention-days: 1
 
 
