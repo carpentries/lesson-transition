@@ -58,7 +58,7 @@ convert_blocks <- function(episode) {
   episode$unblock()
 }
 
-sql <- pegboard::Episode$new(to("episodes/.ignore-05-databases.Rmd"))
+sql <- pegboard::Episode$new(from("_episodes_rmd/.ignore-05-databases.Rmd"))
 convert_blocks(sql)
 sql$confirm_sandpaper()
 sql$write(to("episodes"), format = "Rmd")
