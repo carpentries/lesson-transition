@@ -35,11 +35,6 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      - uses: actions/checkout@v3
-        with:
-          repository: newren/git-filter-repo
-          path: gfr
-
       - uses: r-lib/actions/setup-r@v2
         with:
           install-r: false
@@ -83,7 +78,7 @@ jobs:
         run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          PATH="$(PWD)/gfr/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${{ env.THIS_LESSON }}.json" "${{ env.THIS_LESSON }}.R"
+          PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${{ env.THIS_LESSON }}.json" "${{ env.THIS_LESSON }}.R"
 
       - name: upload failed repo
         uses: actions/upload-artifact@v2
