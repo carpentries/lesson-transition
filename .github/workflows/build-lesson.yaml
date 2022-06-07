@@ -86,10 +86,10 @@ jobs:
           PATH="$(PWD)/gfr/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${THIS_LESSON}.json" "${THIS_LESSON}.R"
 
       - name: upload failed repo
-        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: lsn
           path: ${{ github.workspace }}/sandpaper/${THIS_LESSON}
+          retention-days: 1
 
 
