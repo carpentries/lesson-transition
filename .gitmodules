@@ -74,3 +74,6 @@
 	path = swcarpentry/shell-novice
 	url = https://github.com/swcarpentry/shell-novice/
 	branch = gh-pages
+[submodule "git-filter-repo"]
+	path = git-filter-repo
+	url = https://github.com/newren/git-filter-repo.git
