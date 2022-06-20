@@ -259,7 +259,7 @@ the lessons contained with `make`
 
 The packages used in this script are the same packages that are used in 
 {sandpaper}, you can [follow the setup instructions to get this script working
-](https://carpentries.github.io/sandpaper-docs/setup).
+](https://carpentries.github.io/sandpaper-docs/#setup).
 
 ## Post translation
 
