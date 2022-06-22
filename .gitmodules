@@ -15,7 +15,7 @@
 	path = datacarpentry/astronomy-python
 	url = https://github.com/datacarpentry/astronomy-python/
 [submodule "datacarpentry/R-ecology-lesson"]
-	branch = main
+	branch = null
 	path = datacarpentry/R-ecology-lesson
 	url = https://github.com/datacarpentry/R-ecology-lesson/
 [submodule "carpentries-incubator/python-packaging-publishing"]
@@ -47,13 +47,13 @@
 	path = carpentries-incubator/SDC-BIDS-dMRI
 	url = https://github.com/carpentries-incubator/SDC-BIDS-dMRI/
 [submodule "datacarpentry/r-raster-vector-geospatial"]
-	branch = main
+	branch = null
 	path = datacarpentry/r-raster-vector-geospatial
 	url = https://github.com/datacarpentry/r-raster-vector-geospatial/
 [submodule "carpentries/instructor-training"]
 	path = carpentries/instructor-training
 	url = https://github.com/carpentries/instructor-training/
-	branch = gh-pages
+	branch = null
 [submodule "carpentries-incubator/SDC-BIDS-sMRI"]
 	path = carpentries-incubator/SDC-BIDS-sMRI
 	url = https://github.com/carpentries-incubator/SDC-BIDS-sMRI/
@@ -69,11 +69,11 @@
 [submodule "datacarpentry/r-socialsci"]
 	path = datacarpentry/r-socialsci
 	url = https://github.com/datacarpentry/r-socialsci/
-	branch = main
+	branch = null
 [submodule "swcarpentry/shell-novice"]
 	path = swcarpentry/shell-novice
 	url = https://github.com/swcarpentry/shell-novice/
-	branch = gh-pages
+	branch = null
 [submodule "git-filter-repo"]
 	path = git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git

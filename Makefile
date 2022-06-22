@@ -63,7 +63,7 @@ template/ : establish-template.R renv.lock renv/library/
 
 # $(TARGETS) Copy and transform a lesson
 sandpaper/%.json : %.R %/.git $(PREREQS) transform-lesson.R
-	bash filter-and-transform.sh $@ $<
+	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
 
 sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
 	bash filter-and-transform.sh $@ $< || echo "UGH"
