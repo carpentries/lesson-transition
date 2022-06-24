@@ -97,10 +97,10 @@ to subfolders under episodes. Other folders are in grey with no arrows indicatin
 
 The process works in the following steps:
 
-1. (manual step) create file named `program/lesson.R` (e.g. `swcarpentry/r-novice-gapminder.R`)
-1. provision template with [`establish-template.R`](establish-template.R)
-1. add/fetch git submodule of the repository for reference with [`fetch-submodule.sh`](fetch-submodule.sh)
-1. run [`filter-and-transform.sh`](filter-and-transform.sh), which does the following    
+1. (manual step) create file named `<program>/<lesson>.R` (e.g. `swcarpentry/r-novice-gapminder.R`)
+1. provision template with [`Rscript establish-template.R template/`](establish-template.R)
+1. add/fetch git submodule of the repository for reference with [`fetch-submodule.sh <program>/<lesson>`](fetch-submodule.sh)
+1. run [`filter-and-transform.sh sandpaper/<program>/<lesson>.json <program>/<lesson>.R`](filter-and-transform.sh), which does the following    
    i. performs a fresh clone of the submodule into `sandpaper/program/lesson/`    
    ii. use [`git-filter-repo`](https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html) to exclude commits associated with [carpentries/styles](https://github.com/carpentries/styles)    
    iii. apply transformations in [`transform-lesson.R`](transform-lesson.R) to modify kramdown syntax to pandoc syntax and move folders    
