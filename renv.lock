@@ -199,10 +199,10 @@
     },
     "downlit": {
       "Package": "downlit",
-      "Version": "0.4.0",
+      "Version": "0.4.1",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "ba63dc9ab5a31f3209892437e40c5f60",
+      "Repository": "CRAN",
+      "Hash": "4850b3f46b1e7dd8c666f68aacad6951",
       "Requirements": [
         "brio",
         "desc",
@@ -212,6 +212,7 @@
         "memoise",
         "rlang",
         "vctrs",
+        "withr",
         "yaml"
       ]
     },
@@ -519,10 +520,10 @@
     },
     "pkgdown": {
       "Package": "pkgdown",
-      "Version": "2.0.4",
+      "Version": "2.0.5",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "170f882396f07f525a4d017a8e9d2790",
+      "Hash": "584e7c13c2cb3a1d4b32166dc411f3bb",
       "Requirements": [
         "bslib",
         "callr",
@@ -619,10 +620,10 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.0.2",
+      "Version": "1.0.3",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "04884d9a75d778aca22c7154b8333ec9",
+      "Repository": "CRAN",
+      "Hash": "9103a8f74b2114a5ed1136b471d8feca",
       "Requirements": []
     },
     "rmarkdown": {
@@ -662,16 +663,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.6.0",
+      "Version": "0.6.2",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "14e7cbc59579ebcf51d08b9e1d9975e7cd61d5ff",
+      "RemoteSha": "23f15bab1f6bddb85227385293ad8f50f2d26418",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "5f7381ea442d35b736fe53db3be3c4b7",
+      "Hash": "44410d41844aaee5de9c56effc690243",
       "Requirements": [
         "assertthat",
         "callr",
@@ -868,15 +869,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.2.0",
+      "Version": "0.2.1",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "45d26ede8113c9b1710e59ebff9d8c27fecaefd7",
+      "RemoteSha": "79b523d546544dc94ee5d4430224a1e2043a2100",
       "RemoteHost": "api.github.com",
-      "Hash": "978dea4dcc9068a26552604ab01f77e0",
+      "Hash": "244765bdc98ac68dd900f9195cecadc3",
       "Requirements": []
     },
     "vctrs": {
