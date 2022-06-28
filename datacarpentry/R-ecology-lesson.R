@@ -97,6 +97,18 @@ convert_blocks <- function(episode) {
   episode$unblock()$use_sandpaper()
 }
 
+remove_date_built_on <- function(episode) {
+  the_child <- grepl("_page_built_on", xml2::xml_attr(episode$code, "child"))
+  if (any(the_child)) {
+    xml2::xml_remove(episode$code[the_child])
+  }
+  episode
+}
+rewrite_date_built_on <- function(name) {
+  rmd <- Episode$new(to(name))
+  remove_date_built_on(rmd)
+  rmd$write(to(), format = "Rmd")
+}
 
 # Convert answer code chunks to solutions 
 find_answers <- function(episode) {
@@ -158,6 +170,8 @@ cli::cli_h2("Converting solutions")
 walk(eps, wrap_solutions)
 cli::cli_h2("fixing image paths")
 walk(eps, fix_images)
+cli::cli_h2("removing page built on chunks")
+walk(eps, remove_date_built_on)
 
 cli::cli_h2("Fixing error in episode 5")
 # Fix an error in episode 5 where there is a stray `>` at the end of the code
@@ -170,17 +184,15 @@ invisible(xml_set_text(extra_alligator, sub("\\n[>]\\n$", "\n", ea_txt)))
 # Modify the index to include our magic header
 idx <- Episode$new(from("index.Rmd"))
 add_experiment_info(idx)
+remove_date_built_on(idx)
 idx$yaml[length(idx$yaml) + 0:1] <- c("site: sandpaper::sandpaper_site", "---")
 idx$label_divs() # fee our image from it's HTML prison
 invisible(fix_images(idx))
 
 # add notice in README
 rdm <- Episode$new(from("README.md"))
+remove_date_built_on(rdm)
 add_experiment_info(rdm)
-
-# hack: copy the included file in both places
-file_copy(from("_page_built_on.Rmd"), to("episodes"), overwrite = TRUE)
-file_copy(from("_page_built_on.Rmd"), new, overwrite = TRUE)
 
 # write episodes, index, and readme
 walk(eps, ~.x$write(path = to("episodes"), format = "Rmd"))
@@ -198,9 +210,15 @@ setup[SEQ(answers)] <- paste("#", setup[SEQ(answers)])
 setup <- sub("fig.path", "# fig.path", setup, fixed = TRUE)
 writeLines(setup, to("episodes", "setup.R"))
 
+# fix CITATION.Rmd
+rewrite_date_built_on("CITATION.Rmd")
+rewrite_date_built_on("CONTRIBUTING.Rmd")
+rewrite_date_built_on("CONDUCT.Rmd")
+rewrite_date_built_on("LICENSE.Rmd")
 
 # copy learner reference
 ref <- Episode$new(from("reference.md"))
+remove_date_built_on(ref)
 ref$yaml <- c("---", "title: Learners' Reference", "---")
 ref$write(to("learners"), format = "md")
 set_learners(new, order = "reference.md", write = TRUE)
@@ -209,6 +227,7 @@ file_delete(to("reference.md"))
 # copy instructor notes and modify links
 ino <- Episode$new(from("instructor-notes.md"))
 ino$confirm_sandpaper()
+remove_date_built_on(ino)
 ilinks <- xml2::xml_attr(ino$links, "destination")
 ilinks[grepl("code-handout.R", ilinks)] <- "files/code-handout.R"
 ilinks <- sub("datacarpentry", "fishtree-attempt", ilinks)

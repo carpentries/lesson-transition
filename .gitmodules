@@ -15,7 +15,7 @@
 	path = datacarpentry/astronomy-python
 	url = https://github.com/datacarpentry/astronomy-python/
 [submodule "datacarpentry/R-ecology-lesson"]
-	branch = main
+	branch = null
 	path = datacarpentry/R-ecology-lesson
 	url = https://github.com/datacarpentry/R-ecology-lesson/
 [submodule "carpentries-incubator/python-packaging-publishing"]
