@@ -29,7 +29,7 @@ Usage:
 }' -> doc
 library("docopt")
 
-arguments <- docopt(doc, version = "R Ecology Converter 2021-10", help = TRUE)
+arguments <- docopt(doc, version = "R Ecology Converter 2022-06", help = TRUE)
 # Convert DataCarpentry R-ecology lesson to use the {sandpaper} infrastructure
 # ============================================================================
 #
@@ -42,6 +42,11 @@ arguments <- docopt(doc, version = "R Ecology Converter 2021-10", help = TRUE)
 # programmatically:
 #  - The note on episode 2 will need the heading increased or the <aside> tags
 #    will not work :(
+#
+# update: 2022-06-28
+#
+# I have removed the _page_built_on.Rmd child chunk in 3651ac6 because it was
+# redundant with our reporting at the top of the page.
 #
 library("sandpaper")
 library("usethis")
