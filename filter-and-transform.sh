@@ -63,6 +63,8 @@ git-filter-repo \
   --path .travis.yml \
   --path tic.R \
   --path build_lesson.R \
+  --path DESCRIPTION \
+  --path _page_built_on.Rmd \
   --path _site.yml \
   --path-glob '*html' \
   --path-glob '*.css' \
