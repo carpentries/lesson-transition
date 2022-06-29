@@ -3,7 +3,9 @@ set -euo pipefail
 
 NAME=${1:-new}
 
-if [[ "${CI}" ]]; then
+if [[ -z "${CI:-}" ]]; then
+  :
+else
   printf "${GITHUB_PAT}"
   exit 0
 fi
