@@ -199,10 +199,10 @@
     },
     "downlit": {
       "Package": "downlit",
-      "Version": "0.4.1",
+      "Version": "0.4.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "4850b3f46b1e7dd8c666f68aacad6951",
+      "Hash": "79bf3f66590752ffbba20f8d2da94c7c",
       "Requirements": [
         "brio",
         "desc",
@@ -663,16 +663,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.6.2",
+      "Version": "0.8.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "23f15bab1f6bddb85227385293ad8f50f2d26418",
+      "RemoteSha": "256389eec198d4d20c06147d4fd9d377357756c2",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "a0363d6b4503d2e8ba0a5f9d939fc0fc",
+      "Hash": "64d7b074913572909e930a73b4ff947c",
       "Requirements": [
         "assertthat",
         "callr",
