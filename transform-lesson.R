@@ -181,10 +181,10 @@ params <- c(
     "carpentries-incubator" = "incubator",
     "cp" # default
   ),
-  url = glue::glue("{this_carp_domain}/{path_file(new)}")
+  url = glue::glue("{this_carp_domain}/{path_file(new)}"),
   "workbench-beta" = "true"
 )
-set_config(params, path = new, write = TRUE)
+set_config(params, path = new, write = TRUE, create = TRUE)
 file_move(to("_config.yml"), to("gifnoc_.yml"))
 
 # Transform and write to our episodes folder

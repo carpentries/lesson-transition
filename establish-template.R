@@ -20,7 +20,7 @@ library("docopt")
 library("sandpaper")
 library("varnish")
 
-arguments <- docopt(doc, version = "Stunning Barnacle 2021-10", help = TRUE)
+arguments <- docopt(doc, version = "Stunning Barnacle 2022-07", help = TRUE)
 
 lesson <- path_abs(arguments$dir)
 to <- function(...) path(lesson, ...)
@@ -30,7 +30,10 @@ if (dir_exists(lesson)) {
 }
 
 cli::cli_alert_info("creating a new sandpaper lesson")
-create_lesson(lesson, name = "FIXME", open = FALSE)
+usethis::create_from_github("carpentries/workbench-template-rmd", tempdir())
+fs::dir_copy(fs::path(tempdir(), "workbench-template-rmd"), lesson)
+cli::cli_alert_info("Updating workflows")
+sandpaper::update_github_workflows(lesson)
 cli::cli_alert_info("Removing boilerplate")
 file_delete(to("episodes", "01-introduction.Rmd"))
 file_delete(to("index.md"))

@@ -245,7 +245,7 @@ file_delete(to("instructor-notes.md"))
 writeLines("index.Rmd", to(".renvignore"))
 
 # copy over images
-dir_delete(to("episodes", "fig"))
+tryCatch(dir_delete(to("episodes", "fig")), error = function(e) NULL)
 dir_copy(from("img"), to("episodes", "fig"))
 
 # Fix config items
@@ -256,10 +256,10 @@ params <- c(
   contact    = "zkamvar@carpentries.org",
   life_cycle = "stable",
   carpentry  = "dc",
-  url = "https://lessons.datacarpentry.org/R-ecology-lesson"
+  url = "https://lessons.datacarpentry.org/R-ecology-lesson",
   "workbench-beta" = "true"
 )
-set_config(params, path = new, write = TRUE)
+set_config(params, path = new, write = TRUE, create = TRUE)
 
 
 yaml <- readLines(to(".github/workflows/sandpaper-main.yaml"))
