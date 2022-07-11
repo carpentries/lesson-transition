@@ -252,20 +252,15 @@ dir_copy(from("img"), to("episodes", "fig"))
 cli::cli_h1("Setting the configuration parameters in config.yaml")
 params <- c(
   title      = "Data Analysis and Visualisation in R for Ecologists",
-  source     = "https://github.com/fishtree-attempt/new-R-ecology-lesson/",
+  source     = "https://github.com/fishtree-attempt/R-ecology-lesson/",
   contact    = "zkamvar@carpentries.org",
   life_cycle = "stable",
-  carpentry  = "dc"
+  carpentry  = "dc",
+  url = "https://lessons.datacarpentry.org/R-ecology-lesson"
+  "workbench-beta" = "true"
 )
 set_config(params, path = new, write = TRUE)
 
-
-# cli::cli_alert_info("Committing...")
-# git_add(".", repo = new)
-# git_commit("Transfer lesson to sandpaper",
-#   committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
-#   repo = new
-# )
 
 yaml <- readLines(to(".github/workflows/sandpaper-main.yaml"))
 l <- grep("sandpaper:::ci_deploy", yaml, fixed = TRUE)

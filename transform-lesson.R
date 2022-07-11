@@ -161,18 +161,28 @@ copy_dir(to("data"), to("episodes/data"))
 del_dir(to("data"))
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
+this_carp <- strsplit(arguments$repo, "/")[[1]][1]
+this_carp_domain <- switch(this_carp
+    # swcarpentry             = "https://lessons.software-carpentry.org",
+    datacarpentry           = "https://lessons.datacarpentry.org",
+    # librarycarpentry        = "https://lessons.librarycarpentry.org",
+    "https://fishtree-attempt.github.io" # default
+  ),
+
 params <- c(
   title      = cfg$title,
-  source     = paste0("https://github.com/fishtree-attempt/", path_file(new), "/"),
+  source     = glue::glue("https://github.com/fishtree-attempt/{path_file(new)}/"),
   contact    = cfg$email,
   life_cycle = if (length(cfg$life_cycle)) cfg$life_cycle else "stable",
-  carpentry  = switch(strsplit(arguments$repo, "/")[[1]][1],
+  carpentry  = switch(this_carp,
     swcarpentry             = "swc",
     datacarpentry           = "dc",
     librarycarpentry        = "lc",
     "carpentries-incubator" = "incubator",
     "cp" # default
-  )
+  ),
+  url = glue::glue("{this_carp_domain}/{path_file(new)}")
+  "workbench-beta" = "true"
 )
 set_config(params, path = new, write = TRUE)
 file_move(to("_config.yml"), to("gifnoc_.yml"))
