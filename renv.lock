@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.2.1",
+    "Version": "4.2.0",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -659,10 +659,10 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "51a7dd40fda01fdcd467cb262437f8c627c57836",
+      "RemoteSha": "5192bac209ed8a2fcfb2f21b1cb6434ab37497d0",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "85606c02c18f03eb3212314907d435e3",
+      "Hash": "525a8375b54bdb62a64c7aef02ecedbf",
       "Requirements": [
         "assertthat",
         "callr",
