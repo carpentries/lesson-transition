@@ -662,7 +662,7 @@
       "RemoteSha": "5192bac209ed8a2fcfb2f21b1cb6434ab37497d0",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "525a8375b54bdb62a64c7aef02ecedbf",
+      "Hash": "d0869014553b00bece8494d37ede8240",
       "Requirements": [
         "assertthat",
         "callr",
