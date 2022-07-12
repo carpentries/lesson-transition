@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.2.0",
+    "Version": "4.2.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -610,10 +610,10 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.0.3",
+      "Version": "1.0.4",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "9103a8f74b2114a5ed1136b471d8feca",
+      "Repository": "CRAN",
+      "Hash": "6539dd8c651e67e3b55b5ffea106362b",
       "Requirements": []
     },
     "rmarkdown": {
@@ -659,10 +659,10 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "5192bac209ed8a2fcfb2f21b1cb6434ab37497d0",
+      "RemoteSha": "c06562153eb51347b10e8f4492419f0d22cd424c",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "d0869014553b00bece8494d37ede8240",
+      "Hash": "ef1dfbd29c824734ab2a07d43cb54046",
       "Requirements": [
         "assertthat",
         "callr",
