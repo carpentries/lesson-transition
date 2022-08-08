@@ -65,14 +65,16 @@
     },
     "bslib": {
       "Package": "bslib",
-      "Version": "0.3.1",
+      "Version": "0.4.0",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "56ae7e1987b340186a8a5a157c2ec358",
+      "Repository": "CRAN",
+      "Hash": "be5ee090716ce1671be6cd5d7c34d091",
       "Requirements": [
+        "cachem",
         "htmltools",
         "jquerylib",
         "jsonlite",
+        "memoise",
         "rlang",
         "sass"
       ]
@@ -90,10 +92,10 @@
     },
     "callr": {
       "Package": "callr",
-      "Version": "3.7.0",
+      "Version": "3.7.1",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "461aa75a11ce2400245190ef5d3995df",
+      "Repository": "CRAN",
+      "Hash": "2fda237f24bc56508f31394beaa56877",
       "Requirements": [
         "R6",
         "processx"
@@ -216,16 +218,6 @@
         "yaml"
       ]
     },
-    "ellipsis": {
-      "Package": "ellipsis",
-      "Version": "0.3.2",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "bb0eec2fe32e88d9e2836c2f73ea2077",
-      "Requirements": [
-        "rlang"
-      ]
-    },
     "evaluate": {
       "Package": "evaluate",
       "Version": "0.15",
@@ -260,10 +252,10 @@
     },
     "gert": {
       "Package": "gert",
-      "Version": "1.6.0",
+      "Version": "1.7.0",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "98c014c4c933f23ea5a0321a4d0b588b",
+      "Repository": "CRAN",
+      "Hash": "e8432885a6c629a693c6e0716d1b68ec",
       "Requirements": [
         "askpass",
         "credentials",
@@ -315,10 +307,10 @@
     },
     "htmltools": {
       "Package": "htmltools",
-      "Version": "0.5.2",
+      "Version": "0.5.3",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "526c484233f42522278ab06fb185cb26",
+      "Repository": "CRAN",
+      "Hash": "6496090a9e00f8354b811d1a2d47b566",
       "Requirements": [
         "base64enc",
         "digest",
@@ -484,14 +476,12 @@
     },
     "pillar": {
       "Package": "pillar",
-      "Version": "1.7.0",
+      "Version": "1.8.0",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "51dfc97e1b7069e9f7e6f83f3589c22e",
+      "Repository": "CRAN",
+      "Hash": "f95cf85794546c4ac2b9a6ca42e671ff",
       "Requirements": [
         "cli",
-        "crayon",
-        "ellipsis",
         "fansi",
         "glue",
         "lifecycle",
@@ -510,14 +500,14 @@
     },
     "pkgdown": {
       "Package": "pkgdown",
-      "Version": "2.0.5",
+      "Version": "2.0.6",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "584e7c13c2cb3a1d4b32166dc411f3bb",
+      "Hash": "f958d0b2a5dabc5ffd414f062b1ffbe7",
       "Requirements": [
         "bslib",
         "callr",
-        "crayon",
+        "cli",
         "desc",
         "digest",
         "downlit",
@@ -662,7 +652,7 @@
       "RemoteSha": "c06562153eb51347b10e8f4492419f0d22cd424c",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "ef1dfbd29c824734ab2a07d43cb54046",
+      "Hash": "7c122043e009664320bb10601cf6ef14",
       "Requirements": [
         "assertthat",
         "callr",
@@ -689,10 +679,10 @@
     },
     "sass": {
       "Package": "sass",
-      "Version": "0.4.1",
+      "Version": "0.4.2",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "f37c0028d720bab3c513fd65d28c7234",
+      "Repository": "CRAN",
+      "Hash": "1b191143d7d3444d504277843f3a95fe",
       "Requirements": [
         "R6",
         "fs",
@@ -765,12 +755,11 @@
     },
     "tibble": {
       "Package": "tibble",
-      "Version": "3.1.7",
+      "Version": "3.1.8",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "08415af406e3dd75049afef9552e7355",
+      "Repository": "CRAN",
+      "Hash": "56b6934ef0f8c68225949a8672fe1a8f",
       "Requirements": [
-        "ellipsis",
         "fansi",
         "lifecycle",
         "magrittr",
@@ -788,9 +777,9 @@
       "RemoteUsername": "ropensci",
       "RemoteRepo": "tinkr",
       "RemoteRef": "main",
-      "RemoteSha": "3035df793bb39546fc92126c3396047a20cb29a6",
+      "RemoteSha": "d9330012ad93f44517eb4f93ee62c03f5de94a3c",
       "RemoteHost": "api.github.com",
-      "Hash": "4749f272bf71803a7620799ef3024f18",
+      "Hash": "b876e8734fd258a830c4d339c1f7b99b",
       "Requirements": [
         "R6",
         "commonmark",
@@ -859,15 +848,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.2.1",
+      "Version": "0.2.2",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "79b523d546544dc94ee5d4430224a1e2043a2100",
+      "RemoteSha": "f2df91f5ecd8e06117f2e802278b4138bb2c743c",
       "RemoteHost": "api.github.com",
-      "Hash": "244765bdc98ac68dd900f9195cecadc3",
+      "Hash": "e1a9748b43ca71e07f70f92fbb3bb232",
       "Requirements": []
     },
     "vctrs": {
