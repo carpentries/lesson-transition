@@ -18,7 +18,7 @@ PREREQS := renv/library/ template/ filter-and-transform.sh functions.R
 .PHONY = github
 .PHONY = info
 
-all: template/ $(TARGETS) repos.md
+all: restore template/ $(TARGETS) repos.md
 modules: $(MODULE)
 	git submodule foreach 'git checkout main || git checkout gh-pages'
 	git submodule foreach 'git pull'
@@ -27,6 +27,8 @@ template: template/
 github: $(GITHUB)
 update:
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::record(paste0("renv@", packageVersion("renv"))); renv::restore(library = renv::paths$$library()); renv::update(library = renv::paths$$library()); renv::snapshot()'
+restore:
+	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore(library = renv::paths$$library())'
 
 bump: 
 	@for i in $(GITHUB); \
