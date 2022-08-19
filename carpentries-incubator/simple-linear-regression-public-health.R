@@ -1,4 +1,5 @@
 # copy over the necessary data files and modify the setup chunks
+dir_create(path(new, 'episodes', c('data', 'files')))
 file_copy(path(old, "bin", "data.RData"), path(new, 'episodes', 'data', 'data.RData'), overwrite = TRUE)
 file_copy(path(old, "bin", "obtain_data.R"), path(new, 'episodes', 'files', 'obtain_data.R'), overwrite = TRUE)
 l <- Lesson$new(new, jekyll = FALSE)
