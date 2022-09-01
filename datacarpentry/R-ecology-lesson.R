@@ -29,7 +29,7 @@ Usage:
 }' -> doc
 library("docopt")
 
-arguments <- docopt(doc, version = "R Ecology Converter 2022-06", help = TRUE)
+arguments <- docopt(doc, version = "R Ecology Converter 2022-09", help = TRUE)
 # Convert DataCarpentry R-ecology lesson to use the {sandpaper} infrastructure
 # ============================================================================
 #
@@ -47,6 +47,10 @@ arguments <- docopt(doc, version = "R Ecology Converter 2022-06", help = TRUE)
 #
 # I have removed the _page_built_on.Rmd child chunk in 3651ac6 because it was
 # redundant with our reporting at the top of the page.
+#
+# update: 2022-09
+#
+# I am working on fixing #8 where `text_answer` code chunks do not get caught
 #
 library("sandpaper")
 library("usethis")
