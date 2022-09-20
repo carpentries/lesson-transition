@@ -459,7 +459,7 @@
       "RemoteSha": "a8db02ab037f2ffeab6e13cc3b662ea8c42822ad",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr",
-      "Hash": "8b85e9a4bbe765b782a438bae6935ef6",
+      "Hash": "7a02c70f969d8da4f68375ed26fd955d",
       "Requirements": [
         "R6",
         "commonmark",
@@ -650,7 +650,7 @@
       "RemoteSha": "3a9ec4676a92167108c4c447cdb98cdc6bc6ebc6",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "77dbdc15874c121f98d766d719e1b0da",
+      "Hash": "5e95495a8dbdfa03772de95fab09d100",
       "Requirements": [
         "assertthat",
         "callr",
