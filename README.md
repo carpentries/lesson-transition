@@ -192,10 +192,11 @@ be able to do the following from the command line:
 2. assign the repositories to bot teams.
 3. destroy repositories that are outdated in the past.
 
-I have created a sandbox organisation where I know I can break things if I need
-to set up or tear down things. I have given the 
-[Carpentries Apprentice](https://github.com/znk-machine) admin access so that I
-do not risk my own token being used to create and delete repositories.
+I have created a [sandbox organisation](https://github.com/fishtree-attempt)
+where I know I can break things if I need to set up or tear down things. I have
+given the [Carpentries Apprentice](https://github.com/carpentries-bot) admin
+access so that I do not risk my own token being used to create and delete
+repositories.
 
 To send lessons to GitHub, you need to make sure you have the correct tokens
 set up from GitHub in addition to your GitHub PAT, which will give you repo
@@ -205,7 +206,7 @@ access:
  - [BOT\_TOKEN](https://github.com/settings/tokens/new?scopes=admin:org&description=GITHUB_BOT) to assign the bots team to the repository
  - [DEL\_TOKEN](https://github.com/settings/tokens/new?scopes=delete_repo&description=GITHUB_DEL) to delete a repository.
 
-In testing, I set these tokens to expire the next day.
+In testing, **I set these tokens to expire the next day**.
 
 Because I do not want to keep these hanging around my BASH environment, and 
 because I want to be difficult, I am using a [vault secrets engine called
@@ -252,7 +253,9 @@ This repository has package management via {renv}, so there are two steps to
 getting set up:
 
 1. install R
-2. Run `make renv/library/`
+2. Open R in this repository. {renv} should prompt you about using a central cache.
+   Select yes.
+2. Run `make restore`.
  
 This will restore the renv session to the correct state so that you can convert
 the lessons contained with `make`
@@ -280,9 +283,10 @@ find solace in [Danielle Navarro's blog post from August on setting up credentia
 
 ### Steps for uploading the lesson and activating github pages
 
-Here, I'm using the [data-lessons](https://github.com/data-lessons), which was
-the organisation that eventually migrated to DataCarpentry and now serves as a
-kind of sandbox for The Carpentries. 
+Here, I'm using the [fishtree-attempt](https://github.com/fishtree-attempt), which
+is a pun on Carpentries (fish: carp, tree: ent, attempt: tries), but more 
+importantly, it is a sandbox organisation in which I can comfrotably destroy and
+re-create lessons at will so that I can test out the translation features.
 
 You should use your own account for this as you will likely not have access to
 the data-lessons organisation.
@@ -290,7 +294,7 @@ the data-lessons organisation.
 ```r
 # In the directory of the new lesson
 library(usethis)
-use_github(organization = "data-lessons")
+use_github(organization = "my-organisation")
 ```
 
 After a few minutes, the lesson will be sent to GitHub and build the site, but
