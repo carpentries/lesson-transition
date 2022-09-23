@@ -103,10 +103,10 @@
     },
     "cli": {
       "Package": "cli",
-      "Version": "3.4.0",
+      "Version": "3.4.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "78003c09d258968a4d28107e779edb10",
+      "Hash": "0d297d01734d2bcea40197bd4971a764",
       "Requirements": []
     },
     "clipr": {
@@ -769,15 +769,15 @@
     },
     "tinkr": {
       "Package": "tinkr",
-      "Version": "0.1.0",
+      "Version": "0.1.0.9000",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "ropensci",
       "RemoteRepo": "tinkr",
       "RemoteRef": "main",
-      "RemoteSha": "a577e9b4f3b94bcf09ead5c77ed49373a31db5d6",
+      "RemoteSha": "dd97a31bb3c35901ae24671925421977998e41da",
       "RemoteHost": "api.github.com",
-      "Hash": "48eac85b976f1649a9f57b206ce54f7a",
+      "Hash": "e5972cb926d1dbcc3faab12e1055a3cd",
       "Requirements": [
         "R6",
         "commonmark",
