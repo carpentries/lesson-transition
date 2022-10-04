@@ -58,7 +58,7 @@ renv/library/ :
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'
 
 template/ : establish-template.R renv.lock renv/library/
-	@GITHUB_PAT=$$(./pat.sh) Rscript $< $@
+	@GITHUB_PAT=$$(./pat.sh) Rscript $< -w workbench-beta-phase.yml $@
 
 # $(MODULE) Get a submodule of a repository
 %/.git : %.R

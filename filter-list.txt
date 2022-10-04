@@ -1,0 +1,59 @@
+# All episodes are now in the episodes folder
+_episodes==>episodes
+_episodes_rmd==>episodes
+
+# We no longer need any styling detritus
+_config_dev.yml
+_site/
+_includes/
+_layouts/
+bootstrap/
+assets/
+css/
+js/
+favicon/
+tools/
+
+# no need for boilerplate or tools
+bin/boilerplate/
+bin/chunk-options.R
+bin/dependencies.R
+bin/extract_figures.py
+bin/generate_md_episodes.R
+bin/install_r_deps.sh
+bin/knit_lessons.sh
+bin/lesson_check.py
+bin/lesson_initialize.py
+bin/markdown_ast.rb
+bin/markdown-ast.rb
+bin/repo_check.py
+bin/reporter.py
+bin/run-make-docker-serve.sh
+bin/test_lesson_check.py
+bin/util.py
+bin/workshop_check.py
+404.md
+aio.md
+Makefile
+Gemfile
+
+# old continuous integration not needed
+.gitignore
+.github
+.travis.yml
+tic.R
+
+# items for R ecology lesson
+build_lesson.R
+DESCRIPTION
+_page_built_on.Rmd
+_site.yml
+glob:'*html'
+glob:'*.css'
+glob:'*.gitkeep'
+glob:'*.ico'
+
+# generated image files
+regex:'^fig/.*[-][0-9]{1,2}.png$'
+regex:'^img/.*[-][0-9]{1,2}.png$'
+regex:'^img/R-ecology-*$'
