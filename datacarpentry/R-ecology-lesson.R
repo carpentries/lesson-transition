@@ -106,6 +106,7 @@ convert_blocks <- function(episode) {
   episode$unblock()$use_sandpaper()
 }
 
+
 remove_date_built_on <- function(episode) {
   the_child <- grepl("_page_built_on", xml2::xml_attr(episode$code, "child"))
   if (any(the_child)) {
@@ -136,6 +137,23 @@ wrap_solutions <- function(episode) {
     episode$add_md(":::::::: solution", where = a + n - 1L)
     n <- n + 2L
   }
+  episode$label_divs()
+}
+
+replace_text_answers <- function(episode) {
+  lines <- xml_attr(xml_children(episode$body), "sourcepos")
+  ep <- episode$code
+  answers <- keep(ep, ~xml_attr(.x, "language") %in% "text_answer")
+  txt <- glue::glue("::::::: solution\n\n{xml_text(answers)}\n\n::::::::::::\n")
+  lines <- which(lines %in% xml_attr(answers, "sourcepos"))
+  n <- 0L
+  for (a in lines) {
+    episode$add_md(txt, where = a + n)
+    n <- n + 1L
+  }
+  ep <- episode$code
+  answers <- keep(ep, ~xml_attr(.x, "language") %in% "text_answer")
+  xml2::xml_remove(answers)
   episode$label_divs()
 }
 
@@ -177,6 +195,7 @@ cli::cli_h2("Converting block quotes")
 walk(eps, convert_blocks)
 cli::cli_h2("Converting solutions")
 walk(eps, wrap_solutions)
+walk(eps, replace_text_answers)
 cli::cli_h2("fixing image paths")
 walk(eps, fix_images)
 cli::cli_h2("removing page built on chunks")
