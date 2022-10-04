@@ -6,11 +6,13 @@ components can be copied over without hassle.
 
 Usage: 
   establish-template.R <dir>
+  establish-template.R -w <workflow> <dir>
   establish-template.R -h | --help
   establish-templte.R -v | --version
 
 -h, --help     Show this information and exit
 -v, --version  Print the version information of this script
+-w <workflow>  Extra workflow to insert into the lesson
 <dir>          The directory to save the repository for later use,
                defaults to a temporary directory
 }' -> doc
@@ -23,6 +25,7 @@ library("varnish")
 arguments <- docopt(doc, version = "Stunning Barnacle 2022-09", help = TRUE)
 
 lesson <- path_abs(arguments$dir)
+wflow  <- path_abs(arguments$w)
 to <- function(...) path(lesson, ...)
 
 if (dir_exists(lesson)) {
@@ -34,6 +37,7 @@ usethis::create_from_github("carpentries/workbench-template-rmd", tempdir())
 fs::dir_copy(fs::path(tempdir(), "workbench-template-rmd"), lesson)
 cli::cli_alert_info("Updating workflows")
 sandpaper::update_github_workflows(lesson)
+file_copy(wflow, to(".github/workflows/"))
 cli::cli_alert_info("Removing boilerplate")
 file_delete(to("episodes", "introduction.Rmd"))
 file_delete(to("index.md"))
