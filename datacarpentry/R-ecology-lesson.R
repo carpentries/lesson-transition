@@ -145,16 +145,23 @@ wrap_solutions <- function(episode) {
   episode$label_divs()
 }
 
+measure_extra_lines <- function(txt) {
+  md <- read_xml(commonmark::markdown_xml(txt))
+  length(xml_children(md))
+}
+
 replace_text_answers <- function(episode) {
-  lines <- xml_attr(xml_children(episode$body), "sourcepos")
+  lines <- get_linestarts(xml_children(episode$body))
   ep <- episode$code
   answers <- keep(ep, ~xml_attr(.x, "language") %in% "text_answer")
-  txt <- glue::glue("::::::: solution\n\n{xml_text(answers)}\n\n::::::::::::\n")
-  lines <- which(lines %in% xml_attr(answers, "sourcepos"))
+  txt <- glue::glue("::::::: solution\n\n{xml_text(answers)}\n\n::::::::::::::::\n")
+  lines <- which(lines %in% get_linestarts(answers))
   n <- 0L
-  for (a in lines) {
-    episode$add_md(txt, where = a + n)
-    n <- n + 1L
+  for (a in seq(lines)) {
+    line <- lines[a] + n
+    soln <- txt[[a]]
+    episode$add_md(soln, where = line)
+    n <- n + measure_extra_lines(soln)
   }
   ep <- episode$code
   answers <- keep(ep, ~xml_attr(.x, "language") %in% "text_answer")
