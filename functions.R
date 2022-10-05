@@ -21,6 +21,22 @@ fix_images <- function(episode, from = "([.][.][/])?(img|fig|images)/", to = "fi
   episode
 }
 
+# Fix all links that are http and not https because that's just kind of an annoying
+# thing to have to fix manually when we know what the solution is.
+fix_https_links <- function(episode) {
+  # extract the table of links that do not pass checks
+  
+  links <- episode$validate_links(warn = FALSE)
+  # extract the nodes that specifically fail the https test
+  http <- links[!links$enforce_https, ]$node
+  # loop through the nodes and fix.
+  purrr::map(http, \(x) {
+    dest <- sub("^http\\:", "https:", xml2::xml_attr(x, "destination"))
+    xml2::xml_set_attr(x, "destination", dest)
+  })
+  invisible(episode)
+}
+
 fix_html_indents <- function(episode) {
   html <- xml_find_all(episode$body, ".//md:html_block", episode$ns)
   if (length(html)) {
@@ -63,6 +79,9 @@ transform <- function(e, out = new) {
 
   cli::cli_status_update("fixing html indents")
   fix_html_indents(e)
+
+  cli::cli_status_update("fixing http -> https")
+  fix_https_links(e)
 
   cli::cli_process_start("Writing {.file {outdir}/{e$name}}")
   e$write(outdir, format = path_ext(e$name), edit = FALSE)
