@@ -244,10 +244,10 @@
     },
     "gert": {
       "Package": "gert",
-      "Version": "1.9.0",
+      "Version": "1.9.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "56dc795889978f759ea0b0de06dcd5b4",
+      "Hash": "9a091a6d2fb91e43afd4337e2dcef2e7",
       "Requirements": [
         "askpass",
         "credentials",
@@ -645,16 +645,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.10.2",
+      "Version": "0.10.3",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "579538abddebbb4d13d1b3a094db87e0e1df9e92",
+      "RemoteSha": "e99afc5b710109e1bdce7bc4cc1e46bef2b21344",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "7caa9926ea6272799e7230fdd295fd94",
+      "Hash": "2b2d33dda67320cfd65397d3790a0905",
       "Requirements": [
         "assertthat",
         "callr",
