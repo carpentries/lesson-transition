@@ -161,6 +161,7 @@ copy_dir(to("data"), to("episodes/data"))
 del_dir(to("data"))
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
+# DEPRECATED
 this_carp <- strsplit(arguments$repo, "/")[[1]][1]
 this_carp_domain <- switch(this_carp,
   # swcarpentry             = "https://lessons.software-carpentry.org",
@@ -181,7 +182,7 @@ params <- c(
     "carpentries-incubator" = "incubator",
     "cp" # default
   ),
-  url = glue::glue("{this_carp_domain}/{path_file(new)}"),
+  url = glue::glue("https://preview.carpentries.org/{path_file(new)}"),
   "workbench-beta" = "true"
 )
 set_config(params, path = new, write = TRUE, create = TRUE)

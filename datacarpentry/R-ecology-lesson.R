@@ -291,7 +291,7 @@ params <- c(
   contact    = "zkamvar@carpentries.org",
   life_cycle = "stable",
   carpentry  = "dc",
-  url = "https://lessons.datacarpentry.org/R-ecology-lesson",
+  url = "https://preview.carpentries.org/R-ecology-lesson",
   "workbench-beta" = "true"
 )
 set_config(params, path = new, write = TRUE, create = TRUE)
