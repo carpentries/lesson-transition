@@ -120,12 +120,17 @@ rewrite_date_built_on <- function(name) {
   rmd$write(to(), format = "Rmd")
 }
 
+get_linestarts <- function(nodes) {
+  lines <- xml_attr(nodes, "sourcepos")
+  lines <- map_chr(strsplit(lines, ":"), 1)
+  as.integer(lines)
+}
 # Convert answer code chunks to solutions 
 find_answers <- function(episode) {
-  lines <- xml_attr(xml_children(episode$body), "sourcepos")
+  lines <- get_linestarts(xml_children(episode$body))
   ep <- episode$code
   answers <- keep(ep, ~!is.na(xml_attr(.x, "answer")))
-  which(lines %in% xml_attr(answers, "sourcepos"))
+  which(lines %in% get_linestarts(answers))
 }
 
 # add pandoc fenced-div tags to surround our answers
