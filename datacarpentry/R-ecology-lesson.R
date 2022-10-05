@@ -29,7 +29,7 @@ Usage:
 }' -> doc
 library("docopt")
 
-arguments <- docopt(doc, version = "R Ecology Converter 2022-06", help = TRUE)
+arguments <- docopt(doc, version = "R Ecology Converter 2022-09", help = TRUE)
 # Convert DataCarpentry R-ecology lesson to use the {sandpaper} infrastructure
 # ============================================================================
 #
@@ -47,6 +47,10 @@ arguments <- docopt(doc, version = "R Ecology Converter 2022-06", help = TRUE)
 #
 # I have removed the _page_built_on.Rmd child chunk in 3651ac6 because it was
 # redundant with our reporting at the top of the page.
+#
+# update: 2022-09
+#
+# I am working on fixing #8 where `text_answer` code chunks do not get caught
 #
 library("sandpaper")
 library("usethis")
@@ -102,6 +106,7 @@ convert_blocks <- function(episode) {
   episode$unblock()$use_sandpaper()
 }
 
+
 remove_date_built_on <- function(episode) {
   the_child <- grepl("_page_built_on", xml2::xml_attr(episode$code, "child"))
   if (any(the_child)) {
@@ -115,12 +120,17 @@ rewrite_date_built_on <- function(name) {
   rmd$write(to(), format = "Rmd")
 }
 
+get_linestarts <- function(nodes) {
+  lines <- xml_attr(nodes, "sourcepos")
+  lines <- map_chr(strsplit(lines, ":"), 1)
+  as.integer(lines)
+}
 # Convert answer code chunks to solutions 
 find_answers <- function(episode) {
-  lines <- xml_attr(xml_children(episode$body), "sourcepos")
+  lines <- get_linestarts(xml_children(episode$body))
   ep <- episode$code
   answers <- keep(ep, ~!is.na(xml_attr(.x, "answer")))
-  which(lines %in% xml_attr(answers, "sourcepos"))
+  which(lines %in% get_linestarts(answers))
 }
 
 # add pandoc fenced-div tags to surround our answers
@@ -132,6 +142,30 @@ wrap_solutions <- function(episode) {
     episode$add_md(":::::::: solution", where = a + n - 1L)
     n <- n + 2L
   }
+  episode$label_divs()
+}
+
+measure_extra_lines <- function(txt) {
+  md <- read_xml(commonmark::markdown_xml(txt))
+  length(xml_children(md))
+}
+
+replace_text_answers <- function(episode) {
+  lines <- get_linestarts(xml_children(episode$body))
+  ep <- episode$code
+  answers <- keep(ep, ~xml_attr(.x, "language") %in% "text_answer")
+  txt <- glue::glue("::::::: solution\n\n{xml_text(answers)}\n\n::::::::::::::::\n")
+  lines <- which(lines %in% get_linestarts(answers))
+  n <- 0L
+  for (a in seq(lines)) {
+    line <- lines[a] + n
+    soln <- txt[[a]]
+    episode$add_md(soln, where = line)
+    n <- n + measure_extra_lines(soln)
+  }
+  ep <- episode$code
+  answers <- keep(ep, ~xml_attr(.x, "language") %in% "text_answer")
+  xml2::xml_remove(answers)
   episode$label_divs()
 }
 
@@ -173,6 +207,7 @@ cli::cli_h2("Converting block quotes")
 walk(eps, convert_blocks)
 cli::cli_h2("Converting solutions")
 walk(eps, wrap_solutions)
+walk(eps, replace_text_answers)
 cli::cli_h2("fixing image paths")
 walk(eps, fix_images)
 cli::cli_h2("removing page built on chunks")
