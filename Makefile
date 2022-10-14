@@ -30,6 +30,9 @@ modules: $(MODULE)
 sandpaper/%.json : %.R %/.git $(PREREQS) transform-lesson.R
 	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
 
+sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
+	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
+
 renv/library/ :
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'
 update:
@@ -44,9 +47,6 @@ template/ : establish-template.R renv.lock renv/library/
 # $(MODULE) Get a submodule of a repository
 %/.git : %.R
 	bash fetch-submodule.sh $@
-
-sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
-	bash filter-and-transform.sh $@ $< || echo "UGH"
 
 github: $(GITHUB)
 sandpaper/%-status.json : sandpaper/%.json create-test-repo.sh delete-test-repo.sh
