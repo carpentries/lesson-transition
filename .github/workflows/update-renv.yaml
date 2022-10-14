@@ -42,7 +42,7 @@ jobs:
             ${{ runner.os }}-renv-
 
       - name: Install curl
-        run: apt install libcurl4-openssl-dev
+        run: apt-get install -y libcurl4-openssl-dev
 
       # Runs a single command using the runners shell
       - name: Update renv
