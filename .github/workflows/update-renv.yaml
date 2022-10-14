@@ -41,6 +41,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-renv-
 
+    - name: Install curl
+      run: apt install libcurl4-openssl-dev
+
       # Runs a single command using the runners shell
       - name: Update renv
         shell: Rscript {0}
