@@ -74,7 +74,7 @@ sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R
 	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
 
 prebeta/datacarpentry/R-ecology-lesson.json : sandpaper/datacarpentry/R-ecology-lesson.json pre-beta.R
-	@GITHUB_PAT=$$(./pat.sh) Rscript pre-beta.R $< $@
+	@GITHUB_PAT=$$(./pat.sh) Rscript pre-beta.R $< $@ beta-phase.csv
 
 renv/library/ :
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'
@@ -104,8 +104,17 @@ bump:
 		done
 
 info: 
+	@echo "Repositories not yet in Beta ------------------------------------------"
 	@for i in $(GITHUB); \
-		do [[ -e $${i} ]] && printf "$$(jq .created_at < $${i})\t$${i##sandpaper/}\n" || echo "$${i} does not exist"; \
+		do [[ -e $${i} ]] && printf "$$(jq .created_at < $${i} | xargs date -d)\t$${i##sandpaper/}\n" || echo "$${i} does not exist"; \
+		done
+	@echo "Repositories Pre-Beta -------------------------------------------------"
+	@for i in $(PREBETA_GITHUB); \
+		do [[ -e $${i} ]] && printf "$$(jq .created_at < $${i} | xargs date -d)\t$${i##sandpaper/}\n" || echo "$${i} does not exist"; \
+		done
+	@echo "Repositories Beta -----------------------------------------------------"
+	@for i in $(BETA_GITHUB); \
+		do [[ -e $${i} ]] && printf "$$(jq .created_at < $${i} | xargs date -d)\t$${i##sandpaper/}\n" || echo "$${i} does not exist"; \
 		done
 
 status:
