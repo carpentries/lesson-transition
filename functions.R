@@ -27,6 +27,9 @@ fix_https_links <- function(episode) {
   # extract the table of links that do not pass checks
   
   links <- episode$validate_links(warn = FALSE)
+  if (length(links) == 0 || nrow(links) == 0) {
+    return(invisible(episode))
+  }
   # extract the nodes that specifically fail the https test
   http <- links[!links$enforce_https, ]$node
   # loop through the nodes and fix.
