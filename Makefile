@@ -74,7 +74,7 @@ sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R
 	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
 
 prebeta/datacarpentry/R-ecology-lesson.json : sandpaper/datacarpentry/R-ecology-lesson.json pre-beta.R
-	@GITHUB_PAT=$$(./pat.sh) Rscript pre-beta.R $< $@ beta-phase.csv
+	@GITHUB_PAT=$$(./pat.sh) Rscript pre-beta.R datacarpentry/R-ecology-lesson $@ beta-phase.csv
 
 renv/library/ :
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'

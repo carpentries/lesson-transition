@@ -25,12 +25,30 @@ Usage:
                 looking up the dates from the repo key.
 }' -> doc
 library("fs")
+library("sandpaper")
 library("docopt")
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2022-10", help = TRUE)
 dates <- read.csv(arguments$dates)
-repo  <- arguments$in
+repo  <- arguments[["in"]]
 old   <- paste0("sandpaper/", repo)
 new   <- paste0("prebeta/", repo)
-
+org_repo <- strsplit(repo, "/")[[1]]
+url   <- paste0("https://", org_repo[1], ".github.io/", org_repo[2])
+# moving the repository
+if (dir_exists(old)) {
+  if (!dir_exists(path_dir(new))) {
+    dir_create(path_dir(new), recurse = TRUE)
+  }
+  file_move(old, new)
+}
+this_lesson <- dates$repository == repo
+set_config(c(
+  "pre-beta-date" = dates$pre.beta[this_lesson],
+  "old-url" = url
+  ), 
+  path = new,
+  write = TRUE,
+  create = TRUE
+)
 

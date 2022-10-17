@@ -117,8 +117,8 @@ del_dir <- function(x) {
 
 add_experiment_info <- function(episode) {
   # Modify the index to include our magic header
-  experiment <- "> **ATTENTION** This is an experimental test of the [{sandpaper}](https://carpentries.github.io/sandpaper-docs) lesson infrastructure
-> with automated conversion via [the lesson transition script](https://github.com/data-lessons/lesson-transition/).
+  experiment <- "> **ATTENTION** This is an experimental test of [The Carpentries Workbench](https://carpentries.github.io/workbench) lesson infrastructure.
+> It was automatically converted from the source lesson via [the lesson transition script](https://github.com/carpentries/lesson-transition/).
 >
 > If anything seems off, please contact Zhian Kamvar <zkamvar@carpentries.org>
 "
