@@ -18,7 +18,7 @@ Usage:
 -q, --quiet     Do not print any progress messages
 -o, --org       GitHub organisation in which to publish the snapshot. This will
                 default to fishtree-attempt
-<in>            A repository to upload
+<in>            A converted repository to upload
 <out>           A JSON file to write the GitHub log to
 <dates>         A CSV file that has three columns, prebeta, beta, and prerelease
                 containing dates of each of these phases with a repo column for
@@ -28,4 +28,8 @@ library("fs")
 library("docopt")
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2022-10", help = TRUE)
-print("Nothing to do")
+dates <- read.csv(arguments$dates)
+old   <- arguments$in
+new   <- sub("^sandpaper", "prebeta", old)
+
+
