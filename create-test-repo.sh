@@ -2,7 +2,7 @@
 # This script will create a test repository and assign a team to that repository
 #
 # Usage:
-#   NEW_TOKEN=$(./pat.sh) BOT_TOKEN=<token> bash create-test-repo.sh repo/name team new-org
+#   NEW_TOKEN=$(./pat.sh) BOT_TOKEN=<token> bash create-test-repo.sh repo/name team new-org folder
 #
 # The above command will create new-org/repo and assign it to "team".
 set -euo pipefail
@@ -10,8 +10,9 @@ set -euo pipefail
 REPOSITORY=${1:-fishtree-attempt/znk-test}
 TEAM=${2:-bots}
 ORG="${3:-fishtree-attempt}"
+FOLDER="${4:-sandpaper}"
 NAME="$(basename ${REPOSITORY})"
-OUT="sandpaper/${REPOSITORY}-status.json"
+OUT="${FOLDER}/${REPOSITORY}-status.json"
 echo "from ${REPOSITORY} to ${ORG}/${NAME} (${TEAM})"
 
 # This does two steps:
@@ -34,7 +35,7 @@ curl \
 
 URL=$(jq -r .html_url < ${OUT})
 # 3. push the repository to the new lesson
-cd sandpaper/${REPOSITORY}
+cd ${FOLDER}/${REPOSITORY}
 git push -u origin main
 Rscript -e "usethis::use_github_pages()"
 
