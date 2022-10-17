@@ -30,6 +30,11 @@ else
   echo "${REPOSITORY}, was created at ${CREATED} according to ${FILE}"
 fi
 
+if [[ -z ${DEL_TOKEN} ]]; then
+  echo "This process needs a delete token"
+  exit 1
+fi
+
 # The TIME variable stores the live created at time of the repository from the 
 # GitHub API. This will fail if the token is invalid.
 TIME=$(curl \
