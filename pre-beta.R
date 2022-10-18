@@ -35,6 +35,7 @@ repo  <- arguments[["in"]]
 new   <- paste0("prebeta/", repo)
 logfile <- path_ext_set(new, "json")
 commitfile <- path_ext_set(new, "hash")
+invalidfile <- sub("\\.hash", "-invalid.hash", commitfile)
 remote_exists <- file_exists(paste0(new, "-status.json"))
 org_repo <- strsplit(repo, "/")[[1]]
 url   <- paste0("https://", org_repo[1], ".github.io/", org_repo[2])
@@ -63,6 +64,14 @@ if (dir_exists(new)) {
   callr::run("bash", cmd,
     env = c("current", PATH = paste0(gfr, ":", Sys.getenv("PATH")))
   )
+  conversions <- read.table(path(new, ".git", "filter-repo", "commit-map"), 
+    header = TRUE)
+  suppressWarnings(excluded <- as.integer(conversions[["new"]]) %in% 0)
+  bad_hashes <- conversions[["old"]][excluded]
+  if (length(bad_hashes)) {
+    writeLines(bad_hashes[1], invalidfile)
+  }
+
 }
 this_lesson <- dates$repository == repo
 set_config(c(
