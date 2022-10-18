@@ -3,3 +3,4 @@ template/
 sandpaper/**
 /prebeta/*/*
 !/prebeta/**/*-status.json
+!/prebeta/**/*.hash

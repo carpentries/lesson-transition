@@ -30,17 +30,39 @@ library("docopt")
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2022-10", help = TRUE)
 dates <- read.csv(arguments$dates)
+org   <- arguments[["org"]]
 repo  <- arguments[["in"]]
-old   <- paste0("sandpaper/", repo)
 new   <- paste0("prebeta/", repo)
+logfile <- path_ext_set(new, "json")
+commitfile <- path_ext_set(new, "hash")
+remote_exists <- file_exists(paste0(new, "-status.json"))
 org_repo <- strsplit(repo, "/")[[1]]
 url   <- paste0("https://", org_repo[1], ".github.io/", org_repo[2])
-# moving the repository
-if (dir_exists(old)) {
-  if (!dir_exists(path_dir(new))) {
-    dir_create(path_dir(new), recurse = TRUE)
-  }
-  file_move(old, new)
+
+if (dir_exists(new)) {
+  # if we've already done this, then we just exit
+  message("Beta repository exists; exiting")
+  quit(save = "no")
+} else if (remote_exists) {
+  # The remote exists, so we clone and exit
+  message("Beta repository exists on GitHub; cloning and exiting")
+  org     <- if (length(org) && org != "") org else "fishtree-attempt"
+  pbsrc   <- paste0("https://github.com/", org, "/", org_repo[2])
+  gert::git_clone(pbsrc, path = new, verbose = TRUE)
+  quit(save = "no")
+} else {
+  # Nothing exists, so we build and move forward.
+  message("No repository exists.")
+  gfr <- path_abs("git-filter-repo")
+  hash <- callr::run("git", c("rev-parse", paste0("HEAD:", repo)))$stdout
+  writeLines(hash, commitfile)
+  cmd <- c("filter-and-transform.sh", 
+    paste0("prebeta/", logfile),
+    path_ext_set(repo, "R")
+  )
+  callr::run("bash", cmd,
+    env = c("current", PATH = paste0(gfr, ":", Sys.getenv("PATH")))
+  )
 }
 this_lesson <- dates$repository == repo
 set_config(c(
@@ -52,3 +74,14 @@ set_config(c(
   create = TRUE
 )
 
+chchchchanges <- git_add(".", repo = new)
+change_id <- git_commit("[automation] set prebeta",
+  committer = "Carpentries Apprentice <zkamvar+machine@gmail.com>",
+  repo = new
+)
+
+if (remote_exists) {
+  gert::git_push(repo = new)
+} else {
+  message("Beta repository created. Now upload it to GitHub")
+}

@@ -70,11 +70,14 @@ modules: $(MODULE)
 sandpaper/%.json : %.R %/.git $(PREREQS) transform-lesson.R
 	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
 
+prebeta/%.json : %.R %/.git $(PREREQS) transform-lesson.R
+	Rscript pre-beta.R $* $@ beta-phase.csv
+
 sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
 	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
 
-prebeta/datacarpentry/R-ecology-lesson.json : sandpaper/datacarpentry/R-ecology-lesson.json pre-beta.R
-	@GITHUB_PAT=$$(./pat.sh) Rscript pre-beta.R datacarpentry/R-ecology-lesson $@ beta-phase.csv
+prebeta/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
+	Rscript pre-beta.R datacarpentry/R-ecology-lesson $@ beta-phase.csv
 
 renv/library/ :
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'
