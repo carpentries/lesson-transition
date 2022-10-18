@@ -27,7 +27,6 @@ git clone --recurse-submodules https://github.com/data-lessons/lesson-transition
 git pull --recurse-submodules
 ```
 
-
 ## Motivation
 
 There are over 100 lessons in The Carpentries, Carpentries Lab, and Carpentries
@@ -134,6 +133,17 @@ the lesson. This particular example shows an R Markdown lesson. Markdown lessons
 will start from the gh-pages branch](fig/beta-phase.svg)
 
 ## Usage
+
+### Requirements
+
+This tool requires Git, R, Python, BASH, and Make to convert the lessons. There
+is one make command that uses the `gh` github command line interface.
+
+The tool used to filter commits is a python tool called
+[git-filter-repo](git-filter-repo) and we have a copy as a submodule of this
+project. 
+
+The R packages required are provided in the [`renv.lock` file](renv.lock)
 
 ### Adding a new lesson
 
