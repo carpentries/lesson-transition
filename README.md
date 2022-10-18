@@ -3,14 +3,14 @@
 This repository will contain scripts for transitioning Carpentries lessons built
 from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka 
 "The Lesson Template") to [the decoupled/centralised 
-infrastructure](https://carpentries.github.io/sandpaper-docs) (aka "The Lesson
-Infrastructure"). If you want to use this tool, scroll to [the usage
+infrastructure](https://carpentries.github.io/workbench) (aka "The Carpentries
+Workbench"). If you want to use this tool, scroll to [the usage
 section](#usage). 
 
 **This transition process is necessarily destructive and can only be 
 perforemd one-way from 
 [carpentries/styles](https://carpentries.github.io/lesson-example) to 
-[The Carpentries Workbench](https://carpentries.github.io/sandpaper-docs).**
+[The Carpentries Workbench](https://carpentries.github.io/workbench).**
 Once a lesson is transitioned, it can not transition back. 
 
 For details about the differences between styles and the workbench, you can
@@ -42,11 +42,13 @@ Transitioning the content to use Pandoc syntax and the Workbench folder
 structure is a _good enough_ approach, but we are still left with the previous
 commits that are not related to the lesson itself. These extra commits are a
 burden on the repository as they take up extra megabytes of space in the git
-database. Thus, we are going one step further and _removing all commits that
-are not strictly lesson content_. By removing these commits, we distill the
-commit history to those that are relevant so that it paints a clearer picture of
-the lesson development timeline and reduces the cognitive load needed to 
-understand how the lesson was created.
+database. 
+
+Thus, we are going one step further and _removing all commits that are not
+strictly lesson content_. By removing these commits, we distill the commit
+history to those that are relevant so that it paints a clearer picture of the
+lesson development timeline and reduces the cognitive load needed to understand
+how the lesson was created.
 
 Note: Excluding irrelevant commits from the history has precedent within The
 Carpentries! Prior to 2015, Software Carpentry lessons all lived in a [monorepo

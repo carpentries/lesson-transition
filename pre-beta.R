@@ -16,7 +16,7 @@ Usage:
 -h, --help      Show this information and exit
 -v, --version   Print the version information of this script
 -q, --quiet     Do not print any progress messages
--o, --org       GitHub organisation in which to publish the snapshot. This will
+-o <org>, --org=<org>       GitHub organisation in which to publish the snapshot. This will
                 default to fishtree-attempt
 <in>            Name of a repository to convert to pre-beta phase
 <out>           A JSON file to write the GitHub log to
@@ -27,6 +27,7 @@ Usage:
 library("fs")
 library("sandpaper")
 library("docopt")
+library("gert")
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2022-10", help = TRUE)
 dates <- read.csv(arguments$dates)
@@ -57,11 +58,8 @@ if (dir_exists(new)) {
   gfr <- path_abs("git-filter-repo")
   hash <- callr::run("git", c("rev-parse", paste0("HEAD:", repo)))$stdout
   writeLines(hash, commitfile)
-  cmd <- c("filter-and-transform.sh", 
-    paste0("prebeta/", logfile),
-    path_ext_set(repo, "R")
-  )
-  callr::run("bash", cmd,
+  cmd <- c("filter-and-transform.sh", logfile, path_ext_set(repo, "R"))
+  callr::run("bash", cmd, echo_cmd = TRUE, echo = TRUE,
     env = c("current", PATH = paste0(gfr, ":", Sys.getenv("PATH")))
   )
   conversions <- read.table(path(new, ".git", "filter-repo", "commit-map"), 
@@ -90,7 +88,7 @@ change_id <- git_commit("[automation] set prebeta",
 )
 
 if (remote_exists) {
-  gert::git_push(repo = new)
+  git_push(repo = new)
 } else {
   message("Beta repository created. Now upload it to GitHub")
 }

@@ -70,7 +70,7 @@ modules: $(MODULE)
 sandpaper/%.json : %.R %/.git $(PREREQS) transform-lesson.R
 	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
 
-prebeta/%.json : %.R %/.git $(PREREQS) transform-lesson.R
+prebeta/%.json : %.R %/.git $(PREREQS) transform-lesson.R pre-beta.R
 	Rscript pre-beta.R $* $@ beta-phase.csv
 
 sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
