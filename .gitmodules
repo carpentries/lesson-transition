@@ -77,3 +77,7 @@
 [submodule "git-filter-repo"]
 	path = git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git
+[submodule "carpentries-incubator/bioc-project"]
+	path = carpentries-incubator/bioc-project
+	url = https://github.com/carpentries-incubator/bioc-project/
+	branch = main
