@@ -576,10 +576,10 @@
     },
     "ragg": {
       "Package": "ragg",
-      "Version": "1.2.3",
+      "Version": "1.2.4",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "a7b1a8b453c5385786cdfa75aba57483",
+      "Hash": "0db17bd5a1d4abfec76487b6f5dd957b",
       "Requirements": [
         "systemfonts",
         "textshaping"
@@ -646,16 +646,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.10.4",
+      "Version": "0.10.5",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "0abf2dee8830039a65034732232957416517b109",
+      "RemoteSha": "cef110b466a3f73db3ad559d38f861baaac8a046",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "1507b9533f45e548e52a114a0e55b63c",
+      "Hash": "91624db696437da9c32df010d7794a89",
       "Requirements": [
         "assertthat",
         "callr",
@@ -843,15 +843,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.2.6",
+      "Version": "0.2.7",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "f966f6f2bfffef576ef22863e043d2f9f5841fe5",
+      "RemoteSha": "1a0dd878890d5e99c3b729eec59d89f65a1592fe",
       "RemoteHost": "api.github.com",
-      "Hash": "ecd680c15ddb6dcd08f55a581c53ada8",
+      "Hash": "e080039c1165ab7603000850288ec862",
       "Requirements": []
     },
     "vctrs": {
