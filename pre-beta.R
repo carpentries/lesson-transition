@@ -44,6 +44,7 @@ url   <- paste0("https://", org_repo[1], ".github.io/", org_repo[2])
 if (dir_exists(new)) {
   # if we've already done this, then we just exit
   message("Beta repository exists; exiting")
+  fs::file_touch(logfile)
   quit(save = "no")
 } else if (remote_exists) {
   # The remote exists, so we clone and exit
@@ -51,6 +52,7 @@ if (dir_exists(new)) {
   org     <- if (length(org) && org != "") org else "fishtree-attempt"
   pbsrc   <- paste0("https://github.com/", org, "/", org_repo[2])
   gert::git_clone(pbsrc, path = new, verbose = TRUE)
+  fs::file_touch(logfile)
   quit(save = "no")
 } else {
   # Nothing exists, so we build and move forward.
