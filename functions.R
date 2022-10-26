@@ -53,6 +53,44 @@ fix_html_indents <- function(episode) {
   episode
 }
 
+# fix headings that start at greater than two and are all greater than level 2
+#
+# In this case, headings should all be decreased by one level
+fix_small_headings <- function(episode) {
+  headings <- episode$headings
+  hlevels <- as.integer(xml2::xml_attr(headings, "level"))
+  greater_than_two <- hlevels > 2
+  if (greater_than_two[1] && all(greater_than_two)) {
+    hlevels <- hlevels - 1L
+    xml2::xml_set_attr(headings, "level", as.character(hlevels))
+  }
+  return(episode)
+}
+
+# fix headings that are at level 1
+#
+# if there is only a single heading at level one, we increase the level of this
+# heading and only this heading
+#
+# if there are multiple level 1 headings, then we assume that all the headings
+# flow from there and increase the level of all the headings.
+fix_level_one_headings <- function(episode) {
+  headings <- episode$headings
+  hlevels <- xml2::xml_attr(headings, "level")
+  first_levels <- hlevels == "1"
+  if (sum(first_levels) == 0) {
+    return(episode)
+  }
+  if (sum(first_levels) == 1) {
+    hlevels[first_levels] <- "2"
+  } else {
+    hlevels <- as.character(as.integer(hlevels) + 1L)
+  }
+  xml2::xml_set_attr(headings, "level", hlevels)
+}
+
+
+
 # transform the episodes via pegboard with reporters
 transform <- function(e, out = new) {
   outdir <- fs::path(out, "episodes/")
@@ -85,6 +123,12 @@ transform <- function(e, out = new) {
 
   cli::cli_status_update("fixing http -> https")
   fix_https_links(e)
+
+  cli::cli_status_update("fixing level 1 headings")
+  fix_level_one_headings(e)
+
+  cli::cli_status_update("fixing low-level headings")
+  fix_small_headings(e)
 
   cli::cli_process_start("Writing {.file {outdir}/{e$name}}")
   e$write(outdir, format = path_ext(e$name), edit = FALSE)
