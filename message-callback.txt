@@ -1,0 +1,2 @@
+'return re.sub(b"https://github.com/'${REPO%%${BASE}}'", b"=/='${REPO%%${BASE}}'=/=", re.sub(b"#(\d+? ?)", b"'${BLANK}'/issues/\\1", message.replace(b"@", b" =@=")))'
+
