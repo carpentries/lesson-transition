@@ -89,3 +89,15 @@
 	path = carpentries-incubator/bioc-rnaseq
 	url = https://github.com/carpentries-incubator/bioc-rnaseq/
 	branch = main
+[submodule "datacarpentry/python-ecology-lesson-es"]
+	path = datacarpentry/python-ecology-lesson-es
+	url = https://github.com/datacarpentry/python-ecology-lesson-es/
+	branch = gh-pages
+[submodule "datacarpentry/OpenRefine-ecology-lesson"]
+	path = datacarpentry/OpenRefine-ecology-lesson
+	url = https://github.com/datacarpentry/OpenRefine-ecology-lesson/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-shell"]
+	path = librarycarpentry/lc-shell
+	url = https://github.com/librarycarpentry/lc-shell/
+	branch = gh-pages
