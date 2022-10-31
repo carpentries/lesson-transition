@@ -65,8 +65,8 @@ sql$write(to("episodes"), format = "Rmd")
 
 l <- Lesson$new(new, jekyll = FALSE)
 purrr::walk(l$episodes, fix_setup)
-convert_blocks(l$episodes[["04-ggplot2.Rmd"]])
-protect_examples(l$episodes[["05-rmarkdown.Rmd"]])
+convert_blocks(l$episodes[["05-ggplot2.Rmd"]])
+protect_examples(l$episodes[["06-rmarkdown.Rmd"]])
 
 
 purrr::walk(l$episodes, ~.x$write(to("episodes"), format = "Rmd"))
