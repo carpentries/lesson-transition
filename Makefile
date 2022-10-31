@@ -23,7 +23,7 @@ INPUTS  := $(foreach dir, $(DIRS), $(wildcard $(dir)/*R))
 #   These lessons are now part of the beta stage and need to be handled and 
 #   stored differently.
 PREBETA = datacarpentry/R-ecology-lesson.R \
-	datacarpentry/r-socialsci.R #\
+	datacarpentry/r-socialsci.R \
 	datacarpentry/r-raster-vector-geospatial.R #\
 	datacarpentry/OpenRefine-ecology-lesson.R #\
 	librarycarpentry/lc-shell.R #\
