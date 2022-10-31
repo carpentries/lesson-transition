@@ -559,7 +559,7 @@
       "Package": "ps",
       "Version": "1.7.2",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "68dd03d98a5efd1eb3012436de45ba83",
       "Requirements": []
     },
