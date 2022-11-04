@@ -39,6 +39,17 @@ recommends after a default branch name change:
 
 ```sh
 git checkout gh-pages              # make sure you are gh-pages
+git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
+git fetch origin                   # fetch changes from GitHub
+git branch -u origin/legacy legacy # make sure your legacy branch tracks
+git checkout main                  # switch to the brand-new main branch
+git remote set-head origin -a      # set main branch to be your local default
+```
+
+Here's what it looks like with output
+
+```sh
+git checkout gh-pages              # make sure you are gh-pages
 # Already on 'gh-pages'
 # Your branch is up to date with 'origin/gh-pages'
 git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
@@ -73,6 +84,19 @@ your main branch.
 
 ```sh
 git checkout main                  # make sure you are on main
+git branch -m main old             # change 'main' to a local 'old' branch
+git checkout gh-pages              # switch to gh-pages
+git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
+git fetch origin                   # fetch changes from GitHub
+git branch -u origin/legacy legacy # make sure your legacy branch tracks
+git checkout main                  # switch to the brand-new main branch
+git remote set-head origin -a      # set main branch to be your local default
+```
+
+This is what it looks like with output:
+
+```sh
+git checkout main                  # make sure you are on main
 # Already on 'main'
 # Your branch is up to date with 'origin/main'
 git branch -m main old             # change 'main' to a local 'old' branch
@@ -87,11 +111,11 @@ git fetch origin                   # fetch changes from GitHub
 # remote: Total 5004 (delta 2970), reused 5000 (delta 2966), pack-reused 0
 # Receiving objects: 100% (5004/5004), 39.98 MiB | 32.57 MiB/s, done.
 # Resolving deltas: 100% (2970/2970), done.
-# From https://github.com/fishtree-attempt/R-ecology-lesson
-#  + 78697dd...087da6e gh-pages        -> origin/gh-pages  (forced update)
-#  + 8e955fe...f6eaf66 main            -> origin/main  (forced update)
-#  * [new branch]      legacy          -> origin/legacy
-#  * [new branch]      md-outputs      -> origin/md-outputs
+# From https://github.com/[PROGRAM]/[LESSON]
+#  + 78697dd...087da6e gh-pages   -> origin/gh-pages  (forced update)
+#  + 8e955fe...f6eaf66 main       -> origin/main  (forced update)
+#  * [new branch]      legacy     -> origin/legacy
+#  * [new branch]      md-outputs -> origin/md-outputs
 git branch -u origin/legacy legacy # make sure your legacy branch tracks
 # branch 'legacy' set up to track 'origin/legacy'
 git checkout main                  # switch to the brand-new main branch
