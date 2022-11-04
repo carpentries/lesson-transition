@@ -43,7 +43,7 @@ LICENSE.md
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 _extras/figures.md
-_config.yaml
+_config.yml
 glob:*.css
 
 # old continuous integration not needed

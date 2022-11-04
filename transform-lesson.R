@@ -189,7 +189,7 @@ params <- c(
   "workbench-beta" = "true"
 )
 set_config(params, path = new, write = TRUE, create = TRUE)
-file_move(to("_config.yml"), to("gifnoc_.yml"))
+file_copy(from("_config.yml"), to("gifnoc_.yml"))
 
 # Transform and write to our episodes folder
 cli::cli_h1("Transforming Episodes")
