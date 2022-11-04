@@ -58,11 +58,13 @@ fix_html_indents <- function(episode) {
 # In this case, headings should all be decreased by one level
 fix_small_headings <- function(episode) {
   headings <- episode$headings
-  hlevels <- as.integer(xml2::xml_attr(headings, "level"))
-  greater_than_two <- hlevels > 2
-  if (greater_than_two[1] && all(greater_than_two)) {
-    hlevels <- hlevels - 1L
-    xml2::xml_set_attr(headings, "level", as.character(hlevels))
+  if (length(headings)) {
+    hlevels <- as.integer(xml2::xml_attr(headings, "level"))
+    greater_than_two <- hlevels > 2
+    if (greater_than_two[1] && all(greater_than_two)) {
+      hlevels <- hlevels - 1L
+      xml2::xml_set_attr(headings, "level", as.character(hlevels))
+    }
   }
   return(episode)
 }
