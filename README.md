@@ -16,117 +16,6 @@ Once a lesson is transitioned, it can not transition back.
 For details about the differences between styles and the workbench, you can
 [look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).
 
-## Instructions for Maintainers
-
-Once a lesson has transitioned to use The Workbench, the default branch of the 
-lesson will be altered. Here are the steps you should perform to make sure you
-do not end up with a borked repository:
-
-### Easy mode: delete/rename your local copy and re-clone
-
-This method is guaranteed to prevent merge conflicts and give you a clean slate. 
-
-### Advanced: branch name shuffle
-
-If you want to keep your local copy, here is how you can modify your lesson to update without merge conflicts:
-
-#### For Markdown Lessons
-
-Markdown lessons will have the default branch set to be `gh-pages`. In the
-Workbench, this branch serves rendered HTML, so we will need to change the
-name of this branch to `legacy` using a similar process that GitHub
-recommends after a default branch name change:
-
-```sh
-git checkout gh-pages              # make sure you are gh-pages
-git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
-git fetch origin                   # fetch changes from GitHub
-git branch -u origin/legacy legacy # make sure your legacy branch tracks
-git checkout main                  # switch to the brand-new main branch
-git remote set-head origin -a      # set main branch to be your local default
-```
-
-Here's what it looks like with output
-
-```sh
-git checkout gh-pages              # make sure you are gh-pages
-# Already on 'gh-pages'
-# Your branch is up to date with 'origin/gh-pages'
-git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
-git fetch origin                   # fetch changes from GitHub
-# remote: Enumerating objects: 10594, done.
-# remote: Counting objects: 100% (2206/2206), done.
-# remote: Compressing objects: 100% (85/85), done.
-# remote: Total 10594 (delta 2180), reused 2121 (delta 2121), pack-reused 8388
-# Receiving objects: 100% (10594/10594), 2.32 MiB | 16.85 MiB/s, done.
-# Resolving deltas: 100% (6890/6890), completed with 413 local objects.
-# From https://github.com/[PROGRAM]/[LESSON]
-#  + d22e0d06...4b99f846 gh-pages   -> origin/gh-pages  (forced update)
-#  * [new branch]        legacy     -> origin/legacy
-#  * [new branch]        main       -> origin/main
-#  * [new branch]        md-outputs -> origin/md-outputs
-git branch -u origin/legacy legacy # make sure your legacy branch tracks
-# branch 'legacy' set up to track 'origin/legacy'
-git checkout main                  # switch to the brand-new main branch
-# branch 'main' set up to track 'origin/main'.
-# Switched to a new branch 'main'
-git remote set-head origin -a      # set main branch to be your local default
-# origin/HEAD set to main
-```
-
-#### For R Markdown Lessons
-
-R Markdown lessons will have the default branch set to be `main`. The
-rendered output of this branch lives in `gh-pages`. The new branches will
-histories that will have different commits, so the process for updating is
-similar to that of the Markdown lessons, with two extra steps to protect
-your main branch.
-
-```sh
-git checkout main                  # make sure you are on main
-git branch -m main old             # change 'main' to a local 'old' branch
-git checkout gh-pages              # switch to gh-pages
-git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
-git fetch origin                   # fetch changes from GitHub
-git branch -u origin/legacy legacy # make sure your legacy branch tracks
-git checkout main                  # switch to the brand-new main branch
-git remote set-head origin -a      # set main branch to be your local default
-```
-
-This is what it looks like with output:
-
-```sh
-git checkout main                  # make sure you are on main
-# Already on 'main'
-# Your branch is up to date with 'origin/main'
-git branch -m main old             # change 'main' to a local 'old' branch
-git checkout gh-pages              # switch to gh-pages
-# branch 'gh-pages' set up to track 'origin/gh-pages'.
-# Switched to a new branch 'gh-pages'
-git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
-git fetch origin                   # fetch changes from GitHub
-# remote: Enumerating objects: 5004, done.
-# remote: Counting objects: 100% (5004/5004), done.
-# remote: Compressing objects: 100% (2010/2010), done.
-# remote: Total 5004 (delta 2970), reused 5000 (delta 2966), pack-reused 0
-# Receiving objects: 100% (5004/5004), 39.98 MiB | 32.57 MiB/s, done.
-# Resolving deltas: 100% (2970/2970), done.
-# From https://github.com/[PROGRAM]/[LESSON]
-#  + 78697dd...087da6e gh-pages   -> origin/gh-pages  (forced update)
-#  + 8e955fe...f6eaf66 main       -> origin/main  (forced update)
-#  * [new branch]      legacy     -> origin/legacy
-#  * [new branch]      md-outputs -> origin/md-outputs
-git branch -u origin/legacy legacy # make sure your legacy branch tracks
-# branch 'legacy' set up to track 'origin/legacy'
-git checkout main                  # switch to the brand-new main branch
-# branch 'main' set up to track 'origin/main'.
-# branch 'main' set up to track 'origin/main'.
-# Switched to a new branch 'main'
-git remote set-head origin -a      # set main branch to be your local default
-# origin/HEAD set to main
-```
-
-
 
 ## Submodules
 
@@ -238,11 +127,134 @@ The repositories that have previously been transferred can be found in [repos.md
 
 ## Beta Phase
 
-(TBC)
+The Workbench beta phase steps are described in full at 
+[The Workbench website](https://carpentries.github.io/workbench/beta-phase.html).
+The process of moving lessons in each part of the beta phase are documented in
+[The Beta Phase Workflow document](beta-phase-workflow.md).
+
+In short, the first part of the beta phase involves converting a snapshot of
+a lesson to use The Workbench and host it on a separate GitHub organisation.
+
+The second part of the beta phase involves converting the lesson to use The
+Workbench _in place_ and moving a snapshot of the old version to a branch called
+"legacy"
 
 ![Schematic of Beta Phase showing the relationship between branches and sites for
 the lesson. This particular example shows an R Markdown lesson. Markdown lessons
 will start from the gh-pages branch](fig/beta-phase.svg)
+
+Maintainers should take care to make sure they do not accidentally merge
+hundreds or thousands of commits during the conversion.
+
+### Keeping your clone up-to-date
+
+Once a lesson has transitioned to use The Workbench, the default branch of the 
+lesson will be altered. Here are the steps you should perform to make sure you
+do not end up with a borked repository:
+
+#### Easy mode: delete/rename your local copy and re-clone
+
+This method is guaranteed to prevent merge conflicts and give you a clean slate. 
+
+#### Advanced: branch name shuffle
+
+If you want to keep your local copy, here is how you can modify your lesson to update without merge conflicts:
+
+##### For Markdown Lessons
+
+Markdown lessons will have the default branch set to be `gh-pages`. In the
+Workbench, this branch serves rendered HTML, so we will need to change the
+name of this branch to `legacy` using a similar process that GitHub
+recommends after a default branch name change:
+
+```sh
+git checkout gh-pages              # make sure you are gh-pages
+git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
+git fetch origin                   # fetch changes from GitHub
+git branch -u origin/legacy legacy # make sure your legacy branch tracks
+git checkout main                  # switch to the brand-new main branch
+git remote set-head origin -a      # set main branch to be your local default
+```
+
+Here's what it looks like with output
+
+```sh
+git checkout gh-pages              # make sure you are gh-pages
+# Already on 'gh-pages'
+# Your branch is up to date with 'origin/gh-pages'
+git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
+git fetch origin                   # fetch changes from GitHub
+# remote: Enumerating objects: 10594, done.
+# remote: Counting objects: 100% (2206/2206), done.
+# remote: Compressing objects: 100% (85/85), done.
+# remote: Total 10594 (delta 2180), reused 2121 (delta 2121), pack-reused 8388
+# Receiving objects: 100% (10594/10594), 2.32 MiB | 16.85 MiB/s, done.
+# Resolving deltas: 100% (6890/6890), completed with 413 local objects.
+# From https://github.com/[PROGRAM]/[LESSON]
+#  + d22e0d06...4b99f846 gh-pages   -> origin/gh-pages  (forced update)
+#  * [new branch]        legacy     -> origin/legacy
+#  * [new branch]        main       -> origin/main
+#  * [new branch]        md-outputs -> origin/md-outputs
+git branch -u origin/legacy legacy # make sure your legacy branch tracks
+# branch 'legacy' set up to track 'origin/legacy'
+git checkout main                  # switch to the brand-new main branch
+# branch 'main' set up to track 'origin/main'.
+# Switched to a new branch 'main'
+git remote set-head origin -a      # set main branch to be your local default
+# origin/HEAD set to main
+```
+
+##### For R Markdown Lessons
+
+R Markdown lessons will have the default branch set to be `main`. The
+rendered output of this branch lives in `gh-pages`. The new branches will
+histories that will have different commits, so the process for updating is
+similar to that of the Markdown lessons, with two extra steps to protect
+your main branch.
+
+```sh
+git checkout main                  # make sure you are on main
+git branch -m main old             # change 'main' to a local 'old' branch
+git checkout gh-pages              # switch to gh-pages
+git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
+git fetch origin                   # fetch changes from GitHub
+git branch -u origin/legacy legacy # make sure your legacy branch tracks
+git checkout main                  # switch to the brand-new main branch
+git remote set-head origin -a      # set main branch to be your local default
+```
+
+This is what it looks like with output:
+
+```sh
+git checkout main                  # make sure you are on main
+# Already on 'main'
+# Your branch is up to date with 'origin/main'
+git branch -m main old             # change 'main' to a local 'old' branch
+git checkout gh-pages              # switch to gh-pages
+# branch 'gh-pages' set up to track 'origin/gh-pages'.
+# Switched to a new branch 'gh-pages'
+git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
+git fetch origin                   # fetch changes from GitHub
+# remote: Enumerating objects: 5004, done.
+# remote: Counting objects: 100% (5004/5004), done.
+# remote: Compressing objects: 100% (2010/2010), done.
+# remote: Total 5004 (delta 2970), reused 5000 (delta 2966), pack-reused 0
+# Receiving objects: 100% (5004/5004), 39.98 MiB | 32.57 MiB/s, done.
+# Resolving deltas: 100% (2970/2970), done.
+# From https://github.com/[PROGRAM]/[LESSON]
+#  + 78697dd...087da6e gh-pages   -> origin/gh-pages  (forced update)
+#  + 8e955fe...f6eaf66 main       -> origin/main  (forced update)
+#  * [new branch]      legacy     -> origin/legacy
+#  * [new branch]      md-outputs -> origin/md-outputs
+git branch -u origin/legacy legacy # make sure your legacy branch tracks
+# branch 'legacy' set up to track 'origin/legacy'
+git checkout main                  # switch to the brand-new main branch
+# branch 'main' set up to track 'origin/main'.
+# branch 'main' set up to track 'origin/main'.
+# Switched to a new branch 'main'
+git remote set-head origin -a      # set main branch to be your local default
+# origin/HEAD set to main
+```
 
 ## Usage
 
