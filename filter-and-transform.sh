@@ -66,13 +66,19 @@ REPO="${SCRIPT%.*}" # Repo is script with no file extension
 BASE="$(basename ${REPO})"
 GHP="$(./pat.sh)"
 
-# Move out the site/ directory in case it has previously been built (keeping the memory alive)
+# CLEANING ---------------------------------------------------------------------
+#
+# Move out the site/ directory in case it has previously been built (keeping
+# the memory alive)
 if [[ -d ${OUT}/site/ ]]; then
   mv ${OUT}/site/ ${OUT}../site-${BASE} || echo "" > /dev/null
 fi
 # removing the directory to make a fresh clone for git-filter-repo
 rm -rf ${OUT}
-# the clones must be FRESH
+# make a fresh clone of the submodule to the output directory because
+# git-filter-repo has safety measure to avoid overwriting a repository that has
+# not been freshly cloned.
+# <https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#FRESHCLONE>
 git clone --no-local .git/modules/${REPO} ${OUT}
 
 # FILTERING --------------------------------------------------------------------
@@ -90,6 +96,7 @@ git-filter-repo \
   --paths-from-file ${FILTER} \
   --message-callback "${CALLBACK}"
 
+# SETTING THE REMOTE -----------------------------------------------------------
 # Update our branch and remote
 ORIGIN=https://github.com/fishtree-attempt/${BASE}.git
 CURRENT_BRANCH=$(git branch --show-current)
@@ -112,6 +119,7 @@ fi
 
 echo -e "... \033[1m\033[38;5;208mdone\033[0;00m\033[22m"
 
+# TRANSFORM --------------------------------------------------------------------
 # R Ecology Lesson was not built the same way as other Carpentries lessons, so
 # it runs through its own script.
 if [[ ${SCRIPT} == 'datacarpentry/R-ecology-lesson.R' ]]; then
