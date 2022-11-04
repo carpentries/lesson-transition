@@ -75,11 +75,17 @@ rm -rf ${OUT}
 # the clones must be FRESH
 git clone --no-local .git/modules/${REPO} ${OUT}
 
+# FILTERING --------------------------------------------------------------------
+# 
+# This process will filter out the commits that originated from the styles
+# repository and contribute nothing to the lesson content. This includes styling
+# files AND boilerplate files like LICENSE.md
 BLANK=""
 CALLBACK=${4:-$(eval echo $(cat ${CWD}/message-callback.txt))}
 echo -e "\033[1mConverting \033[38;5;208m${OUT}\033[0;00m...\033[22m"
 cd ${OUT}
 git-filter-repo \
+  --prune-empty=always \
   --invert-paths \
   --paths-from-file ${FILTER} \
   --message-callback "${CALLBACK}"
