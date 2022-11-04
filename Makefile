@@ -51,7 +51,7 @@ PREBETA_TARGETS := $(patsubst %.R, prebeta/%.json, $(filter-out $(BETA), $(PREBE
 PREBETA_GITHUB := $(patsubst %.R, prebeta/%-status.json, $(filter-out $(BETA), $(PREBETA)))
 BETA_TARGETS := $(patsubst %.R, beta/%.json, $(BETA))
 BETA_GITHUB := $(patsubst %.R, prebeta/%-status.json, $(BETA))
-PREREQS := renv/library/ template/ filter-and-transform.sh functions.R
+PREREQS := renv/library/ template/ filter-and-transform.sh functions.R filter-list.txt
 
 .PHONY = all
 .PHONY = modules

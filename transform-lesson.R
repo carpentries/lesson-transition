@@ -104,6 +104,9 @@ if (old_lesson$rmd) {
   copy_dir(template("renv"), to("renv"))
 }
 file_copy(template("config.yaml"), to("config.yaml"))
+file_copy(template("LICENSE.md"), to("LICENSE.md"))
+file_copy(template("CONTRIBUTING.md"), to("CONTRIBUTING.md"))
+file_copy(template("CODE_OF_CONDUCT.md"), to("CODE_OF_CONDUCT.md"))
 
 # appending our gitignore file
 tgi <- readLines(template(".gitignore"))

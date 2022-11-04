@@ -1,3 +1,6 @@
+# Filter list for files from the styles repository. This follows the rules
+# outlined in <https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#_filtering_based_on_many_paths>
+
 # All episodes are now in the episodes folder
 _episodes==>episodes
 _episodes_rmd==>episodes
@@ -36,6 +39,12 @@ bin/workshop_check.py
 aio.md
 Makefile
 Gemfile
+LICENSE.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+_extras/figures.md
+_config.yaml
+glob:*.css
 
 # old continuous integration not needed
 .gitignore
@@ -48,12 +57,11 @@ build_lesson.R
 DESCRIPTION
 _page_built_on.Rmd
 _site.yml
-glob:'*html'
-glob:'*.css'
-glob:'*.gitkeep'
-glob:'*.ico'
+glob:*.html
+glob:*.gitkeep
+glob:*.ico
 
 # generated image files
-regex:'^fig/.*[-][0-9]{1,2}.png$'
-regex:'^img/.*[-][0-9]{1,2}.png$'
-regex:'^img/R-ecology-*$'
+regex:^fig/.*[-][0-9]{1,2}.png$
+regex:^img/.*[-][0-9]{1,2}.png$
+regex:^img/R-ecology-*$
