@@ -91,7 +91,7 @@ set_config(c(
 
 chchchchanges <- git_add(".", repo = new)
 withr::with_dir(new, {
-  callr::run("git", c("commit" "-m", "[automation] set beta stage of workbench"))
+  callr::run("git", c("commit", "-m", "[automation] set beta stage of workbench"))
 })
 
 if (remote_exists) {
