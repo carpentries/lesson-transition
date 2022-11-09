@@ -611,10 +611,10 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "2.17",
+      "Version": "2.18",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "e97c8be593e010f93520e8215c0f9189",
+      "Repository": "CRAN",
+      "Hash": "8063c4e953cefb651e8cd58c82c82d2d",
       "Requirements": [
         "bslib",
         "evaluate",
@@ -646,16 +646,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.10.7",
+      "Version": "0.10.8",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "2969ec2c38e25dabf23fe6f8da46c524aa8eda3f",
+      "RemoteSha": "d94acec3d9d45bca872d9b3ed3743a69d5c5617d",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "0f9e80dba763d35f139f6234792ea908",
+      "Hash": "8eb6ab2f0f7b41a896c3ea652b13f4d7",
       "Requirements": [
         "assertthat",
         "callr",
