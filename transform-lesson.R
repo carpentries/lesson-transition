@@ -164,8 +164,8 @@ copy_dir(to("data"), to("episodes/data"))
 del_dir(to("data"))
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
+this_carp <- strsplit(arguments$script, "/")[[1]][1]
 # DEPRECATED
-this_carp <- strsplit(arguments$repo, "/")[[1]][1]
 this_carp_domain <- switch(this_carp,
   # swcarpentry             = "https://lessons.software-carpentry.org",
   datacarpentry           = "https://lessons.datacarpentry.org",
