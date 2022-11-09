@@ -96,7 +96,7 @@ fix_level_one_headings <- function(episode) {
 # transform the episodes via pegboard with reporters
 transform <- function(e, out = new) {
   outdir <- fs::path(out, "episodes/")
-  cli::cli_process_start("Converting {.file {e$path}} to {.emph sandpaper}")
+  cli::cli_process_start("Converting {.file {fs::path_rel(e$path, getwd())}} to {.emph sandpaper}")
   cli::cli_status_update("converting block quotes to pandoc fenced div")
   e$unblock()
 
@@ -132,7 +132,7 @@ transform <- function(e, out = new) {
   cli::cli_status_update("fixing low-level headings")
   fix_small_headings(e)
 
-  cli::cli_process_start("Writing {.file {outdir}/{e$name}}")
+  cli::cli_process_start("Writing {.file {fs::path_rel(outdir, getwd())}/{e$name}}")
   e$write(outdir, format = path_ext(e$name), edit = FALSE)
   cli::cli_process_done()
 }

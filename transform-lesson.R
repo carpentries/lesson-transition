@@ -39,6 +39,7 @@ Usage:
 }' -> doc
 library("fs")
 library("docopt")
+options(cli.width = 160)
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2021-11", help = TRUE)
 if (arguments$quiet) {

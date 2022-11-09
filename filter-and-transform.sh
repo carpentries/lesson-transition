@@ -94,7 +94,8 @@ git-filter-repo \
   --prune-empty=always \
   --invert-paths \
   --paths-from-file ${FILTER} \
-  --message-callback "${CALLBACK}"
+  --message-callback "${CALLBACK}" \
+  2>&1 | tee ${CWD}/${OUT}-filter.log 
 
 # SETTING THE REMOTE -----------------------------------------------------------
 # Update our branch and remote
@@ -128,7 +129,8 @@ if [[ ${SCRIPT} == 'datacarpentry/R-ecology-lesson.R' ]]; then
     --funs functions.R \
     --template template/ \
     --output ${OUT} \
-    ${REPO} 
+    ${REPO} \
+    2>&1 | tee ${CWD}/${OUT}-filter.log 
 else
   if [[ ${REPO} == 'librarycarpentry/lc-shell' ]]; then
     # replace bash with .language bash in the new repository until
@@ -147,6 +149,7 @@ else
     --template template/ \
     --output ${OUT} \
     ${REPO} \
-    ${SCRIPT}
+    ${SCRIPT} \
+    2>&1 | tee ${CWD}/${OUT}-filter.log 
 fi
 
