@@ -16,6 +16,8 @@ css/
 js/
 favicon/
 tools/
+.ruby-version
+.editorconfig
 
 # no need for boilerplate or tools
 bin/boilerplate/
@@ -42,6 +44,7 @@ Gemfile
 LICENSE.md
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
+CONDUCT.md
 _extras/figures.md
 _config.yml
 glob:*.css

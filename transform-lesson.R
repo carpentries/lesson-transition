@@ -143,6 +143,7 @@ rewrite(from("_extras", "guide.md"), to("instructors"))
 if (fs::file_exists(to("instructors", "guide.md"))) {
   fs::file_move(to("instructors", "guide.md"), to("instructors", "instructor-notes.md"))
 }
+
 rewrite(from("_extras", "discuss.md"), to("learners"))
 rewrite(from("_extras", "exercises.md"), to("learners"))
 rewrite(from("_extras", "figures.md"), to("learners"))
@@ -191,6 +192,12 @@ params <- c(
 )
 set_config(params, path = new, write = TRUE, create = TRUE)
 file_copy(from("_config.yml"), to("gifnoc_.yml"))
+
+# copy over the editor config if it exists
+if (file_exists(from(".editorconfig"))) {
+  file_copy(from(".editorconfig"), to(".editorconfig"))
+}
+
 
 # Transform and write to our episodes folder
 cli::cli_h1("Transforming Episodes")
