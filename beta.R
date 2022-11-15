@@ -66,7 +66,15 @@ if (dir_exists(new)) {
     '"return message"'               # do _NOT_ edit commit messages
   )
   withr::with_dir(new, callr::run("git", c("remote", "set-url", origin)))
+  # preserve the gh-pages branch as 'legacy'
   gert::git_fetch(origin, refspec = "gh-pages:legacy", repo = new)
+  # gert::git_push(origin, refspec = "refs/heads/legacy", repo = new)
+  refs <- gert::git_remote_ls(repo = old)
+  if (any(refs$ref == "refs/heads/main")) {
+    # preserve the main branch as 'old'
+    gert::git_fetch(origin, refspec = "main:old", repo = new)
+    # gert::git_push(origin, refspec = "refs/heads/old", repo = new)
+  }
   callr::run("bash", cmd, echo_cmd = TRUE, echo = TRUE,
     env = c("current", PATH = paste0(gfr, ":", Sys.getenv("PATH")))
   )
