@@ -174,6 +174,20 @@ add_experiment_info <- function(episode) {
   episode$add_md(experiment, 0L)
 }
 
+#' Set up a given GitHub repository to recieve the Workbench
+#'
+#' @param path path to a transformed lesson
+#' @param owner the github repo owner name
+#' @param repo the name of the repository
+#'
+#' Transforming a lesson repository invovlves a couple of steps:
+#'
+#' 1. renaming the default branch and, if needed, the gh-pages branch to have
+#'   `legacy/` prefixes 
+#' 2. enabling GitHub actions to run (that should not be too much of an issue)
+#' 3. pushing the main branch
+#' 4. setting the main branch as default
+#' 5. protecting the main branch
 setup_github <- function(path = NULL, owner, repo) {
   # get default branch
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
