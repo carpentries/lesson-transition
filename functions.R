@@ -174,3 +174,44 @@ add_experiment_info <- function(episode) {
   episode$add_md(experiment, 0L)
 }
 
+setup_github <- function(path = NULL, owner, repo) {
+  # get default branch
+  REPO <- glue::glue("GET /repos/{owner}/{repo}")
+  repo <- gh::gh(REPO)
+  default <- repo$default_branch
+
+  # rename default branch
+  cli::cli_alert_info("renaming {default} to legacy/{default}")
+  RENAME <- glue::glue("POST /repos/{owner}/{repo}/branches/{default}/rename") 
+  gh::gh(RENAME, new_name = glue::glue("legacy/{default}"))
+
+  # rename gh-pages if not default
+  if (default == "main") {
+    cli::cli_alert_info("renaming gh-pages to legacy/gh-pages")
+    RENAME <- glue::glue("POST /repos/{owner}/{repo}/branches/gh-pages/rename") 
+    gh::gh(RENAME, new_name = glue::glue("legacy/gh-pages"))
+  }
+
+  # Set up actions for a repository
+  cli::cli_alert_info("enabling github actions to be run")
+  ACTIONS <- glue::glue("PUT /repos/{owner}/{repo}/actions/permissions")
+  gh::gh(ACTIONS, enabled = TRUE, allowed_actions = "all")
+
+  cli::cli_alert_info("pushing the main branch")
+  gert::git_push(refspec = "heads/refs/main", repo = path, set_upstream = TRUE)
+
+  # set the main branch to be the default branch
+  cli::cli_alert_info("setting main branch as default")
+  gh::gh("PATCH /repos/zkamvar/transition-test-2", default_branch = "main") 
+
+  # Protect the main branch from becoming sausage
+  cli::cli_alert_info("protecting the main branch")
+  PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/main/protection")
+  gh::gh(PROTECT, 
+    required_status_checks = NA,
+    enforce_admins = TRUE,
+    required_pull_request_reviews = NA,
+    restrictions = NA
+  )
+}
+
