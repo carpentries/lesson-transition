@@ -164,19 +164,19 @@ If you want to keep your local copy, here is how you can modify your lesson to u
 
 Markdown lessons will have the default branch set to be `gh-pages`. In the
 Workbench, this branch serves rendered HTML, so we will need to change the
-name of this branch to `legacy` using a similar process that GitHub
+name of this branch to `legacy/gh-pages` using a similar process that GitHub
 recommends after a default branch name change:
 
 ```sh
 git checkout gh-pages              # make sure you are gh-pages
-git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
-git fetch origin                   # fetch changes from GitHub
-git branch -u origin/legacy legacy # make sure your legacy branch tracks
+git branch -m gh-pages legacy/gh-pages               # rename the gh-pages branch to legacy
+git fetch origin                                     # fetch changes from GitHub
+git branch -u origin/legacy/gh-pages legacy/gh-pages # make sure your legacy branch tracks
 git checkout main                  # switch to the brand-new main branch
 git remote set-head origin -a      # set main branch to be your local default
 ```
 
-Here's what it looks like with output
+Here's what it looks like with output (NOTE: ZHIAN KNOWS THIS OUTPUT IS OUTDATED, BUT THE GIST IS STILL THE SAME)
 
 ```sh
 git checkout gh-pages              # make sure you are gh-pages
@@ -214,16 +214,17 @@ your main branch.
 
 ```sh
 git checkout main                  # make sure you are on main
-git branch -m main old             # change 'main' to a local 'old' branch
+git branch -m main legacy/main     # change 'main' to legacy
 git checkout gh-pages              # switch to gh-pages
-git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
-git fetch origin                   # fetch changes from GitHub
-git branch -u origin/legacy legacy # make sure your legacy branch tracks
+git branch -m gh-pages legacy/gh-pages       # rename the gh-pages branch to legacy
+git fetch origin                             # fetch changes from GitHub
+git branch -u origin/legacy/main legacy/main # make sure your legacy branches track
+git branch -u origin/legacy/gh-pages legacy/gh-pages 
 git checkout main                  # switch to the brand-new main branch
 git remote set-head origin -a      # set main branch to be your local default
 ```
 
-This is what it looks like with output:
+Here's what it looks like with output (NOTE: ZHIAN KNOWS THIS OUTPUT IS OUTDATED, BUT THE GIST IS STILL THE SAME)
 
 ```sh
 git checkout main                  # make sure you are on main
