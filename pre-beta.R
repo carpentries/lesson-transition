@@ -34,6 +34,7 @@ dates <- read.csv(arguments$dates)
 org   <- arguments[["org"]]
 repo  <- arguments[["in"]]
 new   <- paste0("prebeta/", repo)
+fs::dir_create(fs::path_dir(new))
 logfile <- path_ext_set(new, "json")
 commitfile <- path_ext_set(new, "hash")
 invalidfile <- sub("\\.hash", "-invalid.hash", commitfile)
@@ -58,7 +59,10 @@ if (dir_exists(new)) {
   # Nothing exists, so we build and move forward.
   message("No repository exists.")
   gfr <- path_abs("git-filter-repo")
-  hash <- callr::run("git", c("rev-parse", paste0("HEAD:", repo)))$stdout
+  hash <- withr::with_dir(fs::path(".git", "modules", repo), {
+    callr::run("pwd")
+    callr::run("git", c("rev-parse", "HEAD"), echo = TRUE, echo_cmd = TRUE)$stdout
+  })
   writeLines(hash, commitfile)
   cmd <- c("filter-and-transform.sh", logfile, path_ext_set(repo, "R"))
   callr::run("bash", cmd, echo_cmd = TRUE, echo = TRUE,

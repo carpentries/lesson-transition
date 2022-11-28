@@ -33,7 +33,7 @@ PREBETA = datacarpentry/R-ecology-lesson.R \
 # Beta: This one is tricky. For lessons that enter this phase, we will make a
 #   lesson release, get the gh-pages branch and covert it to legacy, and then
 #   force-push the main branch. 
-BETA = none #\
+BETA = zkamvar/transition-test-2.R #\
 	datacarpentry/R-ecology-lesson.R #\
 	datacarpentry/r-socialsci.R #\
 	datacarpentry/r-raster-vector-geospatial.R #\
@@ -72,6 +72,9 @@ sandpaper/%.json : %.R %/.git $(PREREQS) transform-lesson.R
 
 prebeta/%.json : %.R %/.git $(PREREQS) transform-lesson.R pre-beta.R
 	Rscript pre-beta.R $* $@ beta-phase.csv
+
+beta/%.json : %.R %/.git $(PREREQS) transform-lesson.R beta.R
+	Rscript beta.R $* $@ beta-phase.csv
 
 sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
 	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<

@@ -23,14 +23,17 @@ Usage:
                 looking up the dates from the repo key.
 }' -> doc
 library("fs")
+library("gh")
 library("sandpaper")
 library("docopt")
 library("gert")
-
+source("functions.R")
+`%||%` <- function(a, b) if (length(a) < 1L) b else a
 arguments <- docopt(doc, version = "Stunning Barnacle 2022-10", help = TRUE)
 dates <- read.csv(arguments$dates)
 repo  <- arguments[["in"]]
 new   <- paste0("beta/", repo)
+fs::dir_create(fs::path_dir(new))
 logfile <- path_ext_set(new, "json")
 commitfile <- path_ext_set(new, "hash")
 invalidfile <- sub("\\.hash", "-invalid.hash", commitfile)
@@ -56,25 +59,20 @@ if (dir_exists(new)) {
   # Nothing exists, so we build and move forward.
   message("No repository exists.")
   gfr <- path_abs("git-filter-repo")
-  hash <- callr::run("git", c("rev-parse", paste0("HEAD:", repo)))$stdout
+  old  <- fs::path(".git", "modules", repo)
+  hash <- withr::with_dir(old, {
+    callr::run("pwd")
+    callr::run("git", c("rev-parse", "HEAD"), echo = TRUE, echo_cmd = TRUE)$stdout
+  })
   writeLines(hash, commitfile)
   origin <- paste0("https://github.com/", repo, ".git")
-  cmd <- c("filter-and-transform.sh", 
+  cmd <- c(#"-x", 
+    "filter-and-transform.sh", 
     logfile,
     path_ext_set(repo, "R"),
     fs::path_abs("filter-list.txt"), # include the file filters
-    '"return message"'               # do _NOT_ edit commit messages
+    "return message\n"               # do _NOT_ edit commit messages
   )
-  withr::with_dir(new, callr::run("git", c("remote", "set-url", origin)))
-  # preserve the gh-pages branch as 'legacy'
-  gert::git_fetch(origin, refspec = "gh-pages:legacy", repo = new)
-  # gert::git_push(origin, refspec = "refs/heads/legacy", repo = new)
-  refs <- gert::git_remote_ls(repo = old)
-  if (any(refs$ref == "refs/heads/main")) {
-    # preserve the main branch as 'old'
-    gert::git_fetch(origin, refspec = "main:old", repo = new)
-    # gert::git_push(origin, refspec = "refs/heads/old", repo = new)
-  }
   callr::run("bash", cmd, echo_cmd = TRUE, echo = TRUE,
     env = c("current", PATH = paste0(gfr, ":", Sys.getenv("PATH")))
   )
@@ -89,7 +87,7 @@ if (dir_exists(new)) {
 }
 this_lesson <- dates$repository == repo
 set_config(c(
-  "beta-date" = dates$beta[this_lesson],
+  "beta-date" = dates$beta[this_lesson] %||% "1970-01-01",
   "old-url" = url
   ), 
   path = new,
@@ -102,8 +100,6 @@ withr::with_dir(new, {
   callr::run("git", c("commit", "-m", "[automation] set beta stage of workbench"))
 })
 
-if (remote_exists) {
-  git_push(repo = new)
-} else {
-  message("Beta repository created. Now upload it to GitHub")
-}
+refs <- gert::git_remote_ls(repo = old)
+gert::git_remote_set_url(origin, remote = "origin", repo = new)
+setup_github(path = new, owner = org_repo[1], repo = org_repo[2])
