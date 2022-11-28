@@ -211,8 +211,13 @@ setup_github <- function(path = NULL, owner, repo) {
   ACTIONS <- glue::glue("PUT /repos/{owner}/{repo}/actions/permissions")
   gh::gh(ACTIONS, enabled = TRUE, allowed_actions = "all")
 
+  cli::cli_alert_info("fetching and pruning")
+  withr::with_dir(path, {
+    callr::run("git", c("fetch", "--prune", "origin"), echo = TRUE, echo_cmd = TRUE)
+  })
+
   cli::cli_alert_info("pushing the main branch")
-  gert::git_push(refspec = "refs/heads/main", repo = path, set_upstream = TRUE)
+  gert::git_push(refspec = "refs/heads/main", repo = path, set_upstream = TRUE, force = TRUE)
 
   # set the main branch to be the default branch
   cli::cli_alert_info("setting main branch as default")
