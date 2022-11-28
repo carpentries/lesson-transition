@@ -24,10 +24,9 @@ INPUTS  := $(foreach dir, $(DIRS), $(wildcard $(dir)/*R))
 #   stored differently.
 PREBETA = datacarpentry/R-ecology-lesson.R \
 	datacarpentry/r-socialsci.R \
-	datacarpentry/r-raster-vector-geospatial.R #\
-	datacarpentry/OpenRefine-ecology-lesson.R #\
-	librarycarpentry/lc-shell.R #\
+	datacarpentry/r-raster-vector-geospatial.R \
 	carpentries/instructor-training.R #\
+	librarycarpentry/lc-shell.R #\
 	datacarpentry/python-ecology-lesson-es.R
 #
 # Beta: This one is tricky. For lessons that enter this phase, we will make a
@@ -37,9 +36,8 @@ BETA = zkamvar/transition-test-2.R #\
 	datacarpentry/R-ecology-lesson.R #\
 	datacarpentry/r-socialsci.R #\
 	datacarpentry/r-raster-vector-geospatial.R #\
-	datacarpentry/OpenRefine-ecology-lesson.R #\
-	librarycarpentry/lc-shell.R #\
 	carpentries/instructor-training.R #\
+	librarycarpentry/lc-shell.R #\
 	datacarpentry/python-ecology-lesson-es.R
 # MODULE are the git submodules for each lesson
 MODULE  := $(patsubst %.R, %/.git, $(INPUTS))
