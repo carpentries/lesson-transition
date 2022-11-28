@@ -191,12 +191,13 @@ add_experiment_info <- function(episode) {
 setup_github <- function(path = NULL, owner, repo) {
   # get default branch
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
-  repo <- gh::gh(REPO)
-  default <- repo$default_branch
+  repo_info <- gh::gh(REPO)
+  default <- repo_info$default_branch
 
   # rename default branch
   cli::cli_alert_info("renaming {default} to legacy/{default}")
   RENAME <- glue::glue("POST /repos/{owner}/{repo}/branches/{default}/rename") 
+  print(RENAME)
   gh::gh(RENAME, new_name = glue::glue("legacy/{default}"))
 
   # rename gh-pages if not default
@@ -205,18 +206,17 @@ setup_github <- function(path = NULL, owner, repo) {
     RENAME <- glue::glue("POST /repos/{owner}/{repo}/branches/gh-pages/rename") 
     gh::gh(RENAME, new_name = glue::glue("legacy/gh-pages"))
   }
-
   # Set up actions for a repository
   cli::cli_alert_info("enabling github actions to be run")
   ACTIONS <- glue::glue("PUT /repos/{owner}/{repo}/actions/permissions")
   gh::gh(ACTIONS, enabled = TRUE, allowed_actions = "all")
 
   cli::cli_alert_info("pushing the main branch")
-  gert::git_push(refspec = "heads/refs/main", repo = path, set_upstream = TRUE)
+  gert::git_push(refspec = "refs/heads/main", repo = path, set_upstream = TRUE)
 
   # set the main branch to be the default branch
   cli::cli_alert_info("setting main branch as default")
-  gh::gh("PATCH /repos/zkamvar/transition-test-2", default_branch = "main") 
+  gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, default_branch = "main") 
 
   # Protect the main branch from becoming sausage
   cli::cli_alert_info("protecting the main branch")
@@ -227,5 +227,15 @@ setup_github <- function(path = NULL, owner, repo) {
     required_pull_request_reviews = NA,
     restrictions = NA
   )
+
+  cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
+  withr::with_dir(path, {
+    callr::run("git", c("checkout", "--orphan", "pages"), echo = TRUE, echo_cmd = TRUE)
+    callr::run("git", c("rm", "-rf", "."), echo = FALSE, echo_cmd = TRUE)
+    callr::run("git", c("commit", "--allow-empty", "-m", "Intializing gh-pages branch"), echo = TRUE, echo_cmd = TRUE)
+    callr::run("git", c("push", "--force", "origin", "HEAD:gh-pages"), echo = TRUE, echo_cmd = TRUE)
+    callr::run("git", c("switch", "main"), echo = TRUE, echo_cmd = TRUE)
+  })
+
 }
 
