@@ -176,27 +176,27 @@ git checkout main                  # switch to the brand-new main branch
 git remote set-head origin -a      # set main branch to be your local default
 ```
 
-Here's what it looks like with output (NOTE: ZHIAN KNOWS THIS OUTPUT IS OUTDATED, BUT THE GIST IS STILL THE SAME)
+Here's what it looks like with output:
 
 ```sh
 git checkout gh-pages              # make sure you are gh-pages
 # Already on 'gh-pages'
 # Your branch is up to date with 'origin/gh-pages'
-git branch -m gh-pages legacy      # rename the gh-pages branch to legacy
-git fetch origin                   # fetch changes from GitHub
-# remote: Enumerating objects: 10594, done.
-# remote: Counting objects: 100% (2206/2206), done.
-# remote: Compressing objects: 100% (85/85), done.
-# remote: Total 10594 (delta 2180), reused 2121 (delta 2121), pack-reused 8388
-# Receiving objects: 100% (10594/10594), 2.32 MiB | 16.85 MiB/s, done.
-# Resolving deltas: 100% (6890/6890), completed with 413 local objects.
-# From https://github.com/[PROGRAM]/[LESSON]
-#  + d22e0d06...4b99f846 gh-pages   -> origin/gh-pages  (forced update)
-#  * [new branch]        legacy     -> origin/legacy
-#  * [new branch]        main       -> origin/main
-#  * [new branch]        md-outputs -> origin/md-outputs
-git branch -u origin/legacy legacy # make sure your legacy branch tracks
-# branch 'legacy' set up to track 'origin/legacy'
+# git branch -m gh-pages legacy/gh-pages      # rename the gh-pages branch to legacy
+git fetch origin                              # fetch changes from GitHub
+# remote: Enumerating objects: 415, done.
+# remote: Counting objects: 100% (415/415), done.
+# remote: Compressing objects: 100% (193/193), done.
+# remote: Total 415 (delta 197), reused 415 (delta 197), pack-reused 0
+# Receiving objects: 100% (415/415), 69.97 KiB | 1.19 MiB/s, done.
+# Resolving deltas: 100% (197/197), done.
+# From https://github.com/zkamvar/transition-test-2
+#  + d5702e0...3fb3008 gh-pages        -> origin/gh-pages  (forced update)
+#  * [new branch]      legacy/gh-pages -> origin/legacy/gh-pages
+#  * [new branch]      main            -> origin/main
+#  * [new branch]      md-outputs      -> origin/md-outputs
+git branch -u origin/legacy/gh-pages legacy/gh-pages # make sure your legacy branch tracks
+# branch 'legacy/gh-pages' set up to track 'origin/legacy/gh-pages'.
 git checkout main                  # switch to the brand-new main branch
 # branch 'main' set up to track 'origin/main'.
 # Switched to a new branch 'main'
