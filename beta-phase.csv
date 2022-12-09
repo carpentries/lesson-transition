@@ -1,8 +1,8 @@
-repository,pre-beta,beta,pre-release
-datacarpentry/R-ecology-lesson,2022-10-17,2022-11-14,2023-01-23
-datacarpentry/r-socialsci,2022-10-31,2022-11-28,2023-02-06
-datacarpentry/r-raster-vector-geospatial,2022-10-31,2022-11-28,2023-02-06
-datacarpentry/OpenRefine-ecology-lesson,2022-11-07,2022-12-05,2023-02-13
-librarycarpentry/lc-shell,2022-11-14,2022-12-12,2023-02-20
-carpentries/instructor-training,2022-11-28,2023-01-09,2023-03-06
-datacarpentry/python-ecology-lesson-es,2022-12-05,2023-01-16,2023-03-13
+"repository","pre-beta","beta","pre-release"
+"datacarpentry/R-ecology-lesson","2022-12-12","2023-02-06","2023-04-03"
+"datacarpentry/r-socialsci","2022-12-12","2023-02-06","2023-04-03"
+"datacarpentry/r-raster-vector-geospatial","2022-12-12","2023-02-06","2023-04-03"
+"datacarpentry/OpenRefine-ecology-lesson","2022-12-12","2023-02-06","2023-04-03"
+"librarycarpentry/lc-shell","2022-12-12","2023-02-06","2023-04-03"
+"carpentries/instructor-training","2022-12-12","2023-02-06","2023-04-03"
+"datacarpentry/python-ecology-lesson-es","2022-12-12","2023-02-06","2023-04-03"
