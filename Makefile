@@ -25,8 +25,8 @@ INPUTS  := $(foreach dir, $(DIRS), $(wildcard $(dir)/*R))
 PREBETA = datacarpentry/R-ecology-lesson.R \
 	datacarpentry/r-socialsci.R \
 	datacarpentry/r-raster-vector-geospatial.R \
-	carpentries/instructor-training.R #\
-	librarycarpentry/lc-shell.R #\
+	carpentries/instructor-training.R \
+	librarycarpentry/lc-shell.R \
 	datacarpentry/python-ecology-lesson-es.R
 #
 # Beta: This one is tricky. For lessons that enter this phase, we will make a
