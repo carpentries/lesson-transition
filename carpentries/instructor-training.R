@@ -1,9 +1,20 @@
 l <- pegboard::Lesson$new(new, jekyll = FALSE)
 
 # update links that are pointing to the old material
-links <- l$validate_links()
-have_this_url <- grep("carpentries.github.io/instructor-training/", links$orig)
-selfies <- links[have_this_url, , drop = FALSE]
+fix_custom_links <- function(nodes) {
+  dst <- xml2::xml_attr(nodes, "destination")
+  new_dst <- purrr::map_chr(dst, glue::glue,
+    .open = "{{", 
+    .close = "}}",
+    site.swc_site = "https://swcarpentry.github.io",
+    site.swc_pages = "https://swcarpentry.github.io",
+    site.dc_site = "https://datacarpentry.org",
+    site.lc_site = "https://librarycarpentry.org",
+    page.training_site = "https://preview.carpentries.org/instructor-training"
+  )
+  xml2::xml_set_attr(nodes, "destination", new_dst)
+}
+
 become_self_aware <- function(node) {
   dst <- xml2::url_parse(xml2::xml_attr(node, "destination"))$path
   if (fs::path_file(dst) == "index.html") {
@@ -15,13 +26,22 @@ become_self_aware <- function(node) {
 }
 write_out <- function(path) {
   ep <- fs::path_file(path)
-  out <- fs::path(new, "episodes")
-  type <- fs::path_ext(ep)
-  l$episodes[[ep]]$write(path = out, format = type)
+  dir <- fs::path_file(fs::path_dir(path))
+  out <- fs::path(new, dir)
+  fmt <- fs::path_ext(ep)
+  type <- if (dir == "episodes") "episodes" else "extra"
+  l[[type]][[ep]]$write(path = out, format = fmt)
 }
+
+links <- l$validate_links()
+links  <- rbind(links, l$extra$setup.md$validate_links())
+have_this_url <- grep("carpentries.github.io/instructor-training/", links$orig)
+selfies <- links[have_this_url, , drop = FALSE]
+cli::cli_alert("fixing custom link links in setup")
+fix_custom_links(l$extra$setup.md$links)
+
 cli::cli_alert("fixing link outs to official site")
 purrr::walk(selfies$node, become_self_aware)
-
 purrr::walk(selfies$filepath, write_out)
 
 cli::cli_alert("adding instructor notes to How We Operate")
