@@ -17,7 +17,7 @@ Usage:
 library("docopt")
 `%||%` <- function(a, b) if (length(a) < 1L || identical(a, FALSE) || identical(a, "")) b else a
 arguments <- docopt(doc, version = "Stunning Barnacle 2022-11", help = TRUE)
-arguments$repo <- arguments$repo %||% "zkamvar/transition-test-2"
+arguments$repo <- arguments$repo %||% "fishtree-attempt/znk-transition-test"
 library("fs")
 library("gh")
 library("cli")
@@ -51,7 +51,15 @@ if (no_repo) {
 
   # create an empty repository
   cli::cli_alert_info("creating a new repository called {.code {arguments$repo}}")
-  gh("POST /user/repos", name = fs::path_file(arguments$repo))
+  rp <- setNames(strsplit(arguments$repo, "/")[[1]], c("org", "repo"))
+  user_type <- switch(gh("GET /users/{usr}", usr = rp["org"])$type,
+    Organization = paste0("orgs/", rp["org"]),
+    User = "user"
+  )
+  gh("POST /{type}/repos", 
+    type = user_type, 
+    name = fs::path_file(arguments$repo),
+    .params = list(homepage = glue::glue("https://{rp['org']}.github.io/{rp['repo']}")))
 
   # clone the test to our temporary directory
   cli::cli_alert_info("importing {.code sgibson91/cross-stitch-carpentry} to {.code {arguments$repo}}")
@@ -72,17 +80,59 @@ if (no_repo) {
   withr::defer()
   cli::cli_status_clear()
 
+  Sys.sleep(2)
   # set gh-pages as the default branch
   cli::cli_alert_info("Setting gh-pages as default")
-  gh("PATCH /repos/{repo}", repo = arguments$repo, default_branch = "gh-pages") 
+  res <- gh("PATCH /repos/{repo}", repo = arguments$repo, 
+    .params = list(default_branch = "gh-pages"))
+  if (res$default_branch != "gh-pages") {
+    stop("the default branch could not be set to gh-pages")
+  }
   
   # test a pull request to default branch
   cli::cli_alert_info("Creating a test pull request")
   gh("POST /repos/{repo}/pulls", 
     repo = arguments$repo,
-    head = "change-prereq-box",
-    base = "gh-pages",
-    title = "test pull request")
+    .params = list(
+      head = "change-prereq-box",
+      base = "gh-pages",
+      title = "test pull request")
+  )
+
+  if (startsWith(arguments$repo, "fishtree-attempt")) {
+    cli::cli_alert_info("Setting permissions")
+    gh("PUT /orgs/{ORG}/teams/{REPO}-maintainers/repos/{ORG}/{REPO}",
+      ORG = rp["org"],
+      REPO = rp["repo"],
+      .params = list(permission = "push"))
+    gh("PUT /orgs/{ORG}/teams/bots/repos/{ORG}/{REPO}",
+      ORG = rp["org"],
+      REPO = rp["repo"],
+      .params = list(permission = "push"))
+  }
+
+  Sys.sleep(2)
+  tmp <- withr::local_tempdir()
+  git_clone(glue::glue("https://github.com/{arguments$repo}"), path = tmp)
+  run_styles <- withr::local_tempfile()
+  download.file("https://github.com/carpentries/actions/raw/main/update-styles/update-styles.sh", run_styles)
+  withr::with_dir(tmp, {
+    try(callr::run("bash", run_styles, echo = TRUE, echo_cmd = TRUE))
+  })
+  cfg <- readLines(fs::path(tmp, "_config.yml"))
+  lc <- which(startsWith(cfg, "life_cycle"))
+  writeLines(c(
+    cfg[1:(lc-1)],
+    "life_cycle: 'transition-step-2'",
+    "transition_date_prebeta: '2022-10-31' # pre-beta stage (two repos, two sites)",
+    "transition_date_beta: '2023-02-06' # beta stage (one repo, two sites)",
+    "transition_date_prerelease: '2023-04-03' # pre-release stage (one repo, one site)",
+    cfg[(lc+1):length(cfg)]
+  ), fs::path(tmp, "_config.yml"))
+  git_add(".", repo = tmp)
+  git_commit("update styles", repo = tmp)
+  git_push(repo = tmp)
+
   
 } else {
   stop(paste0("Delete https://github.com/", arguments$repo, " and try again"))
