@@ -32,9 +32,9 @@ The steps for releasing a lesson to the pre-beta stage are roughly this:
    ```
 2. add the variables to `_config.yml` (make sure the dates are correct)
   - life_cycle: "transition-step-1"
-  - transition_date_prebeta: '2022-10-31' # pre-beta stage (two repos, two sites)
-  - transition_date_beta: '2022-11-28' # beta stage (one repo, two sites)
-  - transition_date_prerelease: '2023-02-06' # pre-release stage (one repo, one site)
+  - transition_date_prebeta: '2022-12-12' # pre-beta stage (two repos, two sites)
+  - transition_date_beta: '2023-02-06' # beta stage (one repo, two sites)
+  - transition_date_prerelease: '2023-04-03' # pre-release stage (one repo, one site)
 3. Tag the maintainers in the pull request(s)
 
 #### Run the transformation
