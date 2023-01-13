@@ -46,6 +46,7 @@ CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 CONDUCT.md
 _extras/figures.md
+_extras/about.md
 _config.yml
 glob:*.css
 
