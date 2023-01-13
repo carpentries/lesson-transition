@@ -226,18 +226,21 @@ setup_github <- function(path = NULL, owner, repo) {
 
   # Protect the main branch from becoming sausage
   # 
-  # NOTE: add list object with a bunch of FALSEs and one 0 to 
-  #      `required_pull_request_reviews` to require a pull request. The name of
-  #      the field here is misleading: 
-  #      https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
+  # https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
   cli::cli_alert_info("protecting the main branch")
-  PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/main/protection")
-  gh::gh(PROTECT, 
-    required_status_checks = NA,
-    enforce_admins = TRUE,
-    required_pull_request_reviews = NA,
-    restrictions = NA
-  )
+  PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/main/protection") 
+  pr_reviews <- list( 
+    dismiss_stale_reviews = structure(FALSE, class = c("scalar", "logical")), 
+    require_code_owner_reviews = structure(FALSE, class = c("scalar", "logical")),
+    require_last_push_approval = structure(FALSE, class = c("scalar", "logical")),
+    required_approving_review_count = 0L 
+  ) 
+  gh::gh(PROTECT,  
+    required_status_checks = NA, 
+    enforce_admins = TRUE, 
+    required_pull_request_reviews = pr_reviews, 
+    restrictions = NA 
+  ) 
 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
   withr::with_dir(path, {
