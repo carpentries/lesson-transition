@@ -190,6 +190,7 @@ add_experiment_info <- function(episode) {
 #' 5. protecting the main branch
 setup_github <- function(path = NULL, owner, repo) {
   # get default branch
+  # NOTE: set cli::h1() tags here so that it's clea what is hapening.
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
   repo_info <- gh::gh(REPO)
   default <- repo_info$default_branch
@@ -224,6 +225,11 @@ setup_github <- function(path = NULL, owner, repo) {
   gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, default_branch = "main") 
 
   # Protect the main branch from becoming sausage
+  # 
+  # NOTE: add list object with a bunch of FALSEs and one 0 to 
+  #      `required_pull_request_reviews` to require a pull request. The name of
+  #      the field here is misleading: 
+  #      https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
   cli::cli_alert_info("protecting the main branch")
   PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/main/protection")
   gh::gh(PROTECT, 
@@ -241,6 +247,8 @@ setup_github <- function(path = NULL, owner, repo) {
     callr::run("git", c("push", "--force", "origin", "HEAD:gh-pages"), echo = TRUE, echo_cmd = TRUE)
     callr::run("git", c("switch", "main"), echo = TRUE, echo_cmd = TRUE)
   })
+
+  # NOTE: add protection here for legacy/ branches setting lock_branch = TRUE
 
 }
 
