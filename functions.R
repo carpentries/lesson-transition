@@ -303,6 +303,15 @@ setup_github <- function(path = NULL, owner, repo) {
   })
 
   # NOTE: add protection here for legacy/ branches setting lock_branch = TRUE
+  cli::cli_alert_info("locking legacy branches")
+  PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/legacy/gh-pages/protection") 
+  gh::gh(PROTECT, 
+    required_status_checks = NA, 
+    enforce_admins = TRUE, 
+    required_pull_request_reviews = NA, 
+    restrictions = NA,
+    lock_branch = TRUE
+  ) 
 
 }
 
