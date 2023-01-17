@@ -32,6 +32,7 @@ library("cli")
 library("gert")
 library("withr")
 library("askpass")
+source("functions.R")
 
 # get the token for the bot account
 cli::cli_h1("Setting up GitHub")
@@ -57,11 +58,12 @@ res <- gh::gh("POST /repos/{owner}/{repo}/forks",
   .params = list(name = hub["repo"], default_branch_only = FALSE),
   .token = get_token()
 )
+cli::cli_alert_info("New fork: {.url {res$html_url}}")
 
 # download the repository locally and create the branch
 cli::cli_h1("Creating Pull Request")
 new_branch <- "outdated-pr-test"
-cli::cli_h2("creating {.code {outdated-pr-test} branch}")
+cli::cli_h2("creating {.code {new_branch} branch}")
 tmp <- withr::local_tempdir(pattern = "git")
 gert_url <- sub("github.com", paste0(arguments$user, "@github.com"), res$html_url)
 gert_url <- paste0(gert_url, ".git")
@@ -83,5 +85,5 @@ res <- gh("POST /repos/{repo}/pulls",
     title = "test styles pull request"),
   .token = get_token()
 )
-cli::cli_alert_info("{.url {res$html_url}}")
+cli::cli_alert_info("Pull Request: {.url {res$html_url}}")
 
