@@ -320,7 +320,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   # setting a new, empty gh-pages branch 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
   withr::with_dir(path, {
-    callr::run("git", c("checkout", "--orphan", "pages"), 
+    callr::run("git", c("checkout", "--orphan", "gh-pages"), 
       echo = TRUE, echo_cmd = TRUE)
     callr::run("git", c("rm", "-rf", "."), 
       echo = FALSE, echo_cmd = TRUE)
