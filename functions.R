@@ -188,6 +188,11 @@ add_experiment_info <- function(episode) {
 #' @param reset if `TRUE` an existing token will be replaced with the new token.
 #'   Defaults to `FALSE`.
 #'
+#' @note I have noticed that `gh::gh_token()` becomes confused after this is
+#'   used and uses the first token in alphabetical order, so it might be better
+#'   to use this function to store the token in an environment instead of the
+#'   local storage cache. 
+#'
 #' If you use `get_token()`, it will give you the token for ravmakz, if it
 #' exists on your local machine. If it does not, you will be prompted to
 #' generate the token manually.
