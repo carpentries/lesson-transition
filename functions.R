@@ -306,7 +306,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
 
   # LOCKING legacy branches ---------------------------------------------------
   cli::cli_alert_info("locking legacy branches")
-  if (default = "main") {
+  if (default == "main") {
     PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/legacy/main/protection") 
     gh::gh(PROTECT, 
       required_status_checks = NA, 
