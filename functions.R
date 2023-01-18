@@ -290,18 +290,24 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   # setting a new, empty gh-pages branch 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
   withr::with_dir(path, {
-    callr::run("git", c("checkout", "--orphan", "pages"), echo = TRUE, echo_cmd = TRUE)
-    callr::run("git", c("rm", "-rf", "."), echo = FALSE, echo_cmd = TRUE)
+    callr::run("git", c("checkout", "--orphan", "pages"), 
+      echo = TRUE, echo_cmd = TRUE)
+    callr::run("git", c("rm", "-rf", "."), 
+      echo = FALSE, echo_cmd = TRUE)
     # we want to add a workflow to prevent pushes
     if (inherits(action, "fs_path")) {
       cli::cli_alert_info("Adding the workflow to prevent pull requests")
       fs::dir_create(".github/workflows", recurse = TRUE)
       fs::file_copy(action, ".github/workflows")
-      callr::run("git", c("add", "."), echo = TRUE, echo_cmd = TRUE)
+      callr::run("git", c("add", fs::path(".github/workflows", fs::path_file(action))), 
+          echo = TRUE, echo_cmd = TRUE)
     }
-    callr::run("git", c("commit", "--allow-empty", "-m", "Intializing gh-pages branch"), echo = TRUE, echo_cmd = TRUE)
-    callr::run("git", c("push", "--force", "origin", "HEAD:gh-pages"), echo = TRUE, echo_cmd = TRUE)
-    callr::run("git", c("switch", "main"), echo = TRUE, echo_cmd = TRUE)
+    callr::run("git", c("commit", "--allow-empty", "-m", "Intializing gh-pages branch"), 
+      echo = TRUE, echo_cmd = TRUE)
+    callr::run("git", c("push", "--force", "origin", "HEAD:gh-pages"), 
+      echo = TRUE, echo_cmd = TRUE)
+    callr::run("git", c("switch", "main"), 
+      echo = TRUE, echo_cmd = TRUE)
   })
 
   # LOCKING legacy branches ---------------------------------------------------
