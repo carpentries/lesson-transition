@@ -140,7 +140,10 @@ transform <- function(e, out = new) {
 # Read and and transform additional files
 rewrite <- function(x, out) {
   tryCatch({
-    ref <- Episode$new(x, process_tags = TRUE, fix_links = TRUE, fix_liquid = TRUE)
+    ref <- pegboard::Episode$new(x, 
+      process_tags = TRUE, 
+      fix_links = TRUE, 
+      fix_liquid = TRUE)
     ref$unblock()$use_sandpaper()$write(out, format = fs::path_ext(x))
   }, error = function(e) {
     cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")
@@ -157,11 +160,19 @@ copy_dir <- function(x, out) {
 }
 
 del_dir <- function(x) {
-  tryCatch(dir_delete(x), 
+  tryCatch(fs::dir_delete(x), 
     error = function(e) {
       cli::cli_alert_warning("Could not delete {.file {x}}")
     })
 }
+
+del_file <- function(x) {
+  tryCatch(fs::file_delete(x), 
+    error = function(e) {
+      cli::cli_alert_warning("Could not delete {.file {x}}")
+    })
+}
+
 
 
 add_experiment_info <- function(episode) {
@@ -246,7 +257,7 @@ get_token <- function(username = "ravmakz", scopes = c("public_repo"),
 #' 5. protecting the main branch
 setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   # get default branch
-  # NOTE: set cli::h1() tags here so that it's clea what is hapening.
+  cli::cli_h1("Setting up repository")
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
   repo_info <- gh::gh(REPO)
   default <- repo_info$default_branch
@@ -264,45 +275,24 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     RENAME <- glue::glue("POST /repos/{owner}/{repo}/branches/gh-pages/rename") 
     gh::gh(RENAME, new_name = glue::glue("legacy/gh-pages"))
   }
+  # GITHUB ACTIONS ------------------------------------------------------------
   # Set up actions for a repository
   cli::cli_alert_info("enabling github actions to be run")
   ACTIONS <- glue::glue("PUT /repos/{owner}/{repo}/actions/permissions")
   gh::gh(ACTIONS, enabled = TRUE, allowed_actions = "all")
 
-  cli::cli_alert_info("fetching and pruning")
+  cli::cli_alert_info("fetching and pruning branches")
   withr::with_dir(path, {
     callr::run("git", c("fetch", "--prune", "origin"), echo = TRUE, echo_cmd = TRUE)
   })
 
-  cli::cli_alert_info("pushing the main branch")
-  gert::git_push(refspec = "refs/heads/main", repo = path, set_upstream = TRUE, force = TRUE)
-
-  # set the main branch to be the default branch
-  cli::cli_alert_info("setting main branch as default")
-  gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, default_branch = "main") 
-
-  # Protect the main branch from becoming sausage
-  # 
-  # https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
-  cli::cli_alert_info("protecting the main branch")
-  PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/main/protection") 
-  pr_reviews <- list( 
-    dismiss_stale_reviews = structure(FALSE, class = c("scalar", "logical")), 
-    require_code_owner_reviews = structure(FALSE, class = c("scalar", "logical")),
-    require_last_push_approval = structure(FALSE, class = c("scalar", "logical")),
-    required_approving_review_count = 0L 
-  ) 
-  gh::gh(PROTECT,  
-    required_status_checks = NA, 
-    enforce_admins = TRUE, 
-    required_pull_request_reviews = pr_reviews, 
-    restrictions = NA 
-  ) 
-
+  # gh-pages branch -----------------------------------------------------------
+  # setting a new, empty gh-pages branch 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
   withr::with_dir(path, {
     callr::run("git", c("checkout", "--orphan", "pages"), echo = TRUE, echo_cmd = TRUE)
     callr::run("git", c("rm", "-rf", "."), echo = FALSE, echo_cmd = TRUE)
+    # we want to add a workflow to prevent pushes
     if (inherits(action, "fs_path")) {
       cli::cli_alert_info("Adding the workflow to prevent pull requests")
       fs::dir_create(".github/workflows", recurse = TRUE)
@@ -314,8 +304,18 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     callr::run("git", c("switch", "main"), echo = TRUE, echo_cmd = TRUE)
   })
 
-  # NOTE: add protection here for legacy/ branches setting lock_branch = TRUE
+  # LOCKING legacy branches ---------------------------------------------------
   cli::cli_alert_info("locking legacy branches")
+  if (default = "main") {
+    PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/legacy/main/protection") 
+    gh::gh(PROTECT, 
+      required_status_checks = NA, 
+      enforce_admins = TRUE, 
+      required_pull_request_reviews = NA, 
+      restrictions = NA,
+      lock_branch = TRUE
+    ) 
+  }
   PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/legacy/gh-pages/protection") 
   gh::gh(PROTECT, 
     required_status_checks = NA, 
@@ -323,6 +323,36 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     required_pull_request_reviews = NA, 
     restrictions = NA,
     lock_branch = TRUE
+  ) 
+
+  cli::cli_h1("Setting up default branch")
+  # FORCE push main branch ----------------------------------------------------
+  cli::cli_alert_info("pushing the main branch")
+  gert::git_push(refspec = "refs/heads/main", repo = path, set_upstream = TRUE, 
+    force = TRUE)
+
+  # set the main branch to be the default branch
+  cli::cli_alert_info("setting main branch as default")
+  gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, 
+    default_branch = "main") 
+
+  # Protect the main branch from becoming sausage -----------------------------
+  # 
+  # https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
+  cli::cli_alert_info("protecting the main branch")
+  PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/main/protection") 
+  falsy <- structure(FALSE, class = c("scalar", "logical"))
+  pr_reviews <- list( 
+    dismiss_stale_reviews = falsy, 
+    require_code_owner_reviews = falsy,
+    require_last_push_approval = falsy
+    required_approving_review_count = 0L 
+  ) 
+  gh::gh(PROTECT,  
+    required_status_checks = NA, 
+    enforce_admins = TRUE, 
+    required_pull_request_reviews = pr_reviews, 
+    restrictions = NA 
   ) 
 
 }
