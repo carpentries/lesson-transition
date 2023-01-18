@@ -1,21 +1,17 @@
-name: "Pull Request Preflight Check"
+name: "Pull Request in wrong branch"
 
 on:
   pull_request_target:
-    branches:
-      ["main", "gh-pages"]
     types:
       ["opened", "synchronize", "reopened"]
 
 jobs:
-  test-pr:
-    name: "Test if pull request is valid"
+  close-pr:
+    name: "Inform of Workbench and Close"
     if: ${{ github.event.action != 'closed' }}
     runs-on: ubuntu-latest
-    outputs:
-      is_valid: ${{ steps.check-pr.outputs.VALID }}
     steps:
-      - name: Comment About Workbench
+      - name: Provide Guidance
         id: comment-diff
         if: ${{ always() }}
         uses: carpentries/actions/comment-diff@main
@@ -46,10 +42,11 @@ jobs:
 
             ## Questions
             
-            If you have any questions or would like assistance , please contact
-            @zkamvar, Lesson Infrastructure Developer for The Carpentries.
+            If you have any questions or would like assistance, please contact
+            @core-team-curriculum (curriculum@carpentries.org) or you can
+            respond to this message.
 
-      - name: Close pull request
+      - name: Close Pull Request
         uses: actions/github-script@v6
         if: ${{ always() }}
         with:
