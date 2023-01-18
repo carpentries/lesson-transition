@@ -286,6 +286,36 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     callr::run("git", c("fetch", "--prune", "origin"), echo = TRUE, echo_cmd = TRUE)
   })
 
+  cli::cli_h1("Setting up default branch")
+  # FORCE push main branch ----------------------------------------------------
+  cli::cli_alert_info("pushing the main branch")
+  gert::git_push(repo = path, set_upstream = TRUE, force = TRUE)
+  # refspec = "refs/heads/main" 
+
+  # set the main branch to be the default branch
+  cli::cli_alert_info("setting main branch as default")
+  gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, 
+    default_branch = "main") 
+
+  # Protect the main branch from becoming sausage -----------------------------
+  # 
+  # https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
+  cli::cli_alert_info("protecting the main branch")
+  PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/main/protection") 
+  falsy <- structure(FALSE, class = c("scalar", "logical"))
+  pr_reviews <- list( 
+    dismiss_stale_reviews = falsy, 
+    require_code_owner_reviews = falsy,
+    require_last_push_approval = falsy,
+    required_approving_review_count = 0L 
+  ) 
+  gh::gh(PROTECT,  
+    required_status_checks = NA, 
+    enforce_admins = TRUE, 
+    required_pull_request_reviews = pr_reviews, 
+    restrictions = NA 
+  ) 
+
   # gh-pages branch -----------------------------------------------------------
   # setting a new, empty gh-pages branch 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
@@ -331,35 +361,6 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     lock_branch = TRUE
   ) 
 
-  cli::cli_h1("Setting up default branch")
-  # FORCE push main branch ----------------------------------------------------
-  cli::cli_alert_info("pushing the main branch")
-  gert::git_push(repo = path, set_upstream = TRUE, force = TRUE)
-  # refspec = "refs/heads/main" 
-
-  # set the main branch to be the default branch
-  cli::cli_alert_info("setting main branch as default")
-  gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, 
-    default_branch = "main") 
-
-  # Protect the main branch from becoming sausage -----------------------------
-  # 
-  # https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
-  cli::cli_alert_info("protecting the main branch")
-  PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/main/protection") 
-  falsy <- structure(FALSE, class = c("scalar", "logical"))
-  pr_reviews <- list( 
-    dismiss_stale_reviews = falsy, 
-    require_code_owner_reviews = falsy,
-    require_last_push_approval = falsy,
-    required_approving_review_count = 0L 
-  ) 
-  gh::gh(PROTECT,  
-    required_status_checks = NA, 
-    enforce_admins = TRUE, 
-    required_pull_request_reviews = pr_reviews, 
-    restrictions = NA 
-  ) 
 
 }
 
