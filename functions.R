@@ -194,8 +194,6 @@ add_experiment_info <- function(episode) {
 #' @param scopes if a new token should be created, a vector of scopes for that
 #'   token, defaults to public_repo
 #' @param description a meaningful description of the new token
-#' @param write if `TRUE`, the new token profile is written to the credentials
-#'   helper. Defaults to `FALSE`
 #' @param reset if `TRUE` an existing token will be replaced with the new token.
 #'   Defaults to `FALSE`.
 #'
@@ -214,33 +212,25 @@ add_experiment_info <- function(episode) {
 #' To generate a temporary token for your account without saving it, use a fake
 #' username: `get_token("fakename")`. Because reset and write are set to FALSE,
 #' this token is strictly temporary. 
-get_token <- function(username = "ravmakz", scopes = c("public_repo"),
-  description = "fork transtion test", write = FALSE, reset = FALSE) {
-  pwd <- gitcreds::gitcreds_fill(list(
-      url = "https://github.com", 
-      username = username))
-  # get the password output from gitcreds. It will default to `dummy get` if no
-  # password exists
-  pwd <- strsplit(pwd[grepl('^password', pwd)], "=")[[1]][2]
-  if (pwd == "dummy get" || reset) {
-    # prompt to create a new token 
-    base <- "https://github.com/settings/tokens/new"
-    description <- xml2::url_escape(description)
-    scopes <- paste(scopes, collapse = ",")
-    url <- glue::glue("{base}?scopes={scopes}&description={description}")
-    browseURL(url)
-    msg <- glue::glue("Create a temporary token with `{scopes}` scopes:\nPASTE YOUR TOKEN HERE: ")
-    # askpass prevents the system from seeing the value of the pasted token
-    pwd <- askpass::askpass(msg)
-    if (write || reset) {
-      gitcreds::gitcreds_approve(list(
-          url = "https://github.com", 
-          username = username, 
-          password = pwd))
+create_token <- function() {
+  pwd <- NULL
+  function(username = "ravmakz", scopes = c("public_repo"),
+    description = "fork transtion test", reset = FALSE) {
+    if (is.null(pwd) || reset) {
+      # prompt to create a new token 
+      base <- "https://github.com/settings/tokens/new"
+      description <- xml2::url_escape(description)
+      scopes <- paste(scopes, collapse = ",")
+      url <- glue::glue("{base}?scopes={scopes}&description={description}")
+      browseURL(url)
+      msg <- glue::glue("Create a temporary token with `{scopes}` scopes:\nPASTE YOUR TOKEN HERE: ")
+      # askpass prevents the system from seeing the value of the pasted token
+      pwd <<- askpass::askpass(msg)
     }
+    invisible(pwd)
   }
-  invisible(pwd)
 }
+get_token <- create_token()
 #' Set up a given GitHub repository to recieve the Workbench
 #'
 #' @param path path to a transformed lesson
