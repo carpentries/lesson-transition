@@ -37,9 +37,7 @@ source("functions.R")
 # get the token for the bot account
 cli::cli_h1("Setting up GitHub")
 cli::cli_h2("Provisining token")
-get_token(username = "ravmakz",
-  write = TRUE, 
-  scopes = c("delete_repo", "public_repo"))
+get_token(username = "ravmakz", scopes = c("delete_repo", "public_repo"))
 hub <- setNames(strsplit(arguments$repo, "/")[[1]], c("owner", "repo"))
 
 # remove the existing fork
