@@ -244,12 +244,13 @@ get_token <- function(username = "ravmakz", scopes = c("public_repo"),
 #' 3. pushing the main branch
 #' 4. setting the main branch as default
 #' 5. protecting the main branch
-setup_github <- function(path = NULL, owner, repo) {
+setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   # get default branch
   # NOTE: set cli::h1() tags here so that it's clea what is hapening.
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
   repo_info <- gh::gh(REPO)
   default <- repo_info$default_branch
+  action <- if (is.null(action)) NULL else fs::path_abs(action)
 
   # rename default branch
   cli::cli_alert_info("renaming {default} to legacy/{default}")
@@ -302,6 +303,12 @@ setup_github <- function(path = NULL, owner, repo) {
   withr::with_dir(path, {
     callr::run("git", c("checkout", "--orphan", "pages"), echo = TRUE, echo_cmd = TRUE)
     callr::run("git", c("rm", "-rf", "."), echo = FALSE, echo_cmd = TRUE)
+    if (inherits(action, "fs_path")) {
+      cli::cli_alert_info("Adding the workflow to prevent pull requests")
+      fs::dir_create(".github/workflows", recurse = TRUE)
+      fs::file_copy(action, ".github/workflows")
+      callr::run("git", c("add", "."), echo = TRUE, echo_cmd = TRUE)
+    }
     callr::run("git", c("commit", "--allow-empty", "-m", "Intializing gh-pages branch"), echo = TRUE, echo_cmd = TRUE)
     callr::run("git", c("push", "--force", "origin", "HEAD:gh-pages"), echo = TRUE, echo_cmd = TRUE)
     callr::run("git", c("switch", "main"), echo = TRUE, echo_cmd = TRUE)
