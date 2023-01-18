@@ -334,8 +334,8 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   cli::cli_h1("Setting up default branch")
   # FORCE push main branch ----------------------------------------------------
   cli::cli_alert_info("pushing the main branch")
-  gert::git_push(refspec = "refs/heads/main", repo = path, set_upstream = TRUE, 
-    force = TRUE)
+  gert::git_push(repo = path, set_upstream = TRUE, force = TRUE)
+  # refspec = "refs/heads/main" 
 
   # set the main branch to be the default branch
   cli::cli_alert_info("setting main branch as default")
