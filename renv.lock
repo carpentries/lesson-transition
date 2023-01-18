@@ -226,7 +226,7 @@
       "Package": "evaluate",
       "Version": "0.20",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Hash": "4b68aa51edd89a0e044a66e75ae3cc6c",
       "Requirements": []
     },
