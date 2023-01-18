@@ -345,7 +345,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   pr_reviews <- list( 
     dismiss_stale_reviews = falsy, 
     require_code_owner_reviews = falsy,
-    require_last_push_approval = falsy
+    require_last_push_approval = falsy,
     required_approving_review_count = 0L 
   ) 
   gh::gh(PROTECT,  
