@@ -144,21 +144,76 @@ has completed the checkin.
 ### What to Expect
 
 A repository that recently update to use the beta stage of the workbench can 
-be a bit bewildering. Branches have not been deleted, but they have been moved
-around. This has consequences for two aspects of lesson development: clones and
-forks. 
+be a bit bewildering. When you visit the GitHub page, you will notice that the
+default branch is now called `main` and the folder structure looks different. 
+
+When you look at the list of branches you will notice a few things:
+
+1. The main branch is protected. This means that you will need to make a pull
+   request before you can push to the main branch.
+2. There is a `legacy/gh-pages` branch. For most lessons, this used to be the
+   default branch, but in the beta phase, we have renamed it and locked it.
+   There should be no need to edit this branch.
+
+#### Pull Requests
+
+Before the second stage of the beta phase, **it is important to resolve all of
+the open pull requests.** Remeber that it's okay to say no and to invite the
+contributor to open an issue, citing the pending transformation of your lesson.
+
+Any pull requests left open before the transition will point to the locked
+`legacy/` branch and must be re-opened from a brand new fork in order to be
+considered.
+
+For example, someone suggested a change a week before the transition and none
+of the maintainers had the capacity to address the pull request. Because of
+this, the pull request is now in a state where the only path foward is to close
+it because the base branch of the pull request is locked.
+
+Speaking from experience, addressing really old issues or pull requests is hard
+because it can feel like you are letting the contributor down, but it is
+important to remember that telling someone that their pull request is no longer
+valid is far more demotivating than gently saying and providing instructions to
+follow up in an issue.
+
+I'm going to provide a small script that you can use when addressing these pull
+requests. This will include instructions for a contributor to delete and 
+re-fork their copy of the repository.
 
 As a reminder, a **clone** is a copy of a lesson repository to your computer and
-a **fork** is a copy of a lesson repository to your GitHub account.
+a **fork** is a copy of a lesson repository to your GitHub account. We will talk
+about clones later.
 
-For maintainers and everyone who works on lessons locally on their computer,
-cloning is going to be the most prescient topic (and probably the easist to
-deal with).
+#### Forks
+
+Anyone who has created a fork of the lesson and intends to continue contributions
+must delete and re-fork. To do that, they can go to settings, scroll all the way
+down to the "Danger Zone" section, click "Delete this repository", write the
+name of the repository in the box and then click "I understand the consequences,
+delete the repository".
+
+After deleting their fork, they can re-fork using the same process they used 
+previously, by clicking the fork button at the top of the lesson repository. 
+
+Again, this is the ONLY way to update a fork. To illustrate why, I will show you
+what happens if you try to use GitHub's method of "synchronizing a fork". 
+
+All GitHub forks will have a button that allows you to synchronize the default
+branch of your fork with the corresponding branch of the lesson repository. 
+
+The problem is: the corresponding branch has a completely different commit
+history and git WILL merge it, regardless of how nonsensical the lesson
+repository becomes.
+
+If someone has changes they want to contribute, synchronises their branch, and
+then attempts to create a pull request, that pull request will automatically
+close, giving them instructions they can use to delete and re-fork their 
+repository.
+
 
 #### Clones
 
+Note 
 
-
-#### Forks
 
 
