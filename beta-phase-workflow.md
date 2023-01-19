@@ -141,6 +141,24 @@ NOTE: it is currently not possible to have fine-grained permissions in teams,
 so I will add them to a new team that _does_ have write access until everyone
 has completed the checkin. 
 
-## What to Expect
+### What to Expect
+
+A repository that recently update to use the beta stage of the workbench can 
+be a bit bewildering. Branches have not been deleted, but they have been moved
+around. This has consequences for two aspects of lesson development: clones and
+forks. 
+
+As a reminder, a **clone** is a copy of a lesson repository to your computer and
+a **fork** is a copy of a lesson repository to your GitHub account.
+
+For maintainers and everyone who works on lessons locally on their computer,
+cloning is going to be the most prescient topic (and probably the easist to
+deal with).
+
+#### Clones
+
+
+
+#### Forks
 
 
