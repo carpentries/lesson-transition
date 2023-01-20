@@ -211,9 +211,34 @@ close, giving them instructions they can use to delete and re-fork their
 repository.
 
 
-#### Clones
+#### Clones aka, working on a lesson locally
 
-Note 
+If you have a clone, like a fork, the easiest thing to do is to re-clone the
+repository. You will want to move your old repository to a new folder called
+`old-[repository-name]`. I can not stress this enough: make a copy before you do
+anything. That way if something unexpected happens, you can restore from the 
+copy.
+
+After you change the name of your existing repository, you can clone the new
+version using the standard `git clone` command.
+
+As I said, it _is_ possible to update your local repository, and it involves the
+same process that GitHub recommends when you change a branch name. I've
+documented the steps needed for both markdown and R Markdown-based lessons, and
+you are free to try them at your own risk.
+
+Now I want to show you what happens if you attempt to pull from the repository
+without first re-cloning or moving the branch names.
+
+When you run `git pull`, you might see a few new branches created and then git
+will give you an error saying that it cannot merge branches with unrelated
+histories.
+
+
+
+
+
+
 
 
 
