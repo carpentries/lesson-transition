@@ -149,7 +149,9 @@ rewrite(from("_extras", "exercises.md"), to("learners"))
 rewrite(from("_extras", "figures.md"), to("learners"))
 rewrite(from("reference.md"), to("learners"))
 rewrite(from("setup.md"), to("learners"))
-del_dir("_extras")
+del_dir(to("_extras"))
+del_file("reference.md")
+del_file("setup.md")
 
 
 # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
@@ -191,7 +193,6 @@ params <- c(
   "workbench-beta" = "true"
 )
 set_config(params, path = new, write = TRUE, create = TRUE)
-file_copy(from("_config.yml"), to("gifnoc_.yml"))
 
 # copy over the editor config if it exists
 if (file_exists(from(".editorconfig"))) {
