@@ -94,7 +94,7 @@ fix_level_one_headings <- function(episode) {
 
 
 # transform the episodes via pegboard with reporters
-transform <- function(e, out = new) {
+transform <- function(e, out = new, verbose = getOption("carpentries.transition.loud", TRUE)) {
   outdir <- fs::path(out, "episodes/")
   cli::cli_process_start("Converting {.file {fs::path_rel(e$path, getwd())}} to {.emph sandpaper}")
   cli::cli_status_update("converting block quotes to pandoc fenced div")
@@ -138,7 +138,7 @@ transform <- function(e, out = new) {
 }
 
 # Read and and transform additional files
-rewrite <- function(x, out) {
+rewrite <- function(x, out, verbose = getOption("carpentries.transition.loud", TRUE)) {
   tryCatch({
     ref <- pegboard::Episode$new(x, 
       process_tags = TRUE, 
@@ -146,30 +146,32 @@ rewrite <- function(x, out) {
       fix_liquid = TRUE)
     ref$unblock()$use_sandpaper()$write(out, format = fs::path_ext(x))
   }, error = function(e) {
-    cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")
+    if (verbose) cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")
   })
 }
 
 # Copy a directory if it exists
-copy_dir <- function(x, out) {
+copy_dir <- function(x, out, verbose = getOption("carpentries.transition.loud", TRUE)) {
   tryCatch(fs::dir_copy(x, out, overwrite = TRUE),
     error = function(e) {
-      cli::cli_alert_warning("Could not copy {.file {x}}")
-      cli::cli_alert_warning(e$message)
+      if (verbose) {
+        cli::cli_alert_warning("Could not copy {.file {x}}")
+        cli::cli_alert_warning(e$message)
+      }
     })
 }
 
-del_dir <- function(x) {
+del_dir <- function(x, verbose = getOption("carpentries.transition.loud", TRUE)) {
   tryCatch(fs::dir_delete(x), 
     error = function(e) {
-      cli::cli_alert_warning("Could not delete {.file {x}}")
+      if (verbose) cli::cli_alert_warning("Could not delete {.file {x}}")
     })
 }
 
-del_file <- function(x) {
+del_file <- function(x, verbose = getOption("carpentries.transition.loud", TRUE)) {
   tryCatch(fs::file_delete(x), 
     error = function(e) {
-      cli::cli_alert_warning("Could not delete {.file {x}}")
+      if (verbose) cli::cli_alert_warning("Could not delete {.file {x}}")
     })
 }
 

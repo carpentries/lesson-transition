@@ -43,6 +43,7 @@ options(cli.width = 160)
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2021-11", help = TRUE)
 if (arguments$quiet) {
+  options("carpentries.transition.loud", arguments$quiet)
   sink()
 }
 
