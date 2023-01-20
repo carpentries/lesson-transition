@@ -138,20 +138,26 @@ rdm$write(path = new, format = "md")
 
 # Transform non-episode MD files
 cli::cli_h2("copying instructor and learner materials")
+
 rewrite(from("_extras", "design.md"), to("instructors"))
+del_file(to("_extras", "design.md"))
 rewrite(from("_extras", "guide.md"), to("instructors"))
+del_file(to("_extras", "guide.md"))
 if (fs::file_exists(to("instructors", "guide.md"))) {
   fs::file_move(to("instructors", "guide.md"), to("instructors", "instructor-notes.md"))
 }
 
 rewrite(from("_extras", "discuss.md"), to("learners"))
+del_file(to("_extras", "discuss.md"))
 rewrite(from("_extras", "exercises.md"), to("learners"))
-rewrite(from("_extras", "figures.md"), to("learners"))
+del_file(to("_extras", "exercises.md"))
+del_file(to("_extras", "figures.md"))
 rewrite(from("reference.md"), to("learners"))
 rewrite(from("setup.md"), to("learners"))
+purrr::walk(fs::dir_ls(to("_extras"), glob = "*md"), rewrite, to("instructors"))
 del_dir(to("_extras"))
-del_file("reference.md")
-del_file("setup.md")
+del_file(to("reference.md"))
+del_file(to("setup.md"))
 
 
 # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
