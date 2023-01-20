@@ -89,16 +89,6 @@ if (no_repo) {
     stop("the default branch could not be set to gh-pages")
   }
   
-  # test a pull request to default branch
-  cli::cli_alert_info("Creating a test pull request")
-  gh("POST /repos/{repo}/pulls", 
-    repo = arguments$repo,
-    .params = list(
-      head = "change-prereq-box",
-      base = "gh-pages",
-      title = "test pull request")
-  )
-
   if (startsWith(arguments$repo, "fishtree-attempt")) {
     cli::cli_alert_info("Setting permissions")
     gh("PUT /orgs/{ORG}/teams/{REPO}-maintainers/repos/{ORG}/{REPO}",
