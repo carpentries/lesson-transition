@@ -60,7 +60,7 @@ cli::cli_alert_info("New fork: {.url {res$html_url}}")
 
 # download the repository locally and create the branch
 cli::cli_h1("Creating Pull Request")
-new_branch <- "outdated-pr-test"
+new_branch <- "ravmakz-patch-1"
 cli::cli_h2("creating {.code {new_branch} branch}")
 tmp <- withr::local_tempdir(pattern = "git")
 gert_url <- sub("github.com", paste0(arguments$user, "@github.com"), res$html_url)
@@ -80,7 +80,8 @@ res <- gh("POST /repos/{repo}/pulls",
   .params = list(
     head = paste0(arguments$user, ":", new_branch),
     base = "gh-pages",
-    title = "test styles pull request"),
+    title = "replace one letter",
+    body = "I've added the letter R in 'Motivation' to make it more :skull:"),
   .token = get_token()
 )
 cli::cli_alert_info("Pull Request: {.url {res$html_url}}")
