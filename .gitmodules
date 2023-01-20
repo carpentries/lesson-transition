@@ -84,7 +84,7 @@
 [submodule "carpentries-incubator/bioc-intro"]
 	path = carpentries-incubator/bioc-intro
 	url = https://github.com/carpentries-incubator/bioc-intro/
-	branch = null
+	branch = main
 [submodule "carpentries-incubator/bioc-rnaseq"]
 	path = carpentries-incubator/bioc-rnaseq
 	url = https://github.com/carpentries-incubator/bioc-rnaseq/
