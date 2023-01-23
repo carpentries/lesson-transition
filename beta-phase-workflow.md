@@ -186,6 +186,8 @@ about clones later.
 
 #### Forks
 
+##### All forks must be deleted and re-forked
+
 Anyone who has created a fork of the lesson and intends to continue contributions
 must delete and re-fork. To do that, they can go to settings, scroll all the way
 down to the "Danger Zone" section, click "Delete this repository", write the
@@ -195,12 +197,13 @@ delete the repository".
 After deleting their fork, they can re-fork using the same process they used 
 previously, by clicking the fork button at the top of the lesson repository. 
 
-Again, this is the ONLY way to update a fork. To illustrate why, I will show you
-what happens if you try to use GitHub's method of "synchronizing a fork". 
+##### Danger in synchronisation
+
+To illustrate why all forks must be deleted, I will show you what happens if
+you try to use GitHub's method of "synchronizing a fork". 
 
 All GitHub forks will have a button that allows you to synchronize the default
 branch of your fork with the corresponding branch of the lesson repository. 
-
 The problem is: the corresponding branch has a completely different commit
 history and git WILL merge it, regardless of how nonsensical the lesson
 repository becomes.
@@ -210,6 +213,12 @@ then attempts to create a pull request, that pull request will automatically
 close, giving them instructions they can use to delete and re-fork their 
 repository.
 
+##### One exception
+
+If someone does not delete their fork and would like to make a contribution,
+they should do so from the upstream repository. That is, they should go to the
+file the would like to modify and use the "edit" button in the GitHub interface.
+GitHub will create a new branch for them and it will match the new history.
 
 #### Clones aka, working on a lesson locally
 
