@@ -143,6 +143,8 @@ has completed the checkin.
 
 ### What to Expect
 
+To start the example, we have a styles-based lesson with its default branch set to `gh-pages`. This lesson has its episodes in the underscore episodes folder and there is one pull request that we will leave open during the transition to demonstrate what happens to it. Note that this pull request is going into the `gh-pages branch`
+
 A repository that recently update to use the beta stage of the workbench can 
 be a bit bewildering. When you visit the GitHub page, you will notice that the
 default branch is now called `main` and the folder structure looks different. 
