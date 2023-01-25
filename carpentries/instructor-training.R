@@ -1,5 +1,6 @@
 l <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+# FUNCTIONS FOR INSTRUCTOR TRAINING -------------------------------------------
 # update links that are pointing to the old material
 fix_custom_links <- function(nodes) {
   dst <- xml2::xml_attr(nodes, "destination")
@@ -10,7 +11,7 @@ fix_custom_links <- function(nodes) {
     site.swc_pages = "https://swcarpentry.github.io",
     site.dc_site = "https://datacarpentry.org",
     site.lc_site = "https://librarycarpentry.org",
-    page.training_site = "https://preview.carpentries.org/instructor-training"
+    page.training_site = "."
   )
   xml2::xml_set_attr(nodes, "destination", new_dst)
 }
@@ -33,8 +34,10 @@ write_out <- function(path) {
   l[[type]][[ep]]$write(path = out, format = fmt)
 }
 
+# PROCESSING LESSON LINKS ------------------------------------------------------
 links <- l$validate_links()
-links  <- rbind(links, l$extra$setup.md$validate_links())
+setup_links <- l$extra$setup.md$validate_links()
+links  <- rbind(links, cbind(list(episodes = "setup.md"), setup_links))
 have_this_url <- grep("carpentries.github.io/instructor-training/", links$orig)
 selfies <- links[have_this_url, , drop = FALSE]
 cli::cli_alert("fixing custom link links in setup")
@@ -109,13 +112,14 @@ purrr::walk(breaks, ~write_out(.x$add_md(break_message)$path))
 
 cli::cli_alert("arranging extras")
 # move over extras into learners and instructors
-oextra <- function(x) fs::path(new, "_extras", x)
+oextra <- function(x) fs::path(old, "_extras", x)
 instr <- fs::path(new, "instructors")
 learn <- fs::path(new, "learners")
 rewrite(oextra("checkout.md"), learn)
 rewrite(oextra("demo_lessons.md"), learn)
 rewrite(oextra("demos_rubric.md"), learn)
-fs::file_move(oextra("glossary.md"), fs::path(learn, "reference.md"))
+rewrite(oextra("glossary.md"), learn)
+fs::file_move(fs::path(learn, "glossary.md"), fs::path(learn, "reference.md"))
 rewrite(oextra("members.md"), learn)
 rewrite(oextra("training_calendar.md"), learn)
 rewrite(oextra("fromthelearners.md"), learn)
