@@ -113,3 +113,7 @@
 	path = carpentries/maintainer-onboarding
 	url = https://github.com/carpentries/maintainer-onboarding/
 	branch = gh-pages
+[submodule "carpentries-incubator/managing-computational-projects"]
+	path = carpentries-incubator/managing-computational-projects
+	url = https://github.com/carpentries-incubator/managing-computational-projects/
+	branch = gh-pages
