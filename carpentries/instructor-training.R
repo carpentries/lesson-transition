@@ -126,7 +126,6 @@ rewrite(oextra("fromthelearners.md"), learn)
 set_learners(new, c("training_calendar.md", "checkout.md", "demo_lessons.md", "demos_rubric.md", "members.md", "fromthelearners.md", "reference.md"), write = TRUE)
 
 rewrite(oextra("registration_confirmation.md"), instr)
-fs::file_move(oextra("etherpad.md"), instr)
 rewrite(oextra("additional_exercises.md"), instr)
 rewrite(oextra("icebreakers.md"), instr)
-set_instructors(new, c("icebreakers.md", "additional_exercises.md", "etherpad.md", "registration_confirmation.md", "instructor-notes.md"), write = TRUE)
+set_instructors(new, c("icebreakers.md", "additional_exercises.md", "registration_confirmation.md", "instructor-notes.md"), write = TRUE)
