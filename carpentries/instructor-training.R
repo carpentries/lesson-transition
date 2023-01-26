@@ -11,6 +11,7 @@ fix_custom_links <- function(nodes) {
     site.swc_pages = "https://swcarpentry.github.io",
     site.dc_site = "https://datacarpentry.org",
     site.lc_site = "https://librarycarpentry.org",
+    site.github.repository_url = "https://github.com/carpentries/instructor-training",
     page.training_site = "."
   )
   xml2::xml_set_attr(nodes, "destination", new_dst)
@@ -101,6 +102,7 @@ idx$add_md(idx_note, 1)
 ilinks <- idx$validate_links()
 iselfies <- ilinks[grep("carpentries.github.io/instructor-training/", ilinks$orig), , drop = FALSE]
 purrr::walk(iselfies$node, become_self_aware)
+fix_custom_links(idx$links)
 idx$write(new, format = "md")
 
 
