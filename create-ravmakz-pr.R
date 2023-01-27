@@ -65,7 +65,11 @@ cli::cli_h2("creating {.code {new_branch} branch}")
 tmp <- withr::local_tempdir(pattern = "git")
 gert_url <- sub("github.com", paste0(arguments$user, "@github.com"), res$html_url)
 gert_url <- paste0(gert_url, ".git")
-gert::git_clone(gert_url, path = tmp, password = get_token())
+tryCatch(gert::git_clone(gert_url, path = tmp, password = get_token()),
+  error = function(e) {
+    gert::git_clone(gert_url, path = tmp, password = get_token())
+  }
+)
 gert::git_branch_create(new_branch, repo = tmp)
 idx <- sub("otivation", "ortivation", readLines(fs::path(tmp, "index.md")))
 writeLines(idx, fs::path(tmp, "index.md"))
