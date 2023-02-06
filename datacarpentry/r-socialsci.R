@@ -6,13 +6,13 @@
 # Sandpaper does something weird where it's assuming that `site/` is the root
 # (instead of site/built), so placing a .here sentinel works. 
 # sets download_data.R to live in the data folder
-fs::file_copy(to("bin/download_data.R"), to("episodes/data/download_data.R"))
+fs::file_copy(from("bin/download_data.R"), to("episodes/data/download_data.R"))
 # gives a sentinel file for episodes to give an anchor for the build
 fs::file_touch(to("episodes/.here"))
-rewrite(to("_extras", "data-visualisation-handout.Rmd"), to("learners"))
-rewrite(to("_extras", "data-wrangling-handout.Rmd"), to("learners"))
-rewrite(to("_extras", "intro-R-handout.Rmd"), to("learners"))
-rewrite(to("_extras", "starting-with-data-handout.Rmd"), to("learners"))
+rewrite(from("_extras", "data-visualisation-handout.Rmd"), to("learners"))
+rewrite(from("_extras", "data-wrangling-handout.Rmd"), to("learners"))
+rewrite(from("_extras", "intro-R-handout.Rmd"), to("learners"))
+rewrite(from("_extras", "starting-with-data-handout.Rmd"), to("learners"))
 
 sandpaper::set_learners(new, 
   c("reference.md",
@@ -71,5 +71,3 @@ protect_examples(l$episodes[["06-rmarkdown.Rmd"]])
 
 purrr::walk(l$episodes, ~.x$write(to("episodes"), format = "Rmd"))
 
-# Making sure we have the historic site available to us
-gert::git_fetch("https://github.com/datacarpentry/r-socialsci.git", refspec = "gh-pages:legacy", repo = new)
