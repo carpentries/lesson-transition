@@ -4,6 +4,9 @@ sandpaper/**
 /prebeta/*/*
 !/prebeta/**/*-status.json
 !/prebeta/**/*.hash
+/beta/*/*
+!/beta/**/*-status.json
+!/beta/**/*.hash
 beta/zkamvar*
 beta/zkamvar/*
 zkamvar/*
