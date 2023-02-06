@@ -87,6 +87,12 @@ git clone --no-local .git/modules/${REPO} ${OUT}
 # repository and contribute nothing to the lesson content. This includes styling
 # files AND boilerplate files like LICENSE.md
 BLANK=""
+PRODUCTION="${PRODUCTION:-}"
+# when the callback is not blank, that means that we are likely using 
+# this in production and will need to reflect that in the output
+if [[ -n ${4} ]]; then
+  PRODUCTION="true"
+fi
 CALLBACK=${4:-$(eval echo $(cat ${CWD}/message-callback.txt))}
 echo -e "\033[1mConverting \033[38;5;208m${OUT}\033[0;00m...\033[22m"
 cd ${OUT}
@@ -124,7 +130,7 @@ echo -e "... \033[1m\033[38;5;208mdone\033[0;00m\033[22m"
 # R Ecology Lesson was not built the same way as other Carpentries lessons, so
 # it runs through its own script.
 if [[ ${SCRIPT} == 'datacarpentry/R-ecology-lesson.R' ]]; then
-  GITHUB_PAT="${GHP}" Rscript ${SCRIPT} \
+  PROD="${PRODUCTION}" GITHUB_PAT="${GHP}" Rscript ${SCRIPT} \
     --build \
     --funs functions.R \
     --template template/ \
@@ -142,7 +148,7 @@ else
     sed -i -r -e 's/\.bash/\.language-bash/' ${tmp}/{_episodes,_extras,}/*.md
     REPO=${tmp}
   fi
-  GITHUB_PAT="${GHP}" Rscript transform-lesson.R \
+  PROD="${PRODUCTION}" GITHUB_PAT="${GHP}" Rscript transform-lesson.R \
     --build \
     --fix-liquid \
     --funs functions.R \

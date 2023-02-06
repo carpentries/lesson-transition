@@ -178,6 +178,9 @@ del_file <- function(x, verbose = getOption("carpentries.transition.loud", TRUE)
 
 
 add_experiment_info <- function(episode) {
+  if (Sys.getenv("PROD") == "true") {
+    return(invisible(episode))
+  }
   # Modify the index to include our magic header
   experiment <- "> **ATTENTION** This is an experimental test of [The Carpentries Workbench](https://carpentries.github.io/workbench) lesson infrastructure.
 > It was automatically converted from the source lesson via [the lesson transition script](https://github.com/carpentries/lesson-transition/).
