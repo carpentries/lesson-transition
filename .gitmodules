@@ -53,7 +53,7 @@
 [submodule "carpentries/instructor-training"]
 	path = carpentries/instructor-training
 	url = https://github.com/carpentries/instructor-training/
-	branch = gh-pages
+	branch = main
 [submodule "carpentries-incubator/SDC-BIDS-sMRI"]
 	path = carpentries-incubator/SDC-BIDS-sMRI
 	url = https://github.com/carpentries-incubator/SDC-BIDS-sMRI/
@@ -92,7 +92,7 @@
 [submodule "datacarpentry/python-ecology-lesson-es"]
 	path = datacarpentry/python-ecology-lesson-es
 	url = https://github.com/datacarpentry/python-ecology-lesson-es/
-	branch = gh-pages
+	branch = main
 [submodule "datacarpentry/OpenRefine-ecology-lesson"]
 	path = datacarpentry/OpenRefine-ecology-lesson
 	url = https://github.com/datacarpentry/OpenRefine-ecology-lesson/
