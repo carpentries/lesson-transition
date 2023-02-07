@@ -259,7 +259,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   action <- if (is.null(action)) NULL else fs::path_abs(action)
 
   # rename default branch
-  cli::cli_alert_info("renaming {default} to legacy/{default}")
+  cli::cli_alert_info("renaming default branch ({default}) to legacy/{default}")
   RENAME <- glue::glue("POST /repos/{owner}/{repo}/branches/{default}/rename") 
   print(RENAME)
   gh::gh(RENAME, new_name = glue::glue("legacy/{default}"))
@@ -338,6 +338,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   # LOCKING legacy branches ---------------------------------------------------
   cli::cli_alert_info("locking legacy branches")
   if (default == "main") {
+    cli::cli_alert_info("locking legacy/main")
     PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/legacy/main/protection") 
     gh::gh(PROTECT, 
       required_status_checks = NA, 
@@ -347,6 +348,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
       lock_branch = TRUE
     ) 
   }
+  cli::cli_alert_info("locking legacy/gh-pages")
   PROTECT <- glue::glue("PUT /repos/{owner}/{repo}/branches/legacy/gh-pages/protection") 
   gh::gh(PROTECT, 
     required_status_checks = NA, 

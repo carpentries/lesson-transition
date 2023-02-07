@@ -102,4 +102,13 @@ withr::with_dir(new, {
 
 refs <- gert::git_remote_ls(repo = old)
 gert::git_remote_set_url(origin, remote = "origin", repo = new)
+prepare_for_execution <- function(cmd) {
+  cli::cli_alert("preparing to run {.code {cmd}} in")
+  for (step in 5:1) {
+    Sys.sleep(1)
+    cli::cli_alert("{step}...")
+  }
+}
+cmd <- glue::glue("setup_github(path = '{new}', owner = '{org_repo[1]}', repo = '{org_repo[2]}')")
+prepare_for_execution(cmd)
 setup_github(path = new, owner = org_repo[1], repo = org_repo[2])
