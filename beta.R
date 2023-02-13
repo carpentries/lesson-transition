@@ -88,7 +88,8 @@ if (dir_exists(new)) {
 this_lesson <- dates$repository == repo
 set_config(c(
   "beta-date" = dates$beta[this_lesson] %||% "1970-01-01",
-  "old-url" = url
+  "old-url" = url,
+  "source" = paste0("https://github.com/", repo),
   ), 
   path = new,
   write = TRUE,
