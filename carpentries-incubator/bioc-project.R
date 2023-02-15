@@ -26,14 +26,49 @@ make_raw_links_relative <- function(lnks) {
   fix_these_links(lnks[raw_links, ])
 }
 
-
 fix_lesson_links <- function(lsn) {
   lnks <- lsn$validate_links()
   remove_index_links(lnks)
   make_raw_links_relative(lnks)
 }
 
+fix_bib_code <- function(ep) {
+  bib_code <- ep$code 
+  bib_code <- bib_code[grepl("bibliography.bib", xml2::xml_text(bib_code))]
+  txt <- parse(text = xml2::xml_text(bib_code))
+  new_txt <- gsub("../bibliography.bib", "files/bibliography.bib", txt)
+  xml2::xml_set_text(bib_code, paste(new_txt, collapse = "\n"))
+  invisible(ep)
+}
+
+remove_setup <- function(ep) {
+  blocks <- ep$code
+  txt <- xml2::xml_text(blocks)
+  bad <- grepl("(chunk-options.R|knitr_fig_path)", txt)
+  if (sum(bad) == 0L) {
+    return(invisible(ep))
+  }
+  txt[bad] <- purrr::map_chr(txt[bad], \(x) {
+    pt <- parse(text = x)
+    paste(pt[!grepl("(chunk-options.R|knitr_fig_path)", pt)], collapse = "\n")
+  })
+  xml2::xml_set_text(blocks, txt)
+  if (any(txt[bad] == "")) {
+    xml2::xml_remove(blocks[bad])
+  }
+  invisible(ep)
+}
+
 write_out <- function(ep) {
   ep$write(fs::path(new, "episodes"), format = "Rmd")
 }
+
 fix_lesson_links(old_lesson)
+
+fs::dir_create(to("episodes/files/"))
+fs::file_move(to("bibliography.bib"), to("episodes/files/bibliography.bib"))
+fix_bib_code(old_lesson$episodes[["02-introduction-to-bioconductor.Rmd"]])
+fix_bib_code(old_lesson$episodes[["07-genomic-ranges.Rmd"]])
+
+purrr::walk(old_lesson$episodes, remove_setup)
+purrr::walk(old_lesson$episodes, write_out)
