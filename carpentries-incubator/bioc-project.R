@@ -59,6 +59,15 @@ remove_setup <- function(ep) {
   invisible(ep)
 }
 
+stop_install_codes <- function(ep) {
+  inst_code <- ep$code 
+  inst_code <- inst_code[grepl("BiocManager::install", xml2::xml_text(inst_code))]
+  if (length(inst_code)) {
+    xml2::xml_set_attr(inst_code, "eval", "FALSE")
+  }
+  invisible(ep)
+}
+
 write_out <- function(ep) {
   ep$write(fs::path(new, "episodes"), format = "Rmd")
 }
@@ -70,5 +79,6 @@ fs::file_move(to("bibliography.bib"), to("episodes/files/bibliography.bib"))
 fix_bib_code(old_lesson$episodes[["02-introduction-to-bioconductor.Rmd"]])
 fix_bib_code(old_lesson$episodes[["07-genomic-ranges.Rmd"]])
 
+purrr::walk(old_lesson$episodes, stop_install_codes)
 purrr::walk(old_lesson$episodes, remove_setup)
 purrr::walk(old_lesson$episodes, write_out)
