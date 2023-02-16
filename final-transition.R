@@ -76,7 +76,7 @@ if (dir_exists(new)) {
   for (f in c("commit-map", "ref-map", "suboptimal-issues")) {
     fs::file_copy(
       path(new, ".git", "filter-repo", f),
-      path(new, "..", paste0(fs::path_file(new), "-" f, ".hash"))
+      paste0(sub("[/]?$", paste0("-", f, ".hash"), new))
     )
   }
   # pluck out a commit to exclude
