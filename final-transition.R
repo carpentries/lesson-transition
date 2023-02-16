@@ -81,6 +81,7 @@ if (dir_exists(new)) {
     writeLines(bad_hashes[1], invalidfile)
   }
 }
+
 set_config(c(
   "source" = paste0("https://github.com/", repo),
   "url" = url

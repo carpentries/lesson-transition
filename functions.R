@@ -256,6 +256,15 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
   repo_info <- gh::gh(REPO)
   default <- repo_info$default_branch
+  date_created <- as.character(as.Date(repo_info$created_at))
+  sandpaper::set_config(c(created = date_created), write = TRUE, path = path)
+  withr::with_dir(path, {
+    callr::run("git", c("add", "config.yaml"), 
+      echo = TRUE, echo_cmd = TRUE)
+    callr::run("git", c("commit", "--amend", "--no-edit"), 
+      echo = TRUE, echo_cmd = TRUE)
+  })
+
   action <- if (is.null(action)) NULL else fs::path_abs(action)
 
   # rename default branch
