@@ -72,6 +72,9 @@ prebeta/%.json : %.R %/.git $(PREREQS) transform-lesson.R pre-beta.R
 beta/%.json : %.R %/.git $(PREREQS) transform-lesson.R beta.R
 	Rscript beta.R $* $@ beta-phase.csv
 
+release/%.json : %.R %/.git $(PREREQS) transform-lesson.R final-transition.R
+	Rscript final-transition.R $* $@
+
 sandpaper/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R datacarpentry/R-ecology-lesson/.git $(PREREQS)
 	PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash filter-and-transform.sh $@ $<
 

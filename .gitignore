@@ -7,6 +7,9 @@ sandpaper/**
 /beta/*/*
 !/beta/**/*-status.json
 !/beta/**/*.hash
+/release/*/*
+!/release/**/*-status.json
+!/release/**/*.hash
 beta/zkamvar*
 beta/zkamvar/*
 zkamvar/*
