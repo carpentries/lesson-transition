@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 r'{Create markdown for a collaboration notice
 
 Usage: 
@@ -30,7 +31,7 @@ collabs <- gh::gh("GET /repos/{repo}/collaborators",
   purrr::discard(\(member) member$login %in% to_ignore)
 
 
-cli::cli_h1("Gathering collaborators for {arguments$repo} with at least push access")
+cli::cli_alert_info("Gathering collaborators for {arguments$repo} with at least push access")
 
 collab_list <- purrr::map_chr(collabs, \(x) {
   glue::glue(" - [ ] @{x$login} ({names(which(unlist(x$permissions))[1])})")
@@ -59,4 +60,7 @@ if (is.null(arguments$issue) || isFALSE(arguments$issue)) {
   writeLines(msg)
 }
 
-
+cli::cli_h1("MANUAL STEP")
+cli::cli_alert_info("Visit {.url https://github.com/{arguments$repo}/settings/access} and set everyone's access to {.code read}")
+cli::cli_par()
+cli::cli_h1("DONE")
