@@ -255,6 +255,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   cli::cli_h1("Setting up repository")
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
   repo_info <- gh::gh(REPO)
+  jsonlite::write_json(repo_info, sub("[/]$", "-status.json", path))
   default <- repo_info$default_branch
   date_created <- as.character(as.Date(repo_info$created_at))
   sandpaper::set_config(c(created = date_created), write = TRUE, path = path)

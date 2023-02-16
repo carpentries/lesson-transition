@@ -72,14 +72,23 @@ if (dir_exists(new)) {
   callr::run("bash", cmd, echo_cmd = TRUE, echo = TRUE,
     env = c("current", PATH = paste0(gfr, ":", Sys.getenv("PATH")))
   )
+  cli::cli_alert_info("Copying filter output")
+  for (f in c("commit-map", "ref-map", "suboptimal-issues")) {
+    fs::file_copy(
+      path(new, ".git", "filter-repo", f),
+      path(new, "..", paste0(fs::path_file(new), "-" f, ".hash"))
+    )
+  }
   # pluck out a commit to exclude
   conversions <- read.table(path(new, ".git", "filter-repo", "commit-map"), 
     header = TRUE)
   suppressWarnings(excluded <- as.integer(conversions[["new"]]) %in% 0)
   bad_hashes <- conversions[["old"]][excluded]
   if (length(bad_hashes)) {
+    cli::cli_alert_info("recording {substr(bad_hashes[1], 1, 7)} to {.file {invalidfile}}")
     writeLines(bad_hashes[1], invalidfile)
   }
+  # copy 
 }
 
 set_config(c(
