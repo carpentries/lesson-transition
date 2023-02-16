@@ -37,20 +37,26 @@ collab_list <- purrr::map_chr(collabs, \(x) {
   glue::glue(" - [ ] @{x$login} ({names(which(unlist(x$permissions))[1])})")
 }) |> glue::glue_collapse(sep = "\n")
 
-msg <- c("This lesson will be converted to use The Carpentries Workbench",
+msg <- c("This lesson will be converted to use [The Carpentries Workbench][workbench]",
   "To prevent accidental reversion of the changes, we are temporarily revoking",
   "write access for all collaborators on this lesson:",
   "",
   collab_list,
   "",
   "If you no longer wish to have write access to this repository, you do not",
-  "need to do anything further", 
+  "need to do anything further.", 
+  "",
+  "1. What you can expect from the transition 📹: https://carpentries.github.io/workbench/beta-phase.html#beta",
+  "2. How to update your local clone 💻: https://carpentries.github.io/workbench/beta-phase.html#updating-clone",
+  "3. How to update (delete) your fork (if you have one) 📹: https://carpentries.github.io/workbench/faq.html#update-fork-from-styles",
   "",
   "If you wish to regain write access, please re-clone the repository on your machine and",
   "then comment here with `I am ready for write access :rocket:` and the",
   "admin maintainer of this repository will restore your permissions.",
   "",
-  "If you have any questions, please reply here and tag @core-team-curriculum")
+  "If you have any questions, please reply here and tag @zkamvar",
+  "",
+  "[workbench]: https://carpentries.github.io/workbench")
 
 if (is.null(arguments$issue) || isFALSE(arguments$issue)) {
   cli::cli_h1("displaying to screen")
