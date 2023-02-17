@@ -337,10 +337,11 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     if (inherits(action, "fs_path")) {
       cli::cli_alert_info("adding index splash screen")
       writeLines(idx, "index.html")
+      fs::file_touch(".nojekyll")
       cli::cli_alert_info("Adding the workflow to prevent pull requests")
       fs::dir_create(".github/workflows", recurse = TRUE)
       fs::file_copy(action, ".github/workflows")
-      callr::run("git", c("add", fs::path(".github/workflows", fs::path_file(action))), 
+      callr::run("git", c("add", ".nojekyll", "index.html", fs::path(".github/workflows", fs::path_file(action))), 
           echo = TRUE, echo_cmd = TRUE)
     }
     callr::run("git", c("commit", "--allow-empty", "-m", "Intializing gh-pages branch"), 
@@ -360,6 +361,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
         path   = jsonlite::unbox("/")
       )
   ))
+  Sys.sleep(2)
   gh::gh("POST /repos/{owner}/{repo}/pages/builds",
     owner = owner,
     repo = repo
