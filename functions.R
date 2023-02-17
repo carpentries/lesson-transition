@@ -324,10 +324,12 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   # gh-pages branch -----------------------------------------------------------
   # setting a new, empty gh-pages branch 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
-  idx <- readLines("transition-screen.html")
-  desc <- if (is.null(repo_info$description)) "This Lesson" else repo_info$description
-  idx <- gsub("LESSON", desc, idx)
-  idx <- gsub("SOURCE", repo_info$full_name, idx)
+  # I wanted to create a temporary splash screen for the transition, but it
+  # looks like it's not happening :(
+  # idx <- readLines("transition-screen.html")
+  # desc <- if (is.null(repo_info$description)) "This Lesson" else repo_info$description
+  # idx <- gsub("LESSON", desc, idx)
+  # idx <- gsub("SOURCE", repo_info$full_name, idx)
   withr::with_dir(path, {
     callr::run("git", c("checkout", "--orphan", "gh-pages"), 
       echo = TRUE, echo_cmd = TRUE)
@@ -335,13 +337,10 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
       echo = FALSE, echo_cmd = TRUE)
     # we want to add a workflow to prevent pushes
     if (inherits(action, "fs_path")) {
-      cli::cli_alert_info("adding index splash screen")
-      writeLines(idx, "index.html")
-      fs::file_touch(".nojekyll")
       cli::cli_alert_info("Adding the workflow to prevent pull requests")
       fs::dir_create(".github/workflows", recurse = TRUE)
       fs::file_copy(action, ".github/workflows")
-      callr::run("git", c("add", ".nojekyll", "index.html", fs::path(".github/workflows", fs::path_file(action))), 
+      callr::run("git", c("add", fs::path(".github/workflows", fs::path_file(action))), 
           echo = TRUE, echo_cmd = TRUE)
     }
     callr::run("git", c("commit", "--allow-empty", "-m", "Intializing gh-pages branch"), 
@@ -351,21 +350,6 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     callr::run("git", c("switch", "main"), 
       echo = TRUE, echo_cmd = TRUE)
   })
-  cli::cli_alert_info("setting gh-pages as pages branch")
-  gh::gh("PUT /repos/{owner}/{repo}/pages",
-    owner = owner,
-    repo = repo,
-    .params = list(
-      source = list(
-        branch = jsonlite::unbox("gh-pages"),
-        path   = jsonlite::unbox("/")
-      )
-  ))
-  Sys.sleep(2)
-  gh::gh("POST /repos/{owner}/{repo}/pages/builds",
-    owner = owner,
-    repo = repo
-  )
 
   # LOCKING legacy branches ---------------------------------------------------
   cli::cli_alert_info("locking legacy branches")
@@ -389,7 +373,6 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     restrictions = NA,
     lock_branch = TRUE
   ) 
-
 
 }
 
