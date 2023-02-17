@@ -106,7 +106,7 @@ writeLines(cfg, fs::path(new, "config.yaml"))
 
 chchchchanges <- git_add(".", repo = new)
 withr::with_dir(new, {
-  callr::run("git", c("commit", "-m", "[automation] set workbench URL"))
+  callr::run("git", c("commit", "-m", "[automation] final workbench updates"))
 })
 
 refs <- gert::git_remote_ls(repo = old)

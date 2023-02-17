@@ -324,6 +324,9 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   # gh-pages branch -----------------------------------------------------------
   # setting a new, empty gh-pages branch 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
+  idx <- readLines("transition-screen.html")
+  idx <- gsub("LESSON", repo_info$description, idx)
+  idx <- gsub("SOURCE", repo_info$full_name, idx)
   withr::with_dir(path, {
     callr::run("git", c("checkout", "--orphan", "gh-pages"), 
       echo = TRUE, echo_cmd = TRUE)
@@ -331,6 +334,8 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
       echo = FALSE, echo_cmd = TRUE)
     # we want to add a workflow to prevent pushes
     if (inherits(action, "fs_path")) {
+      cli::cli_alert_info("adding index splash screen")
+      writeLines(idx, "index.html")
       cli::cli_alert_info("Adding the workflow to prevent pull requests")
       fs::dir_create(".github/workflows", recurse = TRUE)
       fs::file_copy(action, ".github/workflows")
