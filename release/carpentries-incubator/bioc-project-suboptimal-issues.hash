@@ -1,0 +1,6 @@
+The following commits were filtered out, but referenced in another
+commit message.  The reference to the now-nonexistent commit hash
+(or a substring thereof) was left as-is in any commit messages:
+  b'1725e9351f4a30baa385be9c8d00bb26e300823d'
+  b'959563408'
+
