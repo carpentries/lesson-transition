@@ -349,6 +349,20 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     callr::run("git", c("switch", "main"), 
       echo = TRUE, echo_cmd = TRUE)
   })
+  cli::cli_alert_info("setting gh-pages as pages branch")
+  gh::gh("PUT /repos/{owner}/{repo}/pages",
+    owner = owner,
+    repo = repo,
+    .params = list(
+      source = list(
+        branch = jsonlite::unbox("gh-pages"),
+        path   = jsonlite::unbox("/")
+      )
+  ))
+  gh::gh("POST /repos/{owner}/{repo}/pages/builds",
+    owner = owner,
+    repo = repo
+  )
 
   # LOCKING legacy branches ---------------------------------------------------
   cli::cli_alert_info("locking legacy branches")
