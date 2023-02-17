@@ -61,7 +61,8 @@ remove_setup <- function(ep) {
 
 stop_install_codes <- function(ep) {
   inst_code <- ep$code 
-  inst_code <- inst_code[grepl("BiocManager::install", xml2::xml_text(inst_code))]
+  # we have BiocManager::install(), install.packages() AND remove.packages() :weary:
+  inst_code <- inst_code[grepl("(BiocManager[:][:]install)|((install|remove)[.]packages)", xml2::xml_text(inst_code))]
   if (length(inst_code)) {
     xml2::xml_set_attr(inst_code, "eval", "FALSE")
   }
