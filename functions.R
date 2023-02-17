@@ -325,7 +325,8 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   # setting a new, empty gh-pages branch 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
   idx <- readLines("transition-screen.html")
-  idx <- gsub("LESSON", repo_info$description, idx)
+  desc <- if (is.null(repo_info$description)) "This Lesson" else repo_info$description
+  idx <- gsub("LESSON", desc, idx)
   idx <- gsub("SOURCE", repo_info$full_name, idx)
   withr::with_dir(path, {
     callr::run("git", c("checkout", "--orphan", "gh-pages"), 
