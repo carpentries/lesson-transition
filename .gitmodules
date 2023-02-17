@@ -116,4 +116,4 @@
 [submodule "carpentries-incubator/managing-computational-projects"]
 	path = carpentries-incubator/managing-computational-projects
 	url = https://github.com/carpentries-incubator/managing-computational-projects/
-	branch = gh-pages
+	branch = main
