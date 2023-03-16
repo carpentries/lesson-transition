@@ -144,7 +144,17 @@ rewrite <- function(x, out, verbose = getOption("carpentries.transition.loud", T
       process_tags = TRUE, 
       fix_links = TRUE, 
       fix_liquid = TRUE)
-    ref$unblock()$use_sandpaper()$write(out, format = fs::path_ext(x))
+    ref$unblock()$use_sandpaper()
+    if (ref$yaml[2] == "{}") {
+      ref$yaml[2] = "title: 'FIXME'"
+    }
+    if (length(xml2::xml_children(res$body)) == 0L) {
+      res$add_md("FIXME This is a placeholder file. Please add content here.")
+    }
+    if (fs::path_file(x) == "reference.md") {
+      res$add_md("## Glossary")
+    }
+    ref$write(out, format = fs::path_ext(x))
   }, error = function(e) {
     if (verbose) cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")
   })
