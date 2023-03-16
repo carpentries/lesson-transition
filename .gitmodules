@@ -117,3 +117,7 @@
 	path = carpentries-incubator/managing-computational-projects
 	url = https://github.com/carpentries-incubator/managing-computational-projects/
 	branch = main
+[submodule "datacarpentry/sql-ecology-lesson"]
+	path = datacarpentry/sql-ecology-lesson
+	url = https://github.com/datacarpentry/sql-ecology-lesson/
+	branch = gh-pages

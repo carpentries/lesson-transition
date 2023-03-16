@@ -26,6 +26,7 @@ remove_setup <- function(ep) {
   }
   invisible(ep)
 }
+
 fix_these_links <- function(lnks) {
   purrr::walk2(lnks$node, lnks$orig, 
     \(a, b) xml2::xml_set_attr(a, "destination", b))

@@ -1,4 +1,10 @@
 # Functions --------------------------------------------------------------------
+write_out_rmd <- function(ep) {
+  ep$write(fs::path(new, "episodes"), format = "Rmd")
+}
+write_out_md <- function(ep) {
+  ep$write(fs::path(new, "episodes"), format = "md")
+}
 #
 # The following lines are functions that I need to transform the lessons
 #
@@ -91,6 +97,38 @@ fix_level_one_headings <- function(episode) {
   xml2::xml_set_attr(headings, "level", hlevels)
 }
 
+# Jekyll never provided a clear way to create custom anchors for headings
+# so folks found some advice to add empty anchor tags to the headings so that
+# they could reliably name them like:
+#
+# ## <a id='janky'></a> Janky heading with a weird anchor link
+#
+# This is inaccessible design. This function will change this heading to be
+#
+# ## Janky heading with a weird anchor link {#janky}
+#
+#
+fix_janky_heading_ids <- function(episode) {
+  # Find ONLY the nodes that start with an `<a>` tag. 
+  headings <- xml2::xml_find_all(episode$body,
+    ".//md:heading[md:html_inline[starts-with(text(), '<a')]]", 
+    ns = episode$ns)
+  for (this_heading in headings) {
+    # parse the text into HTML, find the first anchor tag, and extract the 
+    # id/name attribute
+    txt    <- xml2::xml_text(this_heading)
+    anchor <- xml2::xml_find_first(xml2::read_html(txt), 
+      ".//a/@id | .//a/@name")
+    id <- xml2::xml_text(anchor)
+    # remove the HTML inline elements of this heading
+    children <- xml2::xml_children(this_heading)
+    xml2::xml_remove(children[xml2::xml_name(children) == "html_inline"])
+    # append the id to the heading text
+    this_text <- trimws(xml2::xml_text(this_heading))
+    xml2::xml_set_text(this_heading, paste0(this_text, " {#", id, "}"))
+  }
+}
+
 
 
 # transform the episodes via pegboard with reporters
@@ -132,6 +170,9 @@ transform <- function(e, out = new, verbose = getOption("carpentries.transition.
   cli::cli_status_update("fixing low-level headings")
   fix_small_headings(e)
 
+  cli::cli_status_update("fixing inaccessible anchor links in headings")
+  fix_janky_heading_ids(e)
+
   cli::cli_process_start("Writing {.file {fs::path_rel(outdir, getwd())}/{e$name}}")
   e$write(outdir, format = path_ext(e$name), edit = FALSE)
   cli::cli_process_done()
@@ -148,11 +189,11 @@ rewrite <- function(x, out, verbose = getOption("carpentries.transition.loud", T
     if (ref$yaml[2] == "{}") {
       ref$yaml[2] = "title: 'FIXME'"
     }
-    if (length(xml2::xml_children(res$body)) == 0L) {
-      res$add_md("FIXME This is a placeholder file. Please add content here.")
+    if (length(xml2::xml_children(ref$body)) == 0L) {
+      ref$add_md("FIXME This is a placeholder file. Please add content here.")
     }
     if (fs::path_file(x) == "reference.md") {
-      res$add_md("## Glossary")
+      ref$add_md("## Glossary")
     }
     ref$write(out, format = fs::path_ext(x))
   }, error = function(e) {
