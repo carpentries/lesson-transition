@@ -30,8 +30,8 @@ library("askpass")
 no_repo <- tryCatch(gh("GET /repos/{repo}", repo = arguments$repo), 
   github_error = function(e) e)
 if (inherits(no_repo, "gh_response")) {
-  tkn <- Sys.getenv("DEL_PAT") %||% FALSE
-  if (isFALSE(tkn)) {
+  tkn <- Sys.getenv("DEL_PAT", unset = NA)
+  if (is.na(tkn)) {
     browseURL("https://github.com/settings/tokens/new?scopes=delete_repo&description=delete%20transition%2Dtest%2D2")
     tkn <- askpass::askpass("Create a temporary token to DELETE existing repository\nPASTE YOUR TOKEN HERE: ")
   }
