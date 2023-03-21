@@ -83,10 +83,10 @@
     },
     "cachem": {
       "Package": "cachem",
-      "Version": "1.0.6",
+      "Version": "1.0.7",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "648c5b3d71e6a37e3043617489a0a0e9",
+      "Hash": "cda74447c42f529de601fe4d4050daef",
       "Requirements": [
         "fastmap",
         "rlang"
@@ -121,10 +121,10 @@
     },
     "commonmark": {
       "Package": "commonmark",
-      "Version": "1.8.1",
+      "Version": "1.9.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "b6e3e947d1d7ebf3d2bdcea1bde63fe7",
+      "Hash": "d691c61bff84bd63c383874d2d0c3307",
       "Requirements": []
     },
     "cpp11": {
@@ -240,10 +240,10 @@
     },
     "fastmap": {
       "Package": "fastmap",
-      "Version": "1.1.0",
+      "Version": "1.1.1",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "77bd60a6157420d4ffa93b27cf6a58b8",
+      "Hash": "f7736a18de97dea803bde0a2daaafb27",
       "Requirements": []
     },
     "fs": {
@@ -271,16 +271,17 @@
     },
     "gh": {
       "Package": "gh",
-      "Version": "1.3.1",
+      "Version": "1.4.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "b6a12054ee13dce0f6696c019c10e539",
+      "Repository": "RSPM",
+      "Hash": "03533b1c875028233598f848fda44c4c",
       "Requirements": [
         "cli",
         "gitcreds",
-        "httr",
+        "httr2",
         "ini",
-        "jsonlite"
+        "jsonlite",
+        "rlang"
       ]
     },
     "gitcreds": {
@@ -351,16 +352,34 @@
     },
     "httr": {
       "Package": "httr",
-      "Version": "1.4.4",
+      "Version": "1.4.5",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "57557fac46471f0dbbf44705cc6a5c8c",
+      "Repository": "RSPM",
+      "Hash": "f6844033201269bec3ca0097bc6c97b3",
       "Requirements": [
         "R6",
         "curl",
         "jsonlite",
         "mime",
         "openssl"
+      ]
+    },
+    "httr2": {
+      "Package": "httr2",
+      "Version": "0.2.2",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "5c09fe33064978ede54de42309c8b532",
+      "Requirements": [
+        "R6",
+        "cli",
+        "curl",
+        "glue",
+        "magrittr",
+        "openssl",
+        "rappdirs",
+        "rlang",
+        "withr"
       ]
     },
     "ini": {
@@ -460,10 +479,10 @@
     },
     "openssl": {
       "Package": "openssl",
-      "Version": "2.0.5",
+      "Version": "2.0.6",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "b04c27110bf367b4daa93f34f3d58e75",
+      "Hash": "0f7cd2962e3044bb940cca4f4b5cecbe",
       "Requirements": [
         "askpass"
       ]
@@ -572,10 +591,10 @@
     },
     "ps": {
       "Package": "ps",
-      "Version": "1.7.2",
+      "Version": "1.7.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "68dd03d98a5efd1eb3012436de45ba83",
+      "Hash": "ebaacc87f539b1100e285e9e5d6496ad",
       "Requirements": []
     },
     "purrr": {
@@ -613,18 +632,18 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.16.0",
+      "Version": "0.17.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "c9e8442ab69bc21c9697ecf856c1e6c7",
+      "Hash": "aaf3c7f769695266a2113db67a25148b",
       "Requirements": []
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.0.6",
+      "Version": "1.1.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "4ed1f8336c8d52c3e750adcdc57228a7",
+      "Hash": "dc079ccd156cde8647360f473c1fa718",
       "Requirements": []
     },
     "rmarkdown": {
@@ -664,16 +683,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.11.10",
+      "Version": "0.11.11.001",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "a1d0ad92bb0f9c6511e6b53c4c659d33999e20f6",
+      "RemoteSha": "8a8517c5a7c6dc0409ed89e64278a819ecfca696",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish,\n    rstudio/renv",
-      "Hash": "1b75bd5d300b8888f31da64c96697771",
+      "Hash": "62c2523e424df1c8b37bebd63ca66164",
       "Requirements": [
         "assertthat",
         "callr",
@@ -714,10 +733,10 @@
     },
     "servr": {
       "Package": "servr",
-      "Version": "0.25",
+      "Version": "0.26",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "fff3eeed2ebb27fc33abbd6d953610a4",
+      "Hash": "fd76750552bad91bbb9b89662f3a3f87",
       "Requirements": [
         "httpuv",
         "jsonlite",
@@ -780,10 +799,10 @@
     },
     "tibble": {
       "Package": "tibble",
-      "Version": "3.1.8",
+      "Version": "3.2.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "56b6934ef0f8c68225949a8672fe1a8f",
+      "Hash": "a84e2cc86d07289b3b6f5069df7a004c",
       "Requirements": [
         "fansi",
         "lifecycle",
@@ -802,9 +821,9 @@
       "RemoteUsername": "ropensci",
       "RemoteRepo": "tinkr",
       "RemoteRef": "main",
-      "RemoteSha": "b2e0459483d8e713bcea4cec35fb9042d51da0a3",
+      "RemoteSha": "c50a2f000fcabc484a6c8b1d4fa0bd19407ed403",
       "RemoteHost": "api.github.com",
-      "Hash": "9e80e55166c8edd827d93467822f1404",
+      "Hash": "529a6b35c4a238e2e8425a146d24f075",
       "Requirements": [
         "R6",
         "commonmark",
@@ -877,10 +896,10 @@
     },
     "vctrs": {
       "Package": "vctrs",
-      "Version": "0.5.2",
+      "Version": "0.6.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "e4ffa94ceed5f124d429a5a5f0f5b378",
+      "Hash": "7e877404388794361277be95d8445de8",
       "Requirements": [
         "cli",
         "glue",
@@ -928,10 +947,10 @@
     },
     "xslt": {
       "Package": "xslt",
-      "Version": "1.4.3",
+      "Version": "1.4.4",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "2f44fc659e30d602098fb238e3b656ed",
+      "Hash": "e2c9cc5c470a5a3a4c1d458404f1a034",
       "Requirements": [
         "Rcpp",
         "xml2"
