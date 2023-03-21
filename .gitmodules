@@ -121,3 +121,7 @@
 	path = datacarpentry/sql-ecology-lesson
 	url = https://github.com/datacarpentry/sql-ecology-lesson/
 	branch = gh-pages
+[submodule "librarycarpentry/lc-r"]
+	path = librarycarpentry/lc-r
+	url = https://github.com/librarycarpentry/lc-r/
+	branch = main
