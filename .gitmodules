@@ -113,11 +113,3 @@
 	path = librarycarpentry/lc-r
 	url = https://github.com/librarycarpentry/lc-r/
 	branch = main
-[submodule "carpentries-incubator/bioc-intro"]
-	path = carpentries-incubator/bioc-intro
-	url = https://github.com/carpentries-incubator/bioc-intro/
-	branch = main
-[submodule "carpentries/maintainer-onboarding"]
-	path = carpentries/maintainer-onboarding
-	url = https://github.com/carpentries/maintainer-onboarding/
-	branch = main
