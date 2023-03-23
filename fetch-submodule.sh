@@ -1,6 +1,24 @@
 #!/usr/bin/env bash
 
-REPO=${1%.*}
+REPO="${1%.*}"
+
+BETA="beta/${REPO%%[/]}.json"
+RELEASE="release/${REPO%%[/]}.json"
+IN_MODULES=$(grep -c ${REPO%%[/]} .gitmodules)
+IN_IGNORE=$(grep -c ${REPO%%[/]} .module-ignore)
+
+if [[ "${IN_IGNORE}" -ne 0 || -e "${BETA}" || -e "${RELEASE}" ]]; then
+  if [[ ${IN_MODULES} -ne 0 ]]; then
+    echo -e "\033[1mRemoving \033[38;5;208m${REPO}\033[0;00m as a submodule\033[22m"
+    git rm "${REPO}"
+    rm -rf ".git/modules/${REPO}"
+    git config --remove-section "submodule.${REPO}" || echo ""
+  else
+    echo -e "\033[1mNothing to do for \033[38;5;208m${REPO}\033[0;00m.\033[22m"
+  fi
+  exit 0
+fi
+
 TOKEN=$(./pat.sh)
 
 echo -e "\033[1mChecking \033[38;5;208m${REPO}\033[0;00m...\033[22m"
