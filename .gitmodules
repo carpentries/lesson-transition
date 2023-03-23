@@ -105,10 +105,6 @@
 	path = fishtree-attempt/znk-transition-test
 	url = https://github.com/fishtree-attempt/znk-transition-test/
 	branch = gh-pages
-[submodule "carpentries/maintainer-onboarding"]
-	path = carpentries/maintainer-onboarding
-	url = https://github.com/carpentries/maintainer-onboarding/
-	branch = main
 [submodule "carpentries-incubator/managing-computational-projects"]
 	path = carpentries-incubator/managing-computational-projects
 	url = https://github.com/carpentries-incubator/managing-computational-projects/
