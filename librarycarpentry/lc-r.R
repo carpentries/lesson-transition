@@ -13,6 +13,9 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+# Remove previously generated markdown files ------------------
+
+fs::file_delete(fs::dir_ls(to("episodes"), glob = "*.md"))
 
 # Fix Episode 3 discontinuous block quotes --------------------
 sandbox <- tempfile()
@@ -69,6 +72,11 @@ e3 <- old_lesson$episodes[[4]]
 e3tmp <- fix_discontinuous_blocks(e3$path)
 # re-load and re-transform that file
 old_lesson$episodes[[4]] <- pegboard::Episode$new(e3tmp)
+e3code <- old_lesson$episodes[[4]]$code
+txt <- xml2::xml_text(e3code)
+needs_fixin <- grepl("fig/BCODE..PNG", txt)
+txt[needs_fixin] <- sub("PNG", "png", txt[needs_fixin])
+xml2::xml_set_text(e3code[needs_fixin], txt[needs_fixin])
 transform(old_lesson$episodes[[4]])
 
 # Fix preamble code ---------------------------------------------
