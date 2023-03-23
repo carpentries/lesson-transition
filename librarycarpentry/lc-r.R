@@ -68,6 +68,17 @@ e3 <- old_lesson$episodes[[4]]
 # fill the gaps and write a new file
 e3tmp <- fix_discontinuous_blocks(e3$path)
 # re-load and re-transform that file
-newe3 <- pegboard::Episode$new(e3tmp)
-transform(newe3)
+old_lesson$episodes[[4]] <- pegboard::Episode$new(e3tmp)
+transform(old_lesson$episodes[[4]])
+
+# Fix preamble code ---------------------------------------------
+fs::dir_create(to("episodes/files/"))
+fs::file_copy(from("bin/download_data.R"), to("episodes/files/download_data.R"))
+replace_source <- function(ep) {
+  setup <- ep$code[1]
+  txt <- sub("../bin/", "files/", xml2::xml_text(setup))
+  xml2::xml_set_text(setup, txt)
+  write_out_rmd(ep)
+}
+purrr::walk(old_lesson$episodes, replace_source)
 
