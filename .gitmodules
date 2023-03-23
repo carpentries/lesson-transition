@@ -42,14 +42,6 @@
 	branch = main
 	path = carpentries-incubator/SDC-BIDS-dMRI
 	url = https://github.com/carpentries-incubator/SDC-BIDS-dMRI/
-[submodule "datacarpentry/r-raster-vector-geospatial"]
-	branch = main
-	path = datacarpentry/r-raster-vector-geospatial
-	url = https://github.com/datacarpentry/r-raster-vector-geospatial/
-[submodule "carpentries/instructor-training"]
-	path = carpentries/instructor-training
-	url = https://github.com/carpentries/instructor-training/
-	branch = main
 [submodule "carpentries-incubator/SDC-BIDS-sMRI"]
 	path = carpentries-incubator/SDC-BIDS-sMRI
 	url = https://github.com/carpentries-incubator/SDC-BIDS-sMRI/
@@ -62,10 +54,6 @@
 	path = carpentries-incubator/SDC-BIDS-fMRI
 	url = https://github.com/carpentries-incubator/SDC-BIDS-fMRI/
 	branch = gh-pages
-[submodule "datacarpentry/r-socialsci"]
-	path = datacarpentry/r-socialsci
-	url = https://github.com/datacarpentry/r-socialsci/
-	branch = main
 [submodule "swcarpentry/shell-novice"]
 	path = swcarpentry/shell-novice
 	url = https://github.com/swcarpentry/shell-novice/
@@ -73,18 +61,6 @@
 [submodule "git-filter-repo"]
 	path = git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git
-[submodule "carpentries-incubator/bioc-project"]
-	path = carpentries-incubator/bioc-project
-	url = https://github.com/carpentries-incubator/bioc-project/
-	branch = main
-[submodule "carpentries-incubator/bioc-rnaseq"]
-	path = carpentries-incubator/bioc-rnaseq
-	url = https://github.com/carpentries-incubator/bioc-rnaseq/
-	branch = main
-[submodule "datacarpentry/python-ecology-lesson-es"]
-	path = datacarpentry/python-ecology-lesson-es
-	url = https://github.com/datacarpentry/python-ecology-lesson-es/
-	branch = main
 [submodule "datacarpentry/OpenRefine-ecology-lesson"]
 	path = datacarpentry/OpenRefine-ecology-lesson
 	url = https://github.com/datacarpentry/OpenRefine-ecology-lesson/
@@ -101,10 +77,6 @@
 	path = fishtree-attempt/znk-transition-test
 	url = https://github.com/fishtree-attempt/znk-transition-test/
 	branch = gh-pages
-[submodule "carpentries-incubator/managing-computational-projects"]
-	path = carpentries-incubator/managing-computational-projects
-	url = https://github.com/carpentries-incubator/managing-computational-projects/
-	branch = main
 [submodule "datacarpentry/sql-ecology-lesson"]
 	path = datacarpentry/sql-ecology-lesson
 	url = https://github.com/datacarpentry/sql-ecology-lesson/
