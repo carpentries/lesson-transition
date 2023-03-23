@@ -30,6 +30,10 @@
 	branch = gh-pages
 	path = carpentries-incubator/citable-software
 	url = https://github.com/carpentries-incubator/citable-software/
+[submodule "carpentries-incubator/jekyll-pages-novice"]
+	branch = gh-pages
+	path = carpentries-incubator/jekyll-pages-novice
+	url = https://github.com/carpentries-incubator/jekyll-pages-novice/
 [submodule "datacarpentry/wrangling-genomics"]
 	branch = gh-pages
 	path = datacarpentry/wrangling-genomics
