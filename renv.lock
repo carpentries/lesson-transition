@@ -105,10 +105,10 @@
     },
     "cli": {
       "Package": "cli",
-      "Version": "3.6.0",
+      "Version": "3.6.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "3177a5a16c243adc199ba33117bd9657",
+      "Hash": "89e6d8219950eac806ae0c489052048a",
       "Requirements": []
     },
     "clipr": {
@@ -350,10 +350,10 @@
     },
     "htmltools": {
       "Package": "htmltools",
-      "Version": "0.5.4",
+      "Version": "0.5.5",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "9d27e99cc90bd701c0a7a63e5923f9b7",
+      "Hash": "ba0240784ad50a62165058a27459304a",
       "Requirements": [
         "base64enc",
         "digest",
@@ -712,16 +712,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.11.11.001",
+      "Version": "0.11.12",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "31926e348653188477aad8345e011f4bbaf03e82",
+      "RemoteSha": "d110cdef5624ed497c8631751b2e014f39339bf1",
       "RemoteHost": "api.github.com",
-      "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish,\n    rstudio/renv",
-      "Hash": "5dad1d894f34db36f971372c4c5752a8",
+      "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
+      "Hash": "dc6089edfc2e72e86ab0c0527ab655d9",
       "Requirements": [
         "assertthat",
         "callr",
