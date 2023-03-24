@@ -214,10 +214,10 @@
     },
     "dplyr": {
       "Package": "dplyr",
-      "Version": "1.1.0",
+      "Version": "1.1.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "d3c34618017e7ae252d46d79a1b9ec32",
+      "Hash": "eb5742d256a0d9306d85ea68756d8187",
       "Requirements": [
         "R6",
         "cli",
@@ -661,10 +661,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.16.0",
+      "Version": "0.17.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "c9e8442ab69bc21c9697ecf856c1e6c7",
+      "Hash": "aaf3c7f769695266a2113db67a25148b",
       "Requirements": []
     },
     "rlang": {
@@ -712,16 +712,16 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.11.12",
+      "Version": "0.11.12.001",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "d110cdef5624ed497c8631751b2e014f39339bf1",
+      "RemoteSha": "3670b23b036137500049d5f0bde3a614bdd2fa5c",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
-      "Hash": "dc6089edfc2e72e86ab0c0527ab655d9",
+      "Hash": "90086e40cc2730e4534145d0f41fde9b",
       "Requirements": [
         "assertthat",
         "callr",
@@ -969,10 +969,10 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.37",
+      "Version": "0.38",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "a6860e1400a8fd1ddb6d9b4230cc34ab",
+      "Hash": "1ed71215d45e85562d3b1b29a068ccec",
       "Requirements": []
     },
     "xml2": {
