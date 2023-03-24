@@ -1,32 +1,53 @@
 # Transitioning Carpentries Lessons
 
-This repository will contain scripts for transitioning Carpentries lessons built
+This repository contains scripts for transitioning Carpentries lessons built
 from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka 
 "The Lesson Template") to [the decoupled/centralised 
 infrastructure](https://carpentries.github.io/workbench) (aka "The Carpentries
-Workbench"). If you want to use this tool, scroll to [the usage
-section](#usage). 
+Workbench"). 
 
-**This transition process is necessarily destructive and can only be 
-perforemd one-way from 
-[carpentries/styles](https://carpentries.github.io/lesson-example) to 
-[The Carpentries Workbench](https://carpentries.github.io/workbench).**
-Once a lesson is transitioned, it can not transition back. 
+If you want to use this tool, scroll to [the usage section](#usage).
+
+The transition process uses tools built for R, python, Git, and BASH and is
+described in [The Release Workflow Documentation](release-workflow.md).
+
+> **Warning**
+> This process is necessarily destructive and can only be perforemd one-way
+> from [carpentries/styles](https://carpentries.github.io/lesson-example) to
+> [The Carpentries Workbench](https://carpentries.github.io/workbench). Once a
+> lesson is transitioned, it can not transition back. 
 
 For details about the differences between styles and the workbench, you can
 [look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).
 
 
-## Submodules
+## How To Clone
 
 This repository uses submodules. To clone this repository, you will need to use
 the `--recurse-submodules` whenever you clone or pull
 
 ```bash
 git clone --recurse-submodules https://github.com/data-lessons/lesson-transition.git
+```
 
+```bash
 git pull --recurse-submodules
 ```
+
+### Storage requirements
+
+> **Warning** 
+> 
+> Cloning this repository with all the submodules will take a lot of bandwidth
+> and space. As of this writing (commit [030f9cf](https://github.com/carpentries/lesson-transition/tree/030f9cf2bf46e0a44bffc0ca04bcc2d7cd78ce4f)),
+> the weight of the repository is ~3 GB
+
+
+During the transition, each of the lessons gains an entirely new set of
+commits, which could double the size of the lesson repository (though, it will
+almost always be less than that), but in terms of the `lesson-transition/`
+directory on your machine: the size will triple if you clone this repository
+AND transform all of the lessons.
 
 ## Motivation
 
@@ -49,6 +70,15 @@ strictly lesson content_. By removing these commits, we distill the commit
 history to those that are relevant so that it paints a clearer picture of the
 lesson development timeline and reduces the cognitive load needed to understand
 how the lesson was created.
+
+![a diagram demonstrating how git-filter-repo removes styles-specific commits
+(grey) from the lesson content commits (blue). The top git tree representing a
+styles lesson shows a git history that starts with styles and then branches to
+include lesson commits in parallel with styles commits with a merge commit. The
+bottom git tree representing a workbench lesson has the styles commits removed
+and the connections between commits are represented with orange lines. Two new
+commits in orange are added to the end of the tree that represent our automated
+commits.](fig/git-filter-repo.svg)
 
 Note: Excluding irrelevant commits from the history has precedent within The
 Carpentries! Prior to 2015, Software Carpentry lessons all lived in a [monorepo
