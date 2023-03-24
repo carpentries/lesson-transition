@@ -56,7 +56,23 @@ PREREQS := renv/library/ template/ filter-and-transform.sh functions.R filter-li
 .PHONY = github
 .PHONY = info
 
-all: restore template/ $(TARGETS) repos.md
+all:  #restore template/ $(TARGETS) repos.md
+	@echo
+	@echo 'Welcome to the Lesson Transition Workflow'
+	@echo '-----------------------------------------'
+	@echo 
+	@echo 'Add an R script of the lesson repository name to the folder of the GitHub organisation it is in.'
+	@echo
+	@echo 'Example: '
+	@echo
+	@echo '    swcarpentry/git-novice.R will allow the transtion workflow to '
+	@echo '    transition <https://github.com/swcarpentry/git-novice> to use '
+	@echo '    the workbench'
+	@echo
+	@echo 'use make sandpaper/<org>/<lesson>.json to test a lesson transition'
+	@echo 'use make release/<org>/<lesson>.json to release a lesson'
+	@echo
+	@echo
 
 modules: $(MODULE)
 	git submodule foreach 'git checkout main || git checkout gh-pages'
