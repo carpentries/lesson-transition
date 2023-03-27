@@ -10,17 +10,17 @@ on:
       repo:
         description: 'Repository to transform'
         required: false
-        default: 'datacarpentry/r-socialsci'
+        default: 'librarycarpentry/lc-r'
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      contents: write
-      pages: write
+    # permissions:
+    #   checks: write
+    #   contents: write
+    #   pages: write
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RENV_PATHS_ROOT: ~/.local/share/renv/
@@ -33,52 +33,57 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          submodules: true
 
       - uses: r-lib/actions/setup-r@v2
         with:
           install-r: false
           use-public-rspm: true
+      - uses: r-lib/actions/setup-renv@v2
 
-      - name: Cache packages
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
+      # - name: Cache packages
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ${{ env.RENV_PATHS_ROOT }}
+      #     key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-renv-
+
+      - name: Setup submodules
+        run: |
+          git submodule --init update git-filter-repo ${{ env.THIS_LESSON }}
 
       # Runs a single command using the runners shell
-      - name: Restore {renv} cache and establish template
-        shell: Rscript {0}
-        run: |
-          if (!requireNamespace("renv", quietly = TRUE)) {
-            install.packages("renv")
-          }
-          renv::restore(library = renv::paths$library())
-          library("fs")
-          library("cli")
-          library("sandpaper")
-          library("varnish")
-          lesson <- path_abs("template/")
-          to <- function(...) path(lesson, ...)
-          if (dir_exists(lesson)) {
-            dir_delete(lesson)
-          }
-          cli::cli_alert_info("creating a new sandpaper lesson")
-          create_lesson(lesson, name = "FIXME", open = FALSE)
-          cli::cli_alert_info("Removing boilerplate")
-          file_delete(to("episodes", "01-introduction.Rmd"))
-          file_delete(to("index.md"))
-          file_delete(to("README.md"))
-          dir_delete(to(".git"))
-          dir_delete(to("renv/profiles/lesson-requirements/renv"))
+      # - name: Restore {renv} cache and establish template
+      #   shell: Rscript {0}
+      #   run: |
+      #     if (!requireNamespace("renv", quietly = TRUE)) {
+      #       install.packages("renv")
+      #     }
+      #     renv::restore(library = renv::paths$library())
+      #     library("fs")
+      #     library("cli")
+      #     library("sandpaper")
+      #     library("varnish")
+      #     lesson <- path_abs("template/")
+      #     to <- function(...) path(lesson, ...)
+      #     if (dir_exists(lesson)) {
+      #       dir_delete(lesson)
+      #     }
+      #     cli::cli_alert_info("creating a new sandpaper lesson")
+      #     create_lesson(lesson, name = "FIXME", open = FALSE)
+      #     cli::cli_alert_info("Removing boilerplate")
+      #     file_delete(to("episodes", "01-introduction.Rmd"))
+      #     file_delete(to("index.md"))
+      #     file_delete(to("README.md"))
+      #     dir_delete(to(".git"))
+      #     dir_delete(to("renv/profiles/lesson-requirements/renv"))
 
       - name: Transform Lesson
         run: |
-          git config --local user.name "$GITHUB_ACTOR"
-          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${{ env.THIS_LESSON }}.json" "${{ env.THIS_LESSON }}.R"
+          make sandpaper/${{ env.THIS_LESSON }}.json
+          # git config --local user.name "$GITHUB_ACTOR"
+          # git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          # PATH="$(PWD)/git-filter-repo/git-filter-repo:${PATH}" bash -x filter-and-transform.sh "sandpaper/${{ env.THIS_LESSON }}.json" "${{ env.THIS_LESSON }}.R"
 
       - name: upload failed repo
         uses: actions/upload-artifact@v2
