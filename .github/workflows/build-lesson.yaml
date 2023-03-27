@@ -50,7 +50,7 @@ jobs:
 
       - name: Setup submodules
         run: |
-          git submodule --init update git-filter-repo ${{ env.THIS_LESSON }}
+          git submodule update --init git-filter-repo ${{ env.THIS_LESSON }}
 
       # Runs a single command using the runners shell
       # - name: Restore {renv} cache and establish template
