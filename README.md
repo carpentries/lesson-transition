@@ -28,7 +28,7 @@ In general, therea are two commands you would want to use:
 
 | Purpose | command | effect |
 | ------- | ------- | ------ |
-| Test a lesson transition | `make sandpaper/<org>/<repo>` | creates a test transition of a lesson by making a copy of the submodule, and transforming it inside of the `sandpaper/` directory |
+| Test a lesson transition | `make sandpaper/<org>/<repo>` | creates a test transition of a lesson by making a copy of the submodule, and transforming it inside of the `sandpaper/` directory. This transformation adds some additional filters to the commit messages so that any issue or pull request references are masked. This prevents authors from getting notifications if you push it up to a testing repository. |
 | Release a lesson transition (irreversible) | `make release/<org>/<repo>` | transitions a lesson and **reconfigure the source repository** to use The Workbench. **This is irreversible, so be sure that this is what you want to do **|
 
 For details about the differences between styles and the workbench, you can
@@ -37,16 +37,38 @@ For details about the differences between styles and the workbench, you can
 
 ## How To Clone
 
+### To transform one lesson
+
+If you wish to transform one lesson, you can clone this without pulling down the
+submodules. This will save space and bandwidth, but it comes at the cost of a
+couple of more commands:
+
+```sh
+git clone https://github.com/carpentries/lesson-transition.git
+cd lesson-transition
+git submodule update --init git-filter-repo # make sure `git-filter-repo` is available
+```
+
+For each repository you want to transform, you will need to run the following
+command to initialize it before you run one of the transformation commands.
+
+```sh
+git submodule update --init <org>/<repo>
+```
+
+### To transform all lessons
+
 This repository uses submodules. To clone this repository, you will need to use
 the `--recurse-submodules` whenever you clone or pull
 
 ```bash
-git clone --recurse-submodules https://github.com/data-lessons/lesson-transition.git
+git clone --recurse-submodules https://github.com/carpentries/lesson-transition.git
 ```
 
 ```bash
 git pull --recurse-submodules
 ```
+
 
 ### Storage requirements
 
@@ -312,7 +334,7 @@ The tool used to filter commits is a python tool called
 [git-filter-repo](git-filter-repo) and we have a copy as a submodule of this
 project. 
 
-The R packages required are provided in the [`renv.lock` file](renv.lock)
+The R packages required are provided in the [`renv.lock` file](renv.lock).
 
 ### Adding a new lesson
 
@@ -324,6 +346,13 @@ To add a lesson for translation, there are two steps:
 2. run `make`
 
 ### Bootstrapping infrastructure
+
+The infrastructure will bootstrap itself (so long as you have the [Requirements](#requirements)
+installed) when you run a conversion command. This will include:
+
+ 0. The lesson submodule
+ 1. R package cache
+ 2. The Workbench template
 
 To bootstrap the infrastructure without converting lessons, you can run the
 following targets:
@@ -344,7 +373,7 @@ To update the R packages used for translation, you can run `make update`
 To make an individual target, run 
 
 ```bash
-make sandpaper/datacarpentry/new-R-ecology-lesson.json
+make sandpaper/datacarpentry/R-ecology-lesson.json
 ```
 
 ### Parallel processing
