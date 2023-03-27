@@ -56,21 +56,32 @@ PREREQS := renv/library/ template/ filter-and-transform.sh functions.R filter-li
 .PHONY = github
 .PHONY = info
 
+BOLD ?= "\\033[1m"
+U ?= "\\033[4m"
+END ?= "\\033[22m"
+ORANGE ?= "\\033[38\;5\;208m"
+CLEAR ?= "\\033[0\;00m"
+PINK ?= "\\033[38\;5\;206m"
+GREEN ?= "\\033[38\;5\;64m"
+
 all:  #restore template/ $(TARGETS) repos.md
-	@echo
-	@echo 'Welcome to the Lesson Transition Workflow'
-	@echo '-----------------------------------------'
-	@echo 
-	@echo 'Add an R script of the lesson repository name to the folder of the GitHub organisation it is in.'
-	@echo
-	@echo 'Example: '
-	@echo
-	@echo '    swcarpentry/git-novice.R will allow the transtion workflow to '
-	@echo '    transition <https://github.com/swcarpentry/git-novice> to use '
-	@echo '    the workbench'
-	@echo
-	@echo 'use make sandpaper/<org>/<lesson>.json to test a lesson transition'
-	@echo 'use make release/<org>/<lesson>.json to release a lesson'
+	@echo -e
+	@echo -e 'Welcome to the Lesson Transition Workflow'
+	@echo -e '-----------------------------------------'
+	@echo -e 
+	@echo -e 'Add an R script of the lesson repository name to the folder of the GitHub organisation it is in.'
+	@echo -e
+	@echo -e 'Example: '
+	@echo -e
+	@echo -e "    $(BOLD)Adding $(ORANGE)swcarpentry/git-novice.R$(CLEAR) will allow the transtion workflow to $(END)"
+	@echo -e "    transition $(BOLD)$(U)<https://github.com/swcarpentry/git-novice>$(CLEAR) to use $(END)"
+	@echo -e '    the workbench'
+	@echo -e
+	@echo -e "Then you can use either:"
+	@echo -e
+	@echo -e "    $(BOLD)make $(GREEN)sandpaper/$(CLEAR)$(BOLD)<org>/<lesson>.json$(CLEAR) to test a lesson transition$(END)"
+	@echo -e
+	@echo -e "    $(BOLD)make $(PINK)release/$(CLEAR)$(BOLD)<org>/<lesson>.json$(CLEAR) to $(PINK)$(BOLD)$(U)transition and release$(CLEAR) a lesson$(END)"
 	@echo
 	@echo
 
