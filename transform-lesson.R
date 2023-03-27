@@ -105,10 +105,10 @@ copy_dir(template(".github"), to(".github"))
 if (old_lesson$rmd) {
   copy_dir(template("renv"), to("renv"))
 }
-file_copy(template("config.yaml"), to("config.yaml"))
-file_copy(template("LICENSE.md"), to("LICENSE.md"))
-file_copy(template("CONTRIBUTING.md"), to("CONTRIBUTING.md"))
-file_copy(template("CODE_OF_CONDUCT.md"), to("CODE_OF_CONDUCT.md"))
+file_copy(template("config.yaml"), to("config.yaml"), overwrite = TRUE)
+file_copy(template("LICENSE.md"), to("LICENSE.md"), overwrite = TRUE)
+file_copy(template("CONTRIBUTING.md"), to("CONTRIBUTING.md"), overwrite = TRUE)
+file_copy(template("CODE_OF_CONDUCT.md"), to("CODE_OF_CONDUCT.md"), overwrite = TRUE)
 
 # appending our gitignore file
 tgi <- readLines(template(".gitignore"))
@@ -203,7 +203,7 @@ set_config(params, path = new, write = TRUE, create = TRUE)
 
 # copy over the editor config if it exists
 if (file_exists(from(".editorconfig"))) {
-  file_copy(from(".editorconfig"), to(".editorconfig"))
+  file_copy(from(".editorconfig"), to(".editorconfig"), overwrite = TRUE)
 }
 
 
