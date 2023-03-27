@@ -1,12 +1,19 @@
 # Transitioning Carpentries Lessons
 
-This repository contains scripts for transitioning Carpentries lessons built
+This repository contains a workflow for transitioning Carpentries lessons built
 from [the all-in-one infrastructure](https://github.com/carpentries/styles) (aka 
 "The Lesson Template") to [the decoupled/centralised 
 infrastructure](https://carpentries.github.io/workbench) (aka "The Carpentries
-Workbench"). 
+Workbench"). The intent of this was explicitly to provide a workflow that could
+transition all of the [61 official Carpentries lessons](https://feeds.carpentries.org/lessons.json).
+It is not guaranteed to work for any lessons outside of The Carpentries.
 
-If you want to use this tool, scroll to [the usage section](#usage).
+If you want to use this workflow, the details for installing and using it can be
+found in [the usage section](#usage). The first step to transform any lesson is
+to create an empty R script with the name of the repository you want to 
+transition inside of a folder with the name of the organisation/owner. This
+workflow will create a submodule for this that will be kept up-to-date until you
+release the transitioned lesson. 
 
 The transition process uses tools built for R, python, Git, and BASH and is
 described in [The Release Workflow Documentation](release-workflow.md).
@@ -16,6 +23,13 @@ described in [The Release Workflow Documentation](release-workflow.md).
 > from [carpentries/styles](https://carpentries.github.io/lesson-example) to
 > [The Carpentries Workbench](https://carpentries.github.io/workbench). Once a
 > lesson is transitioned, it can not transition back. 
+
+In general, therea are two commands you would want to use:
+
+| Purpose | command | effect |
+| ------- | ------- | ------ |
+| Test a lesson transition | `make sandpaper/<org>/<repo>` | creates a test transition of a lesson by making a copy of the submodule, and transforming it inside of the `sandpaper/` directory |
+| Release a lesson transition (irreversible) | `make release/<org>/<repo>` | transitions a lesson and **reconfigure the source repository** to use The Workbench. **This is irreversible, so be sure that this is what you want to do **|
 
 For details about the differences between styles and the workbench, you can
 [look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).

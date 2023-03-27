@@ -1,6 +1,7 @@
 *hash
 template/
 sandpaper/**
+!sandpaper/README.md
 /prebeta/*/*
 !/prebeta/**/*-status.json
 !/prebeta/**/*.hash
