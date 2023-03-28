@@ -24,6 +24,84 @@ described in [The Release Workflow Documentation](release-workflow.md).
 > [The Carpentries Workbench](https://carpentries.github.io/workbench). Once a
 > lesson is transitioned, it can not transition back. 
 
+## How To Clone
+
+This repository uses submodules which do not automatically get propogated when
+you clone. The submodules are kept up-to-date via a GitHub action and the 
+[`fetch-submodule.sh`](fetch-submodule.sh) script.
+
+
+### To transform one lesson
+
+If you wish to transform one lesson, you can clone this without pulling down the
+submodules. This will save space and bandwidth and is generally the right choice.
+There are two git commands you need to bootstrap the lesson. 
+
+```sh
+git clone https://github.com/carpentries/lesson-transition.git
+cd lesson-transition
+git submodule update --init git-filter-repo # make sure `git-filter-repo` is available
+```
+
+### To transform all lessons
+
+If you have a good strong internet connection and you need to transform a lot of
+repositories at once, then you may need to fetch all the submodules. You can do
+so with the `--recurse-submodules` option.
+
+```bash
+git clone --recurse-submodules https://github.com/carpentries/lesson-transition.git
+```
+
+```bash
+git pull --recurse-submodules
+```
+
+### Updating when submodules update
+
+There will be times when the submodules update on GitHub and you forget to use
+`--recurse-submodules`. When this happens, you will end up with mysterious
+staged changes in your local clone. You can run `make modules` and the
+submodules will recurse for you (note that this has the same effect as
+`--recurse-submodules` and you may see an increase in the size of your
+repository).
+
+### Removing submodules
+
+There are two ways to remove submodules from this repository:
+
+1. transform a lesson to The Workbench. This will create a file called 
+   `relase/ORG/REPO-invalid.hash`.
+2. add the repository in the form of `ORG/REPO` to [`.module-ignore`](.module-ignore)
+
+Either one of these will signal to `fetch-submodule.sh` that the submodule is no
+longer used and it should be removed from this repository. 
+
+If you do this by accident, you can use this pattern to restore the
+module: 
+
+```sh
+git restore --staged .gitmodules ORG/REPO
+git restore .gitmodules ORG/REPO
+```
+
+### Storage requirements
+
+> **Warning** 
+> 
+> Cloning this repository with all the submodules will take a lot of bandwidth
+> and space. As of this writing (commit [030f9cf](https://github.com/carpentries/lesson-transition/tree/030f9cf2bf46e0a44bffc0ca04bcc2d7cd78ce4f)),
+> the weight of the repository is ~3 GB
+
+
+During the transition, each of the lessons gains an entirely new set of
+commits, which could double the size of the lesson repository (though, it will
+almost always be less than that), but in terms of the `lesson-transition/`
+directory on your machine: the size will triple if you clone this repository
+AND transform all of the lessons.
+
+## Overview
+
 In general, there are two commands you would want to use:
 
 | Purpose | command | effect |
@@ -104,56 +182,6 @@ of this README.
 For details about the differences between styles and the workbench, you can
 [look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).
 
-
-## How To Clone
-
-### To transform one lesson
-
-If you wish to transform one lesson, you can clone this without pulling down the
-submodules. This will save space and bandwidth, but it comes at the cost of a
-couple of more commands:
-
-```sh
-git clone https://github.com/carpentries/lesson-transition.git
-cd lesson-transition
-git submodule update --init git-filter-repo # make sure `git-filter-repo` is available
-```
-
-For each repository you want to transform, you will need to run the following
-command to initialize it before you run one of the transformation commands.
-
-```sh
-git submodule update --init <org>/<repo>
-```
-
-### To transform all lessons
-
-This repository uses submodules. To clone this repository, you will need to use
-the `--recurse-submodules` whenever you clone or pull
-
-```bash
-git clone --recurse-submodules https://github.com/carpentries/lesson-transition.git
-```
-
-```bash
-git pull --recurse-submodules
-```
-
-
-### Storage requirements
-
-> **Warning** 
-> 
-> Cloning this repository with all the submodules will take a lot of bandwidth
-> and space. As of this writing (commit [030f9cf](https://github.com/carpentries/lesson-transition/tree/030f9cf2bf46e0a44bffc0ca04bcc2d7cd78ce4f)),
-> the weight of the repository is ~3 GB
-
-
-During the transition, each of the lessons gains an entirely new set of
-commits, which could double the size of the lesson repository (though, it will
-almost always be less than that), but in terms of the `lesson-transition/`
-directory on your machine: the size will triple if you clone this repository
-AND transform all of the lessons.
 
 ## Motivation
 
