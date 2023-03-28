@@ -31,6 +31,73 @@ In general, therea are two commands you would want to use:
 | Test a lesson transition | `make sandpaper/<org>/<repo>` | creates a test transition of a lesson by making a copy of the submodule, and transforming it inside of the `sandpaper/` directory. This transformation adds some additional filters to the commit messages so that any issue or pull request references are masked. This prevents authors from getting notifications if you push it up to a testing repository. |
 | Release a lesson transition (irreversible) | `make release/<org>/<repo>` | transitions a lesson and **reconfigure the source repository** to use The Workbench. **This is irreversible, so be sure that this is what you want to do **|
 
+The test transition workflow is generally modelled like this:
+
+```mermaid
+---
+title: "Workbench Transition Workflow"
+---
+flowchart TD
+    classDef styles fill:#001483,color:#FFF7F1,stroke-width:1px
+    classDef workbench fill:#FFC700,stroke:#333,stroke-width:1px
+
+    subgraph github.com/ORG
+    GH[("fab:fa-github LESSON")]
+    end
+
+    
+    FINAL{{"TRANSFORMATION SCRIPTS"}}    
+    subgraph  ORG/
+    SLS{{LESSON.R}}
+    SL[/"fab:fa-git-alt LESSON/"\]:::styles
+    end
+
+    subgraph sandpaper/ORG/
+    WL(["fab:fa-git-alt LESSON/"]):::workbench
+    end
+
+    GH -.->|"2. git pull"| SL
+    SLS -.-> |"1. submodule"| SL
+
+    SL --> FINAL
+    FINAL --> |"3. transform"| WL
+
+```
+
+When pushing to GitHub, the flow looks like this:
+
+```mermaid
+---
+title: "Workbench Transition Workflow (simplified)"
+---
+flowchart TD
+    classDef styles fill:#001483,color:#FFF7F1,stroke-width:1px
+    classDef workbench fill:#FFC700,stroke:#333,stroke-width:1px
+
+    subgraph github.com/ORG
+    GH[("fab:fa-github LESSON")]
+    end
+
+    
+    FINAL{{"TRANSFORMATION SCRIPTS"}}    
+    subgraph  ORG/
+    SLS{{LESSON.R}}
+    SL[/"fab:fa-git-alt LESSON/"\]:::styles
+    end
+
+    subgraph sandpaper/ORG/
+    WL(["fab:fa-git-alt LESSON/"]):::workbench
+    end
+
+    GH -.->|"2. git pull"| SL
+    SLS -.-> |"1. submodule"| SL
+
+    SL --> FINAL
+    FINAL --> |"3. transform"| WL
+    FINAL ==>|"4. move branches"| GH
+    WL ==>|"5. push --force fa:fa-shuffle"| GH
+```
+
 
 For details about the differences between styles and the workbench, you can
 [look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).
@@ -193,10 +260,11 @@ a work in progress and may evolve in the future.
 This process is fully demonstrated in the workbench testing workflow:
 
 ```mermaid
----
-title: "Workbench Testing Workflow"
----
 flowchart TD
+    classDef styles fill:#001483,color:#FFF7F1,stroke-width:1px
+    classDef workbench fill:#FFC700,stroke:#333,stroke-width:1px
+    classDef r fill:#205959,color:#FFF7F1
+    classDef script fill:#D2BDF2
     
     subgraph github.com/ORG
     GH[("fab:fa-github LESSON")]
@@ -207,20 +275,20 @@ flowchart TD
     MK{{"make release/ORG/LESSON.json"}}
     end
     
-    FS{{"fetch-submodule.R"}}
-    FT{{"filter-and-transform.sh"}}
-    GFR(["git-filter-repo/ fa:fa-database"])
-    TL{{"transform-lesson.R"}}
-    FR{{"functions.R"}}
+    FS{{"fetch-submodule.sh"}}:::script
+    FT{{"filter-and-transform.sh"}}:::script
+    GFR(["git-filter-repo/ fa:fa-database"]):::script
+    TL{{"transform-lesson.R"}}:::r
+    FR{{"functions.R"}}:::r
 
     
     subgraph  ORG/
-    SLS{{LESSON.R}}
-    SL(["fab:fa-git-alt LESSON/"])
+    SLS{{LESSON.R}}:::r
+    SL[/"fab:fa-git-alt LESSON/"\]:::styles
     end
 
     subgraph release/ORG/
-    WL(["fab:fa-git-alt LESSON/"])
+    WL(["fab:fa-git-alt LESSON/"]):::workbench
     LOG["(output log) LESSON-filter.log"]
     COMMITS["(commits) LESSON.json"]
 
@@ -252,6 +320,11 @@ the lesson repository is transformed using the GitHub API:
 title: "Workbench Transition Workflow"
 ---
 flowchart TD
+    classDef styles fill:#001483,color:#FFF7F1,stroke-width:1px
+    classDef workbench fill:#FFC700,stroke:#333,stroke-width:1px
+    classDef r fill:#205959,color:#FFF7F1
+    classDef script fill:#D2BDF2
+
     subgraph github.com/ORG
     GH[("fab:fa-github LESSON")]
     end
@@ -261,21 +334,21 @@ flowchart TD
     MK{{"make release/ORG/LESSON.json"}}
     end
     
-    FINAL{{"final-transition.R"}}
-    FS{{"fetch-submodule.R"}}
-    FT{{"filter-and-transform.sh"}}
-    GFR(["git-filter-repo/ fa:fa-database"])
-    TL{{"transform-lesson.R"}}
-    FR{{"functions.R"}}
+    FINAL{{"final-transition.R"}}:::r
+    FS{{"fetch-submodule.sh"}}:::script
+    FT{{"filter-and-transform.sh"}}:::script
+    GFR(["git-filter-repo/ fa:fa-database"]):::script
+    TL{{"transform-lesson.R"}}:::r
+    FR{{"functions.R"}}:::r
 
     
     subgraph  ORG/
-    SLS{{LESSON.R}}
-    SL(["fab:fa-git-alt LESSON/"])
+    SLS{{LESSON.R}}:::r
+    SL[/"fab:fa-git-alt LESSON/"\]:::styles
     end
 
     subgraph release/ORG/
-    WL(["fab:fa-git-alt LESSON/"])
+    WL(["fab:fa-git-alt LESSON/"]):::workbench
     LOG["(output log) LESSON-filter.log"]
     COMMITS["(commits) LESSON.json"]
     HASH["(updated hashes) LESSON{,-invalid,-commit-map,-ref-map,suboptimal-issues}.hash"]
