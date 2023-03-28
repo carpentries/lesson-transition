@@ -31,6 +31,118 @@ In general, therea are two commands you would want to use:
 | Test a lesson transition | `make sandpaper/<org>/<repo>` | creates a test transition of a lesson by making a copy of the submodule, and transforming it inside of the `sandpaper/` directory. This transformation adds some additional filters to the commit messages so that any issue or pull request references are masked. This prevents authors from getting notifications if you push it up to a testing repository. |
 | Release a lesson transition (irreversible) | `make release/<org>/<repo>` | transitions a lesson and **reconfigure the source repository** to use The Workbench. **This is irreversible, so be sure that this is what you want to do **|
 
+```mermaid
+---
+title: "Workbench Testing Workflow"
+---
+flowchart TD
+    
+    subgraph github.com/ORG
+    GH[("fab:fa-github LESSON")]
+    end
+    
+    subgraph interactive
+    YOU{"USER fa:fa-user"}
+    MK{{"make release/ORG/LESSON.json"}}
+    end
+    
+    FS{{"fetch-submodule.R"}}
+    FT{{"filter-and-transform.sh"}}
+    GFR(["git-filter-repo/ fa:fa-database"])
+    TL{{"transform-lesson.R"}}
+    FR{{"functions.R"}}
+
+    
+    subgraph  ORG/
+    SLS{{LESSON.R}}
+    SL(["fab:fa-git-alt LESSON/"])
+    end
+
+    subgraph release/ORG/
+    WL(["fab:fa-git-alt LESSON/"])
+    LOG["(output log) LESSON-filter.log"]
+    COMMITS["(commits) LESSON.json"]
+
+    end
+
+    YOU ==> MK
+    GH -.-> SL
+    MK --> FS
+    SLS -.-> FS
+    MK --> FT
+    FS -->|"0. provision submodule"| SL
+    SL --> FT 
+    FT -->|"1. makes a copy fa:fa-code-fork"| GFR
+    GFR -->|"2. filter styles commits fa:fa-filter"| TL 
+    FR ---|"common transformations"| TL
+    TL -->|"3. transformation + commit"| SLS
+    SLS -->|"4. final cleanup + commit"| TL
+    TL --> WL
+    TL -.-> LOG
+    TL -.-> COMMITS
+```
+
+Final transition workflow:
+
+```mermaid
+---
+title: "Workbench Transition Workflow"
+---
+flowchart TD
+    subgraph github.com/ORG
+    GH[("fab:fa-github LESSON")]
+    end
+    
+    subgraph interactive
+    YOU{"USER fa:fa-user"}
+    MK{{"make release/ORG/LESSON.json"}}
+    end
+    
+    FINAL{{"final-transition.R"}}
+    FS{{"fetch-submodule.R"}}
+    FT{{"filter-and-transform.sh"}}
+    GFR(["git-filter-repo/ fa:fa-database"])
+    TL{{"transform-lesson.R"}}
+    FR{{"functions.R"}}
+
+    
+    subgraph  ORG/
+    SLS{{LESSON.R}}
+    SL(["fab:fa-git-alt LESSON/"])
+    end
+
+    subgraph release/ORG/
+    WL(["fab:fa-git-alt LESSON/"])
+    LOG["(output log) LESSON-filter.log"]
+    COMMITS["(commits) LESSON.json"]
+    HASH["(updated hashes) LESSON{,-invalid,-commit-map,-ref-map,suboptimal-issues}.hash"]
+
+    end
+
+    YOU ==> MK
+    MK -->|"0. provision submodule"| FS 
+    GH -.->|"pull"| SL
+    SLS --> FS
+    MK --> FINAL
+    FR -.- FINAL
+    FS --> SL
+    SL --> FINAL
+    FINAL --> FT
+    FT -->|"1. makes a copy fa:fa-code-fork"| GFR
+    GFR -->|"2. filter styles commits fa:fa-filter"| TL 
+    FR -.-|"transform() fab:fa-r-project"| TL
+    TL -->|"3. transformation + commit"| SLS
+    SLS -->|"4. final cleanup + commit"| TL
+    TL --> WL
+    TL -.-> LOG
+    TL -.-> COMMITS
+    FINAL -.-> HASH
+    GH <===> |"push --force fa:fa-shuffle"| WL
+    FINAL ===> |"setup_github() fab:fa-r-project"| GH
+    
+
+```
+
 For details about the differences between styles and the workbench, you can
 [look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).
 
