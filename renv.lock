@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.2.2",
+    "Version": "4.2.3",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -756,7 +756,7 @@
       "Package": "renv",
       "Version": "0.17.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
@@ -977,14 +977,14 @@
     },
     "tinkr": {
       "Package": "tinkr",
-      "Version": "0.1.0.9000",
+      "Version": "0.2.0",
       "Source": "GitHub",
       "RemoteType": "github",
+      "RemoteHost": "api.github.com",
       "RemoteUsername": "ropensci",
       "RemoteRepo": "tinkr",
       "RemoteRef": "main",
-      "RemoteSha": "c50a2f000fcabc484a6c8b1d4fa0bd19407ed403",
-      "RemoteHost": "api.github.com",
+      "RemoteSha": "a5dd3ddfa235d4a3eb6df78c885d68410ba161c8",
       "Requirements": [
         "R6",
         "commonmark",
@@ -995,7 +995,7 @@
         "xslt",
         "yaml"
       ],
-      "Hash": "529a6b35c4a238e2e8425a146d24f075"
+      "Hash": "1dff5f878bfb560fdfe0db0547f75a1d"
     },
     "tinytex": {
       "Package": "tinytex",
