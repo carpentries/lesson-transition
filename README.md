@@ -24,7 +24,7 @@ described in [The Release Workflow Documentation](release-workflow.md).
 > [The Carpentries Workbench](https://carpentries.github.io/workbench). Once a
 > lesson is transitioned, it can not transition back. 
 
-In general, therea are two commands you would want to use:
+In general, there are two commands you would want to use:
 
 | Purpose | command | effect |
 | ------- | ------- | ------ |
@@ -98,6 +98,8 @@ flowchart TD
     WL ==>|"5. push --force fa:fa-shuffle"| GH
 ```
 
+Expanded versions of these graphs can be found in the [Process section](#process)
+of this README.
 
 For details about the differences between styles and the workbench, you can
 [look at the transition guide](https://carpentries.github.io/workbench/transition-guide.html).
