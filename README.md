@@ -347,6 +347,14 @@ To add a lesson for translation, there are two steps:
 
 ### Bootstrapping infrastructure
 
+> **Note** 
+>
+> **If you have never used {renv} before**, then you will need to _manually
+> confirm that you want to use {renv}_ in an interactive R session. To do this,
+> open R after you have cloned this repository and {renv} will bootstrap itself
+> and then print a message on your screen informing you that it wants to create
+> a global package cache and where it exists.
+
 The infrastructure will bootstrap itself (so long as you have the [Requirements](#requirements)
 installed) when you run a conversion command. This will include:
 
