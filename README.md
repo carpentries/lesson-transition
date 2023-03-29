@@ -101,7 +101,7 @@ directory on your machine: the size will triple if you clone this repository
 AND transform all of the lessons. Below are tables that demonstrate the sizes
 estimated of each of the lesson programs: 
 
-table: Official Lessons
+table: Official Lessons (breakdown in [official-repo-sizes.csv](official-repo-sizes.csv))
 
 |GitHub Organisation | Repo Size| Required (3x Repo Size)|
 |:-------------------|---------:|-----------------------:|
@@ -112,7 +112,8 @@ table: Official Lessons
 |TOTAL               |    2.09GB|                  6.28GB|
 
 
-table: Community Lessons
+table: Community Lessons (breakdown in [community-repo-sizes.csv](community-repo-sizes.csv))
+
 
 |GitHub Organisation   | Repo Size| Required (3x Repo Size)|
 |:---------------------|---------:|-----------------------:|
