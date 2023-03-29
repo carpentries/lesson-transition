@@ -514,4 +514,28 @@ estimate_storage <- function() {
   write.csv(community_size_table, "community-repo-sizes.csv", row.names = FALSE)
 }
 
+create_release_checklist <- function() {
+  lessons <- read.csv("official-repo-sizes.csv")
+  lessons <- lessons[lessons$org != "TOTAL", ]
+  lessons <- lessons[order(lessons$org, lessons$repo), ]
+  releases <- gh::gh("GET /repos/carpentries/lesson-transition/tags")
+  releases <- purrr::map_chr(releases, "name")
+  tag <- vapply(lessons$org, switch, character(1), carpentries = "cp", datacarpentry = "dc", swcarpentry = "swc", librarycarpentry = "lc")
+  tag <- glue::glue("{ifelse(lessons$repo %in% c('r-socialsci', 'instructor-training', 'python-ecology-lesson-es', 'r-raster-vector-geospatial'), 'beta', 'release')}_{tag}/{lessons$repo}")
+  print(tag)
+  blob_prefix <- "[commit map](https://github.com/carpentries/lesson-transition/blob/"
+  blob_postfix <- glue::glue_data(lessons, 
+    "/beta/{org}/{repo}-commit-map.hash)")
+  lessons$status <- ifelse(tag %in% releases, 
+    paste0(blob_prefix, tag, blob_postfix),
+    "unprocessed"
+  )
+  lessons$released <- ifelse(tag %in% releases, ":ok:", ":hourglass_flowing_sand:")
+  lessons$lesson <- glue::glue_data(lessons, "[{org}/{repo}](https://github.com/{org}/{repo})")
+  lessons$issue <- ""
+  lessons$date  <- "2023-05-07"
+  lessons$number <- seq(nrow(lessons))
+  res <- lessons[c("number", "lesson", "released", "date", "status", "issue")]
+  print(knitr::kable(res, col.names = c("#", "Lesson", "Released", "Date", "Artifacts", "Issue"), align = "rlcrll", row.names = FALSE))
 
+}
