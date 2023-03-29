@@ -427,3 +427,91 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
 
 }
 
+# STORAGE ESTIMATION FOR THIS REPOSITORY --------------------------------------
+# https://stackoverflow.com/a/63543936/2752888
+file_size_formatted <- function(size){
+  
+  k = size/1024.0 ^ 1
+  m = size/1024.0 ^ 2
+  g = size/1024.0 ^ 3
+  t = size/1024.0 ^ 4
+  
+    if (t > 1) {
+      outSize = paste0(round(t,2),"TB")
+    } else if (g > 1) {
+      outSize = paste0(round(g,2),"GB")
+    } else if (m > 1) {
+      outSize = paste0(round(m,2),"MB")
+    } else if (k > 1) {
+      outSize = paste0(round(k,2),"KB")
+    } else{
+      outSize = paste0(round(size,2),"B")
+    }
+    
+  return(outSize)
+}
+
+#' Return the size of public organisation repositories in Bytes.
+#'
+#' @param org the name of the github organisation
+org_repo_sizes <- function(org, update = FALSE) {
+  csv <- fs::path_ext_set(org, "csv")
+  if (!update && fs::file_exists(csv)) {
+    return(tibble::tibble(read.csv(csv, header = TRUE)))
+  }
+  res <- gh::gh("GET /orgs/{org}/repos", org = org, 
+    .limit = Inf, per_page = 100, .params = list(type = "public"))
+  out <- purrr::map_dfr(res, function(x) {
+    tibble::tibble(repo = x$name, size = x$size * 1024)
+  })
+  write.csv(out, csv, row.names = FALSE)
+  out
+}
+
+get_active_lessons <- function(json) {
+  json <- purrr::discard(json, function(x) {
+    x$life_cycle == "on-hold" |
+    x$repo %in% c("workbench-template-md", "workbench-template-rmd", "lesson-development-training", "sandpaper-docs", "lesson-example")
+  })
+  purrr::map_dfr(json, function(x) tibble::tibble(org = x$carpentries_org, repo = x$repo))
+}
+
+lesson_size_summary <- function(lessons, orgs, summarise = TRUE) {
+  res <- dplyr::inner_join(lessons, orgs, by = c("org", "repo"))
+  if (summarise) {
+    res <- dplyr::group_by(res, org) |>
+      dplyr::summarize(size = sum(size))
+  }
+  res <- tibble::add_row(res, org = "TOTAL", size = sum(res$size))
+  res$readable <- vapply(res$size, file_size_formatted, character(1))
+  res$required <- vapply(res$size * 3, file_size_formatted, character(1))
+  res
+}
+
+print_storage <- function(size_table, title = "Lessons") {
+  cols <- c("GitHub Organisation", "Repo Size", "Required (3x Repo Size)")
+  align <- "lrr"
+  print(knitr::kable(size_table[-2], 
+      col.names = cols, 
+      align = align,
+      label = title))
+}
+
+estimate_storage <- function() {
+  orgs <- c("carpentries", "carpentries-incubator", "carpentries-lab",
+    "datacarpentry", "librarycarpentry", "swcarpentry")
+  names(orgs) <- orgs
+  sizes <- purrr::map_dfr(orgs, org_repo_sizes, .id = "org")
+  lessons <- jsonlite::read_json("https://feeds.carpentries.org/lessons.json")
+  incubator <- jsonlite::read_json("https://feeds.carpentries.org/community_lessons.json")
+  lessons <- get_active_lessons(lessons)
+  incubator <- get_active_lessons(incubator)
+  print_storage(lesson_size_summary(lessons, sizes), "Official Lessons")
+  print_storage(lesson_size_summary(incubator, sizes), "Community Lessons")
+  official_size_table <- lesson_size_summary(lessons, sizes, summarise = FALSE)
+  write.csv(official_size_table, "official-repo-sizes.csv", row.names = FALSE)
+  community_size_table <- lesson_size_summary(incubator, sizes, summarise = FALSE)
+  write.csv(community_size_table, "community-repo-sizes.csv", row.names = FALSE)
+}
+
+

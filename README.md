@@ -98,7 +98,28 @@ During the transition, each of the lessons gains an entirely new set of
 commits, which could double the size of the lesson repository (though, it will
 almost always be less than that), but in terms of the `lesson-transition/`
 directory on your machine: the size will triple if you clone this repository
-AND transform all of the lessons.
+AND transform all of the lessons. Below are tables that demonstrate the sizes
+estimated of each of the lesson programs: 
+
+table: Official Lessons
+
+|GitHub Organisation | Repo Size| Required (3x Repo Size)|
+|:-------------------|---------:|-----------------------:|
+|carpentries         |   63.55MB|                190.65MB|
+|datacarpentry       |    1.42GB|                  4.27GB|
+|librarycarpentry    |  284.96MB|                854.88MB|
+|swcarpentry         |  334.73MB|                1004.2MB|
+|TOTAL               |    2.09GB|                  6.28GB|
+
+
+table: Community Lessons
+
+|GitHub Organisation   | Repo Size| Required (3x Repo Size)|
+|:---------------------|---------:|-----------------------:|
+|carpentries-incubator |    5.04GB|                 15.12GB|
+|carpentries-lab       |  199.08MB|                597.24MB|
+|TOTAL                 |    5.24GB|                 15.71GB|
+
 
 ## Overview
 
