@@ -570,7 +570,8 @@ git remote set-head origin -a      # set main branch to be your local default
 ### Requirements
 
 This tool requires Git, R, Python, BASH, and Make to convert the lessons. There
-is one make command that uses the `gh` github command line interface.
+is one make command that uses the `gh` github command line interface. This will
+also provision pandoc for you if you do not have one on your computer. 
 
 The tool used to filter commits is a python tool called
 [git-filter-repo](git-filter-repo) and we have a copy as a submodule of this
@@ -603,6 +604,7 @@ installed) when you run a conversion command. This will include:
  0. The lesson submodule
  1. R package cache
  2. The Workbench template
+ 3. pandoc version 2.19.2 (the one used in RStudio by default)
 
 To bootstrap the infrastructure without converting lessons, you can run the
 following targets:
