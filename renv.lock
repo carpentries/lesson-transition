@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.2.2",
+    "Version": "4.2.3",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -596,6 +596,19 @@
       ],
       "Hash": "0f7cd2962e3044bb940cca4f4b5cecbe"
     },
+    "pandoc": {
+      "Package": "pandoc",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "fs",
+        "rappdirs",
+        "rlang"
+      ],
+      "Hash": "3a1e43a19c15f4393262606d8409f77b"
+    },
     "pegboard": {
       "Package": "pegboard",
       "Version": "0.4.3",
@@ -756,7 +769,7 @@
       "Package": "renv",
       "Version": "0.17.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],

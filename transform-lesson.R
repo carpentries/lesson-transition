@@ -38,7 +38,9 @@ Usage:
                           sandpaper lesson. `old_lesson` = the Lesson object
 }' -> doc
 library("fs")
+library("pandoc")
 library("docopt")
+pandoc_activate("2.19.2")
 options(cli.width = 160)
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2021-11", help = TRUE)
