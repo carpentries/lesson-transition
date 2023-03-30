@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 FILE=${1:-empty}
 
@@ -13,11 +13,16 @@ if [[ ${FILE} != "empty" && ! -e "${FILE}.R" ]]; then
   echo '# old_lesson - a pegboard::Lesson object containing the transformed files from' >> "${FILE}.R"
   echo '#              the old lesson' >> "${FILE}.R"
   echo '' >> "${FILE}.R"
+  echo '# During iteration: use these to provision the variables and functions' >> "${FILE}.R"
+  echo '# that would be normally available when this script is run' >> "${FILE}.R"
+  echo '#' >> "${FILE}.R"
+  echo '# source("functions.R")' >> "${FILE}.R"
   echo "# old        <- '${FILE}'" >> "${FILE}.R"
   echo "# new        <- 'sandpaper/${FILE}'" >> "${FILE}.R"
   echo '# from       <- function(...) fs::path(old, ...)' >> "${FILE}.R"
   echo '# to         <- function(...) fs::path(new, ...)' >> "${FILE}.R"
   echo '# old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)' >> "${FILE}.R"
+  echo '' >> "${FILE}.R"
 
 else
 
