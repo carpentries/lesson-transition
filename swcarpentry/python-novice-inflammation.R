@@ -10,10 +10,14 @@
 # During iteration: use these to provision the variables and functions
 # that would be normally available when this script is run
 #
+# library("fs")
+# library("xml2")
+# pandoc::pandoc_activate("2.19.2")
 # source("functions.R")
 # old        <- 'swcarpentry/python-novice-inflammation'
 # new        <- 'sandpaper/swcarpentry/python-novice-inflammation'
 # from       <- function(...) fs::path(old, ...)
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
+
 

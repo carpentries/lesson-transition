@@ -16,6 +16,9 @@ if [[ ${FILE} != "empty" && ! -e "${FILE}.R" ]]; then
   echo '# During iteration: use these to provision the variables and functions' >> "${FILE}.R"
   echo '# that would be normally available when this script is run' >> "${FILE}.R"
   echo '#' >> "${FILE}.R"
+  echo '# library("fs")' >> "${FILE}.R"
+  echo '# library("xml2")' >> "${FILE}.R"
+  echo '# pandoc::pandoc_activate("2.19.2")'
   echo '# source("functions.R")' >> "${FILE}.R"
   echo "# old        <- '${FILE}'" >> "${FILE}.R"
   echo "# new        <- 'sandpaper/${FILE}'" >> "${FILE}.R"
