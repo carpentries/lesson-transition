@@ -8,12 +8,15 @@ Workbench"). The intent of this was explicitly to provide a workflow that could
 transition all of the [61 official Carpentries lessons](https://feeds.carpentries.org/lessons.json).
 It is not guaranteed to work for any lessons outside of The Carpentries.
 
-If you want to use this workflow, the details for installing and using it can be
-found in [the usage section](#usage). The first step to transform any lesson is
-to create an empty R script with the name of the repository you want to 
-transition inside of a folder with the name of the organisation/owner. This
-workflow will create a submodule for this that will be kept up-to-date until you
-release the transitioned lesson. 
+If you want to use this workflow here are the steps:
+
+1. install R, Python, and the gh utility (see [the usage section](#usage))
+2. add a lesson R script using `bash add-lesson.sh <ORG>/<LESSON>`
+3. run `make sandpaper/<ORG>/<LESSON>.json` to test and iterate on the
+   transformation (see [the overview section](#overview) for details) 
+
+This workflow will create a submodule for this that will be kept up-to-date
+until you release the transitioned lesson. 
 
 The transition process uses tools built for R, python, Git, and BASH and is
 described in [The Release Workflow Documentation](release-workflow.md).
