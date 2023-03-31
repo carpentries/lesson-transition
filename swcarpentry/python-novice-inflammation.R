@@ -50,3 +50,20 @@ writeLines(ref_lines, to("learners/reference.md"))
 numpy <- readLines(to("episodes/02-numpy.md"))
 numpy <- sub('[\\]{2}["]data[\\]{2}["]', "'data'", numpy)
 writeLines(numpy, to("episodes/02-numpy.md"))
+
+# fix wonky setup fields
+stp <- pegboard::Episode$new(to("learners/setup.md"))$confirm_sandpaper()
+cols <- paste(rep(":", 40), collapse = "")
+open <- paste(cols, '{.empty-div style="margin-bottom: 50px"}')
+empty_div <- c(open, "<!-- This div is intentionally empty to allow the solution to float alone-->", cols, "\n")
+find_node_position <- function(node, body) {
+  children <- xml2::xml_children(body)
+  which(purrr::map_lgl(children, identical, node))
+}
+solutions <- stp$get_divs() |> 
+  purrr::map(1) |>
+  purrr::map_int(find_node_position, stp$body)
+positions <- solutions + (1L:length(solutions) - 1L) * 3
+purrr::walk(positions, function(i) stp$add_md(empty_div, where = i - 1L))
+write_out_md(stp, "learners")
+
