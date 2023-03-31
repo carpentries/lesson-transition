@@ -21,7 +21,7 @@
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
 
-# Renamed files ---------------------------------------
+# Renamed files ------------------------------------------------
 # episodes/11-debugging.md:93 [missing file] 01-numpy/
 # episodes/12-cmdline.md:707 [missing file] 04-files/
 links <- old_lesson$get("links")
@@ -36,4 +36,17 @@ to_fix <- dst =="04-files/"
 xml2::xml_set_attr(ep12[to_fix], "destination", "06-files.html")
 write_out_md(old_lesson$episodes[["12-cmdline.md"]])
 
+# add definition list links back into reference -----------------
+ref_lines <- readLines(to("learners/reference.md"))
+defs <- which(startsWith(ref_lines, ":")) - 1L
+# get identifiers from pandoc
+headings <- pandoc::pandoc_convert(text = paste("#", ref_lines[defs]), to = "html")
+ids <- paste(headings, collapse = "\n")
+ids <- xml2::xml_text(xml2::xml_find_all(xml2::read_html(ids), ".//h1/@id"))
+ref_lines[defs] <- sprintf("[%s]{#%s}", ref_lines[defs], ids)
+writeLines(ref_lines, to("learners/reference.md"))
 
+# fix bum quotation
+numpy <- readLines(to("episodes/02-numpy.md"))
+numpy <- sub('[\\]{2}["]data[\\]{2}["]', "'data'", numpy)
+writeLines(numpy, to("episodes/02-numpy.md"))
