@@ -195,6 +195,7 @@ rewrite <- function(x, out, verbose = getOption("carpentries.transition.loud", T
     if (fs::path_file(x) == "reference.md") {
       ref$add_md("## Glossary")
     }
+    fix_https_links(ref)
     ref$write(out, format = fs::path_ext(x))
   }, error = function(e) {
     if (verbose) cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")

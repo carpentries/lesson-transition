@@ -127,6 +127,7 @@ if (length(idx)) {
   add_experiment_info(idx)
   idx$yaml[length(idx$yaml) + 0:1] <- c("site: sandpaper::sandpaper_site", "---")
   idx$unblock()$use_sandpaper()
+  fix_https_links(idx)
 }
 idx$write(path = new, format = "md")
 
@@ -135,6 +136,7 @@ cli::cli_h2("Processing README")
 rdm <- Episode$new(to("README.md"))
 rdm$confirm_sandpaper()
 add_experiment_info(rdm)
+fix_https_links(rdm)
 
 # write index and readme
 rdm$write(path = new, format = "md")
