@@ -1,9 +1,9 @@
 # Functions --------------------------------------------------------------------
-write_out_rmd <- function(ep) {
-  ep$write(fs::path(new, "episodes"), format = "Rmd")
+write_out_rmd <- function(ep, where = "episodes") {
+  ep$write(fs::path(new, where), format = "Rmd")
 }
-write_out_md <- function(ep) {
-  ep$write(fs::path(new, "episodes"), format = "md")
+write_out_md <- function(ep, where = "episodes") {
+  ep$write(fs::path(new, where), format = "md")
 }
 #
 # The following lines are functions that I need to transform the lessons
