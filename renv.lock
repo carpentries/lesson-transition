@@ -611,14 +611,14 @@
     },
     "pegboard": {
       "Package": "pegboard",
-      "Version": "0.4.3",
+      "Version": "0.5.0",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "e815ea1a34f6eda01a3c9ab9643e35aa051e1938",
+      "RemoteSha": "2247867f92b05279a09b950847a7b07e37ac65d3",
+      "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr",
       "Requirements": [
         "R6",
@@ -631,7 +631,7 @@
         "xslt",
         "yaml"
       ],
-      "Hash": "d580eb0853c43d8036aaa8e81f17f2d0"
+      "Hash": "66fa0c4af37081d75b784ec605e626ae"
     },
     "pillar": {
       "Package": "pillar",
@@ -769,7 +769,7 @@
       "Package": "renv",
       "Version": "0.17.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
