@@ -426,6 +426,55 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     lock_branch = TRUE
   ) 
 
+  # CLOSING any remaining pull requests
+  close_open_prs(owner, repo)
+
+}
+
+close_open_prs <- function(owner, repo) {
+
+  cli::cli_alert_info("Closing open pull requests")
+  pulls <- gh::gh("GET /repos/{owner}/{repo}/pulls", 
+    owner = owner,
+    repo = repo,
+    per_page = 100,
+    .limit = Inf
+  )
+  if (length(pulls) == 0) {
+    cli::cli_alert("No pull requests!")
+    return(invisible())
+  }
+  cli::cli_alert("Found {length(pulls)} pull requests")
+  msg <- paste(readLines("close-pr-msg.md"), collapse = "\n")
+  
+  purrr::walk(pulls, function(x, msg) {
+    cli::cli_status("{cli::symbol$play} Processing #{x$number} ({x$title})")
+    cli::cli_status_update("{cli::symbol$info} Commenting on #{x$number} ({x$title})")
+    gh::gh("POST /repos/{owner}/{repo}/issues/{number}/comments", 
+      owner = owner,
+      repo = repo,
+      number = x$number,
+      .params = list(
+        body = msg
+    ))
+    gh::gh("POST /repos/{owner}/{repo}/issues/{number}/labels", 
+      owner = owner,
+      repo = repo,
+      number = x$number,
+      .params = list(
+        labels = list("pre-workbench")
+    ))
+    cli::cli_status_update("{cli::symbol$stop} Closing #{x$number} ({x$title})")
+    gh::gh("POST /repos/{owner}/{repo}/pulls/{number}", 
+      owner = owner,
+      repo = repo,
+      number = x$number,
+      .params = list(
+        state = "closed"
+      )
+    )
+  }, msg = msg)
+  cli::cli_alert("Pull Requests Managed")
 }
 
 # STORAGE ESTIMATION FOR THIS REPOSITORY --------------------------------------
