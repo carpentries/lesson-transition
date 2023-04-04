@@ -5,8 +5,28 @@ write_out_rmd <- function(ep, where = "episodes") {
 write_out_md <- function(ep, where = "episodes") {
   ep$write(fs::path(new, where), format = "md")
 }
+
 #
 # The following lines are functions that I need to transform the lessons
+#
+# fix definition lists in a file. Kramdown had auto-identifiers for its
+# definition lists, which pandoc does not have. Here, we use the new {pandoc}
+# package to create these identifiers for the definition list.
+# 
+dl_auto_id <- function(path) {
+  ref_lines <- readLines(path)
+  # The definitions will always be immediately proceeding the line 
+  # that starts with ":"
+  defs <- which(startsWith(ref_lines, ":")) - 1L
+  defs <- defs[!startsWith(ref_lines[defs], "[")]
+  # get identifiers from pandoc
+  headings <- pandoc::pandoc_convert(text = paste("#", ref_lines[defs]), to = "html")
+  ids <- paste(headings, collapse = "\n")
+  ids <- xml2::xml_text(xml2::xml_find_all(xml2::read_html(ids), ".//h1/@id"))
+  ref_lines[defs] <- sprintf('[%s]{#%s}', ref_lines[defs], ids)
+  ref_lines <- ref_lines[!grepl("[{][:]\\s?auto", ref_lines)]
+  writeLines(ref_lines, path)
+}
 #
 # transform the image links to be local
 fix_images <- function(episode, from = "([.][.][/])?(img|fig|images)/", to = "fig/") {
