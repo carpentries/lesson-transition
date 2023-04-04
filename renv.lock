@@ -769,7 +769,7 @@
       "Package": "renv",
       "Version": "0.17.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
@@ -1063,15 +1063,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.2.15",
+      "Version": "0.2.16",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "0ceab89e860e078ab8686cf653563da0a5513afd",
+      "RemoteSha": "926afe7bcf7cc5f063d698c6f136458f6287eaec",
       "RemoteHost": "api.github.com",
-      "Hash": "a48a04de43bbeedb28c1543e720f4625"
+      "Hash": "0f5b2f34aa334e57dbd3199a1d5b65f9"
     },
     "vctrs": {
       "Package": "vctrs",
