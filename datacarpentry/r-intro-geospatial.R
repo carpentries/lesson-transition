@@ -29,3 +29,7 @@ e7[96] <- paste0("> >", e7[96])
 writeLines(e7, tmpfile)
 old_lesson$episodes[["07-plot-ggplot2.Rmd"]] <- pegboard::Episode$new(tmpfile)
 transform(old_lesson$episodes[["07-plot-ggplot2.Rmd"]])
+
+
+# add definition list links back into reference -----------------
+dl_auto_id(to("learners/reference.md"))
