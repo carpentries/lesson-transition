@@ -27,6 +27,15 @@ if [[ ${FILE} != "empty" && ! -e "${FILE}.R" ]]; then
   echo '# old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)' >> "${FILE}.R"
   echo '' >> "${FILE}.R"
 
+
+curl \
+  -X POST \
+  -H "Accept: application/vnd.github.v3+json" \
+  -H "Authorization: token $(./pat.sh)" \
+  https://api.github.com/repos/carpentries/lesson-transition/issues \
+  -d "{\"title\":\"${FILE}\", \"body\":\"tracking issues for <https://github.com/${FILE}>/\"}" \
+  | jq ".html_url"
+
 else
 
   echo

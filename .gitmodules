@@ -85,3 +85,11 @@
 	path = librarycarpentry/lc-r
 	url = https://github.com/librarycarpentry/lc-r/
 	branch = main
+[submodule "datacarpentry/organization-geospatial"]
+	path = datacarpentry/organization-geospatial
+	url = https://github.com/datacarpentry/organization-geospatial/
+	branch = main
+[submodule "datacarpentry/r-intro-geospatial"]
+	path = datacarpentry/r-intro-geospatial
+	url = https://github.com/datacarpentry/r-intro-geospatial/
+	branch = main
