@@ -20,3 +20,13 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+# Fix preamble code ---------------------------------------------
+fs::dir_create(to("episodes/files/"))
+fs::file_copy(to("setup.R"), to("episodes/files/setup.R"))
+replace_source <- function(ep) {
+  setup <- ep$code[1]
+  txt <- sub("../setup.R", "files/setup.R", xml2::xml_text(setup))
+  xml2::xml_set_text(setup, txt)
+  write_out_rmd(ep)
+}
+purrr::walk(old_lesson$episodes, replace_source)
