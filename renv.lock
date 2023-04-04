@@ -769,7 +769,7 @@
       "Package": "renv",
       "Version": "0.17.2",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "utils"
       ],
