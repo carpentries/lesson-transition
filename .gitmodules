@@ -93,3 +93,11 @@
 	path = datacarpentry/r-intro-geospatial
 	url = https://github.com/datacarpentry/r-intro-geospatial/
 	branch = main
+[submodule "datacarpentry/geospatial-workshop"]
+	path = datacarpentry/geospatial-workshop
+	url = https://github.com/datacarpentry/geospatial-workshop/
+	branch = gh-pages
+[submodule "datacarpentry/sql-socialsci"]
+	path = datacarpentry/sql-socialsci
+	url = https://github.com/datacarpentry/sql-socialsci/
+	branch = gh-pages
