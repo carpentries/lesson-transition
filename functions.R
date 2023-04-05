@@ -537,9 +537,9 @@ create_workbench_team <- function(owner, repo) {
   team
 }
 
+# Make sure The Carpentries Bot is allowed to access the repository
 add_bot_to_repo <- function(owner, repo) {
-
-  tryCatch({
+  res <- tryCatch({
     gh::gh("PUT /orgs/{org}/teams/bots/repos/{org}/{repo}",
       org = owner,
       repo = repo,
@@ -549,10 +549,47 @@ add_bot_to_repo <- function(owner, repo) {
     cli::cli_alert_danger("could not add bots to repo")
     print(e)
   })
+  res
 }
 
+add_workflow_token <- function(owner, repo, token) {
+  scope <- gh::gh_whoami(.token = token)$scopes
+  if (!grepl("admin[:]org", scope)) {
+    cli::cli_alert_danger("need the admin token for this")
+    return(NULL)
+  }
+  id <- gh::gh("GET /repos/{org}/{repo}", 
+    org = owner, repo = repo, .token = token)$id
+  tryCatch({
+    gh::gh("PUT /orgs/{org}/actions/secrets/SANDPAPER_WORKFLOW/repositories/{id}",
+    org = owner,
+    id = id,
+    .token = token)
+  }, 
+  http_error_403 = function(e) {
+    cli::cli_alert_danger("need the admin token for this")
+    print(e)
+  },
+  http_error_409 = function(e) {
+    cli::cli_alert_danger("visibility error")
+    print(e)
+  })
+}
+
+
+# Add team members who have confirmed that they are able to use The Workbench
 add_workbench_team_members <- function(members, owner, repo) {
-  
+  purrr::map(members, function(user) {
+    tryCatch({
+    gh::gh("PUT /orgs/{org}/teams/{repo}-maintainers-workbench/memberships/{user}",
+      org = owner,
+      repo = repo,
+      user = user
+    )
+    }, error = function(e) {
+      e
+    })
+  })
 }
 
 # STORAGE ESTIMATION FOR THIS REPOSITORY --------------------------------------
