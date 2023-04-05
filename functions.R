@@ -497,6 +497,64 @@ close_open_prs <- function(owner, repo) {
   cli::cli_alert("Pull Requests Managed")
 }
 
+# Create a team for maintainers who have confirmed that they have prepared for
+# the transition. The default maintainer team will be locked until they match.
+create_workbench_team <- function(owner, repo) {
+  parent_ids <- c(carpentries = 3296124L,
+    datacarpentry = 3267328L,
+    librarycarpentry = 3276234L,
+    swcarpentry = 3276177L)
+
+  # check if the team already exists
+  team <- tryCatch({
+    gh::gh("GET /orgs/{owner}/teams/{repo}-maintainers-workbench",
+      owner = owner,
+      repo = repo
+    )
+  }, http_error_404 = function(e) {
+    # a 404 error from github means that the team does not exist
+    NULL
+  })
+
+  if (is.null(team)) {
+    # if it does not exist, create the team and then add the repository to it
+    team <- gh::gh("POST /orgs/{org}/teams",
+      org = owner,
+      .params = list(
+        name = glue::glue("{repo}-maintainers-workbench"),
+        description = "A repo", 
+        parent_team_id = parent_ids[tolower(owner)] + 2023L + 05L + 01L,
+        repo_name = glue::glue("{owner}/{repo}")
+      )
+    )
+    gh::gh("PUT /orgs/{org}/teams/{repo}-maintainers-workbench/repos/{org}/{repo}",
+      org = owner,
+      repo = repo,
+      .params = list(permission = "maintain")
+    )
+  }
+  add_bot_to_repo(owner, repo)
+  team
+}
+
+add_bot_to_repo <- function(owner, repo) {
+
+  tryCatch({
+    gh::gh("PUT /orgs/{org}/teams/bots/repos/{org}/{repo}",
+      org = owner,
+      repo = repo,
+      .params = list(permission = "push")
+    )
+  }, http_error_422 = function(e) {
+    cli::cli_alert_danger("could not add bots to repo")
+    print(e)
+  })
+}
+
+add_workbench_team_members <- function(members, owner, repo) {
+  
+}
+
 # STORAGE ESTIMATION FOR THIS REPOSITORY --------------------------------------
 # https://stackoverflow.com/a/63543936/2752888
 file_size_formatted <- function(size){
