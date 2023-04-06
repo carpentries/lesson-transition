@@ -335,6 +335,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .to
   # get default branch
   cli::cli_h1("Setting up repository")
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
+  user <- gh::gh_whoami(.token = .token)$login
   repo_info <- gh::gh(REPO, .token = .token)
   jsonlite::write_json(repo_info, sub("[/]?$", "-status.json", path))
   default <- repo_info$default_branch
@@ -375,12 +376,18 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .to
   cli::cli_h1("Setting up default branch")
   # FORCE push main branch ----------------------------------------------------
   cli::cli_alert_info("pushing the main branch")
-  gert::git_push(repo = path, set_upstream = TRUE, force = TRUE, 
+  gert::git_push(repo = path, remote = "origin", 
+    set_upstream = TRUE, force = TRUE, 
     password = .token)
   # refspec = "refs/heads/main" 
 
   # set the main branch to be the default branch
   cli::cli_alert_info("setting main branch as default")
+  default_origin <- gert::git_remote_info(repo = repo)$url
+  new_origin <- setup_gert_url(user, default_origin)
+  on.exit(git_remote_set_url(default_origin, remote = "origin", repo = repo),
+    add = TRUE)
+  git_remote_set_url(new_origin, remote = "origin", repo = repo)
   gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, 
     default_branch = "main", .token = .token) 
 
