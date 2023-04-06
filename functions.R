@@ -396,6 +396,7 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .to
     required_pull_request_reviews = pr_reviews, 
     restrictions = NA,
     .token = .token
+  )
 
   # gh-pages branch -----------------------------------------------------------
   # setting a new, empty gh-pages branch 
@@ -539,7 +540,7 @@ create_workbench_team <- function(owner, repo, .token = NULL) {
     gh::gh("PUT /orgs/{org}/teams/{repo}-maintainers-workbench/repos/{org}/{repo}",
       org = owner,
       repo = repo,
-      .token = .token
+      .token = .token,
       .params = list(permission = "maintain")
     )
   }
