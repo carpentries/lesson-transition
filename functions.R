@@ -376,6 +376,11 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .to
   cli::cli_h1("Setting up default branch")
   # FORCE push main branch ----------------------------------------------------
   cli::cli_alert_info("pushing the main branch")
+  default_origin <- gert::git_remote_info(repo = repo)$url
+  new_origin <- setup_gert_url(user, default_origin)
+  on.exit(git_remote_set_url(default_origin, remote = "origin", repo = repo),
+    add = TRUE)
+  git_remote_set_url(new_origin, remote = "origin", repo = repo)
   gert::git_push(repo = path, remote = "origin", 
     set_upstream = TRUE, force = TRUE, 
     password = .token)
@@ -383,11 +388,6 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .to
 
   # set the main branch to be the default branch
   cli::cli_alert_info("setting main branch as default")
-  default_origin <- gert::git_remote_info(repo = repo)$url
-  new_origin <- setup_gert_url(user, default_origin)
-  on.exit(git_remote_set_url(default_origin, remote = "origin", repo = repo),
-    add = TRUE)
-  git_remote_set_url(new_origin, remote = "origin", repo = repo)
   gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, 
     default_branch = "main", .token = .token) 
 
