@@ -7,6 +7,8 @@ on:
 
 jobs:
   close-pr:
+    permissions:
+      pull-requests: write
     name: "Inform of Workbench and Close"
     if: ${{ github.event.action != 'closed' }}
     runs-on: ubuntu-latest
