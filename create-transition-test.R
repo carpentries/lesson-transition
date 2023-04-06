@@ -69,12 +69,12 @@ if (no_repo) {
   cli::cli_alert_info("importing {.code sgibson91/cross-stitch-carpentry} to {.code {arguments$repo}}")
   cli::cli_status("Cloning a mirror of {.code sgibson91/cross-stitch-carpentry}")
   tmp <- withr::local_tempdir()
-  git_clone("https://github.com/sgibson91/cross-stitch-carpentry/",
-    path = tmp, mirror = TRUE, password = tkn)
+  sg_url <- "https://carpentries-bot@github.com/sgibson91/cross-stitch-carpentry/"
+  git_clone(sg_url, path = tmp, mirror = TRUE, password = tkn)
 
   # set the URL
   cli::cli_status_update("setting the remote URL to {.code {arguments$repo}}")
-  git_remote_set_url(paste0("https://github.com/", arguments$repo, ".git"),
+  git_remote_set_url(paste0("https://carpentries-bot@github.com/", arguments$repo, ".git"),
     remote = "origin",
     repo = tmp)
 
@@ -110,7 +110,7 @@ if (no_repo) {
 
   Sys.sleep(2)
   tmp <- withr::local_tempdir()
-  git_clone(glue::glue("https://github.com/{arguments$repo}"), path = tmp,
+  git_clone(glue::glue("https://carpentries-bot@github.com/{arguments$repo}"), path = tmp,
     password = tkn)
   run_styles <- withr::local_tempfile()
   download.file("https://github.com/carpentries/actions/raw/main/update-styles/update-styles.sh", run_styles)

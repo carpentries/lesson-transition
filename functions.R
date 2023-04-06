@@ -308,6 +308,12 @@ create_token <- function() {
   }
 }
 get_token <- create_token()
+
+setup_gert_url <- function(user, url) {
+  gert_url <- sub("github.com", paste0(user, "@github.com"), url)
+  paste0(gert_url, ".git")
+}
+
 #' Set up a given GitHub repository to recieve the Workbench
 #'
 #' @param path path to a transformed lesson
