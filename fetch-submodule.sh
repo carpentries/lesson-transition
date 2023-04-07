@@ -89,7 +89,7 @@ if [[ $(grep -c ${REPO} .gitmodules) -eq 0 ]]; then
     # if the repository does not exist, then we need to create it
     echo -e "... \033[1mCreating new submodule in \033[38;5;208m${REPO}\033[0;00m\033[22m"
     rm -rf "${REPO}"
-    git submodule add -b ${BRANCH} https://github.com/${REPO} ${REPO} || exit 0 #2> /dev/null
+    git submodule add --force -b ${BRANCH} https://github.com/${REPO} ${REPO} || exit 0 #2> /dev/null
 elif [[ ! -e ${REPO}/.git ]]; then
     # if the folder exists, but no repository exists, we need to create it. 
     git submodule update --init ${REPO} || exit 0

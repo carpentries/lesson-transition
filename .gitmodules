@@ -1,7 +1,7 @@
 [submodule "swcarpentry/r-novice-inflammation"]
 	branch = main
 	path = swcarpentry/r-novice-inflammation
-	url = https://github.com/swcarpentry/r-novice-inflammation
+	url = https://github.com/swcarpentry/r-novice-inflammation/
 [submodule "swcarpentry/python-novice-inflammation"]
 	branch = gh-pages
 	path = swcarpentry/python-novice-inflammation
@@ -34,26 +34,6 @@
 	branch = gh-pages
 	path = datacarpentry/wrangling-genomics
 	url = https://github.com/datacarpentry/wrangling-genomics/
-[submodule "carpentries-incubator/simple-linear-regression-public-health"]
-	branch = main
-	path = carpentries-incubator/simple-linear-regression-public-health
-	url = https://github.com/carpentries-incubator/simple-linear-regression-public-health/
-[submodule "carpentries-incubator/SDC-BIDS-dMRI"]
-	branch = main
-	path = carpentries-incubator/SDC-BIDS-dMRI
-	url = https://github.com/carpentries-incubator/SDC-BIDS-dMRI/
-[submodule "carpentries-incubator/SDC-BIDS-sMRI"]
-	path = carpentries-incubator/SDC-BIDS-sMRI
-	url = https://github.com/carpentries-incubator/SDC-BIDS-sMRI/
-	branch = gh-pages
-[submodule "carpentries-incubator/SDC-BIDS-IntroMRI"]
-	path = carpentries-incubator/SDC-BIDS-IntroMRI
-	url = https://github.com/carpentries-incubator/SDC-BIDS-IntroMRI/
-	branch = gh-pages
-[submodule "carpentries-incubator/SDC-BIDS-fMRI"]
-	path = carpentries-incubator/SDC-BIDS-fMRI
-	url = https://github.com/carpentries-incubator/SDC-BIDS-fMRI/
-	branch = gh-pages
 [submodule "swcarpentry/shell-novice"]
 	path = swcarpentry/shell-novice
 	url = https://github.com/swcarpentry/shell-novice/
