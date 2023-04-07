@@ -381,9 +381,10 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .to
 
   cli::cli_h1("Setting up default branch")
 
-  default_origin <- gert::git_remote_info(repo = path)$url
+  default_origin <- glue::glue("https://github.com/{owner}/{repo}")
   new_origin <- setup_gert_url(user, default_origin)
-  on.exit(git_remote_set_url(default_origin, remote = "origin", repo = repo),
+  on.exit(
+    gert::git_remote_set_url(default_origin, remote = "origin", repo = path),
     add = TRUE)
   cli::cli_alert("New origin: {.url {new_origin}}")
   gert::git_remote_set_url(new_origin, remote = "origin", repo = path)
