@@ -56,6 +56,7 @@ PREREQS := renv/library/ template/ filter-and-transform.sh functions.R filter-li
 .PHONY = github
 .PHONY = info
 
+# variables so that I can add colours to the output
 BOLD ?= "\\033[1m"
 U ?= "\\033[4m"
 END ?= "\\033[22m"
@@ -86,8 +87,10 @@ all:  #restore template/ $(TARGETS) repos.md
 	@echo
 
 modules: $(MODULE)
-	git submodule foreach 'git checkout main || git checkout gh-pages'
-	git submodule foreach 'git pull'
+
+# $(MODULE) Get a submodule of a repository
+%/.git : %.R
+	bash fetch-submodule.sh $@
 
 # $(TARGETS) Copy and transform a lesson
 sandpaper/%.json : %.R %/.git $(PREREQS) transform-lesson.R
@@ -119,9 +122,6 @@ template: template/
 template/ : establish-template.R renv.lock renv/library/
 	@GITHUB_PAT=$$(./pat.sh) Rscript $< -w workbench-beta-phase.yml $@
 
-# $(MODULE) Get a submodule of a repository
-%/.git : %.R
-	bash fetch-submodule.sh $@
 
 github: $(GITHUB)
 sandpaper/%-status.json : sandpaper/%.json create-test-repo.sh delete-test-repo.sh
