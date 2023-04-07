@@ -30,7 +30,7 @@ library("askpass")
 no_repo <- tryCatch(gh("GET /repos/{repo}", repo = arguments$repo), 
   github_error = function(e) e)
 if (inherits(no_repo, "gh_response")) {
-  tkn <- Sys.getenv("DEL_PAT", unset = NA)
+  tkn <- Sys.getenv("SETUP_PAT", unset = NA)
   if (is.na(tkn)) {
     browseURL("https://github.com/settings/tokens/new?scopes=delete_repo&description=delete%20transition%2Dtest%2D2")
     tkn <- askpass::askpass("Create a temporary token to DELETE existing repository\nPASTE YOUR TOKEN HERE: ")
@@ -47,36 +47,40 @@ if (inherits(no_repo, "gh_response")) {
   no_repo <- TRUE
 }
 
+tkn <- Sys.getenv("SETUP_PAT", unset = NA)
+tkn <- if (is.na(tkn)) NULL else tkn
+
 if (no_repo) {
 
   # create an empty repository
   cli::cli_alert_info("creating a new repository called {.code {arguments$repo}}")
   rp <- setNames(strsplit(arguments$repo, "/")[[1]], c("org", "repo"))
-  user_type <- switch(gh("GET /users/{usr}", usr = rp["org"])$type,
+  user_type <- switch(gh("GET /users/{usr}", usr = rp["org"], .token = tkn)$type,
     Organization = paste0("orgs/", rp["org"]),
     User = "user"
   )
   gh("POST /{type}/repos", 
     type = user_type, 
     name = fs::path_file(arguments$repo),
+    .token = tkn,
     .params = list(homepage = glue::glue("https://{rp['org']}.github.io/{rp['repo']}")))
 
   # clone the test to our temporary directory
   cli::cli_alert_info("importing {.code sgibson91/cross-stitch-carpentry} to {.code {arguments$repo}}")
   cli::cli_status("Cloning a mirror of {.code sgibson91/cross-stitch-carpentry}")
   tmp <- withr::local_tempdir()
-  git_clone("https://github.com/sgibson91/cross-stitch-carpentry/",
-    path = tmp, mirror = TRUE)
+  sg_url <- "https://carpentries-bot@github.com/sgibson91/cross-stitch-carpentry/"
+  git_clone(sg_url, path = tmp, mirror = TRUE, password = tkn)
 
   # set the URL
   cli::cli_status_update("setting the remote URL to {.code {arguments$repo}}")
-  git_remote_set_url(paste0("https://github.com/", arguments$repo, ".git"),
+  git_remote_set_url(paste0("https://carpentries-bot@github.com/", arguments$repo, ".git"),
     remote = "origin",
     repo = tmp)
 
   # push it up
   cli::cli_status_update("pushing the mirror to {.code {arguments$repo}}")
-  git_push(remote = "origin", mirror = TRUE, repo = tmp)
+  git_push(remote = "origin", mirror = TRUE, repo = tmp, password = tkn)
   withr::defer()
   cli::cli_status_clear()
 
@@ -84,6 +88,7 @@ if (no_repo) {
   # set gh-pages as the default branch
   cli::cli_alert_info("Setting gh-pages as default")
   res <- gh("PATCH /repos/{repo}", repo = arguments$repo, 
+    .token = tkn,
     .params = list(default_branch = "gh-pages"))
   if (res$default_branch != "gh-pages") {
     stop("the default branch could not be set to gh-pages")
@@ -94,16 +99,19 @@ if (no_repo) {
     gh("PUT /orgs/{ORG}/teams/{REPO}-maintainers/repos/{ORG}/{REPO}",
       ORG = rp["org"],
       REPO = rp["repo"],
+      .token = tkn,
       .params = list(permission = "push"))
     gh("PUT /orgs/{ORG}/teams/bots/repos/{ORG}/{REPO}",
       ORG = rp["org"],
       REPO = rp["repo"],
+      .token = tkn,
       .params = list(permission = "push"))
   }
 
   Sys.sleep(2)
   tmp <- withr::local_tempdir()
-  git_clone(glue::glue("https://github.com/{arguments$repo}"), path = tmp)
+  git_clone(glue::glue("https://carpentries-bot@github.com/{arguments$repo}"), path = tmp,
+    password = tkn)
   run_styles <- withr::local_tempfile()
   download.file("https://github.com/carpentries/actions/raw/main/update-styles/update-styles.sh", run_styles)
   withr::with_dir(tmp, {
@@ -121,7 +129,7 @@ if (no_repo) {
   ), fs::path(tmp, "_config.yml"))
   git_add(".", repo = tmp)
   git_commit("update styles", repo = tmp)
-  git_push(repo = tmp)
+  git_push(repo = tmp, password = tkn)
 
   
 } else {

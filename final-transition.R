@@ -120,4 +120,7 @@ prepare_for_execution <- function(cmd) {
 }
 cmd <- glue::glue("setup_github(path = '{new}', owner = '{org_repo[1]}', repo = '{org_repo[2]}')")
 prepare_for_execution(cmd)
-setup_github(path = new, owner = org_repo[1], repo = org_repo[2])
+
+tkn <- Sys.getenv("RELEASE_PAT", unset = "")
+tkn <- if (tkn == "") NULL else tkn
+setup_github(path = new, owner = org_repo[1], repo = org_repo[2], .token = tkn)

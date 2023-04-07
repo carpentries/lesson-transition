@@ -308,11 +308,20 @@ create_token <- function() {
   }
 }
 get_token <- create_token()
+
+setup_gert_url <- function(user, url) {
+  gert_url <- sub("github.com", paste0(user, "@github.com"), url)
+  paste0(gert_url, ".git")
+}
+
 #' Set up a given GitHub repository to recieve the Workbench
 #'
 #' @param path path to a transformed lesson
 #' @param owner the github repo owner name
 #' @param repo the name of the repository
+#' @param action the action to insert into the gh-pages branch to prevent
+#'   new pull requests
+#' @param .token the GitHub API token
 #'
 #' Transforming a lesson repository invovlves a couple of steps:
 #'
@@ -322,11 +331,18 @@ get_token <- create_token()
 #' 3. pushing the main branch
 #' 4. setting the main branch as default
 #' 5. protecting the main branch
-setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
+setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .token = NULL) {
+
+  creds <- gh::gh_whoami(.token = .token)
+  cli::cli_h1("Credentials")
+  print(creds)
+  user <- creds$login
+  stopifnot("Token must be a character" = is.character(.token))
+
   # get default branch
   cli::cli_h1("Setting up repository")
   REPO <- glue::glue("GET /repos/{owner}/{repo}")
-  repo_info <- gh::gh(REPO)
+  repo_info <- gh::gh(REPO, .token = .token)
   jsonlite::write_json(repo_info, sub("[/]?$", "-status.json", path))
   default <- repo_info$default_branch
   date_created <- as.character(as.Date(repo_info$created_at))
@@ -344,19 +360,19 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   cli::cli_alert_info("renaming default branch ({default}) to legacy/{default}")
   RENAME <- glue::glue("POST /repos/{owner}/{repo}/branches/{default}/rename") 
   print(RENAME)
-  gh::gh(RENAME, new_name = glue::glue("legacy/{default}"))
+  gh::gh(RENAME, new_name = glue::glue("legacy/{default}"), .token = .token)
 
   # rename gh-pages if not default
   if (default == "main") {
     cli::cli_alert_info("renaming gh-pages to legacy/gh-pages")
     RENAME <- glue::glue("POST /repos/{owner}/{repo}/branches/gh-pages/rename") 
-    gh::gh(RENAME, new_name = glue::glue("legacy/gh-pages"))
+    gh::gh(RENAME, new_name = glue::glue("legacy/gh-pages"), .token = .token)
   }
   # GITHUB ACTIONS ------------------------------------------------------------
   # Set up actions for a repository
   cli::cli_alert_info("enabling github actions to be run")
   ACTIONS <- glue::glue("PUT /repos/{owner}/{repo}/actions/permissions")
-  gh::gh(ACTIONS, enabled = TRUE, allowed_actions = "all")
+  gh::gh(ACTIONS, enabled = TRUE, allowed_actions = "all", .token = .token)
 
   cli::cli_alert_info("fetching and pruning branches")
   withr::with_dir(path, {
@@ -364,15 +380,24 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
   })
 
   cli::cli_h1("Setting up default branch")
+
+  default_origin <- glue::glue("https://github.com/{owner}/{repo}")
+  new_origin <- setup_gert_url(user, default_origin)
+  on.exit(
+    gert::git_remote_set_url(default_origin, remote = "origin", repo = path),
+    add = TRUE)
+  cli::cli_alert("New origin: {.url {new_origin}}")
+  gert::git_remote_set_url(new_origin, remote = "origin", repo = path)
   # FORCE push main branch ----------------------------------------------------
   cli::cli_alert_info("pushing the main branch")
-  gert::git_push(repo = path, set_upstream = TRUE, force = TRUE)
+  gert::git_push(repo = path, remote = "origin", 
+    set_upstream = TRUE, force = TRUE, password = .token)
   # refspec = "refs/heads/main" 
 
   # set the main branch to be the default branch
   cli::cli_alert_info("setting main branch as default")
   gh::gh("PATCH /repos/{owner}/{repo}", owner = owner, repo = repo, 
-    default_branch = "main") 
+    default_branch = "main", .token = .token) 
 
   # Protect the main branch from becoming sausage -----------------------------
   # 
@@ -386,22 +411,17 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     require_last_push_approval = falsy,
     required_approving_review_count = 0L 
   ) 
-  gh::gh(PROTECT,  
+  gh::gh(PROTECT,
     required_status_checks = NA, 
     enforce_admins = TRUE, 
     required_pull_request_reviews = pr_reviews, 
-    restrictions = NA 
-  ) 
+    restrictions = NA,
+    .token = .token
+  )
 
   # gh-pages branch -----------------------------------------------------------
   # setting a new, empty gh-pages branch 
   cli::cli_alert_info("creating empty gh-pages branch and forcing it up")
-  # I wanted to create a temporary splash screen for the transition, but it
-  # looks like it's not happening :(
-  # idx <- readLines("transition-screen.html")
-  # desc <- if (is.null(repo_info$description)) "This Lesson" else repo_info$description
-  # idx <- gsub("LESSON", desc, idx)
-  # idx <- gsub("SOURCE", repo_info$full_name, idx)
   withr::with_dir(path, {
     callr::run("git", c("checkout", "--orphan", "gh-pages"), 
       echo = TRUE, echo_cmd = TRUE)
@@ -433,7 +453,8 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
       enforce_admins = TRUE, 
       required_pull_request_reviews = NA, 
       restrictions = NA,
-      lock_branch = TRUE
+      lock_branch = TRUE,
+      .token = .token
     ) 
   }
   cli::cli_alert_info("locking legacy/gh-pages")
@@ -443,21 +464,22 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml") {
     enforce_admins = TRUE, 
     required_pull_request_reviews = NA, 
     restrictions = NA,
-    lock_branch = TRUE
+    lock_branch = TRUE,
+    .token = .token
   ) 
 
   # CLOSING any remaining pull requests
-  close_open_prs(owner, repo)
-
+  close_open_prs(owner, repo, .token)
 }
 
-close_open_prs <- function(owner, repo) {
+close_open_prs <- function(owner, repo, .token = NULL) {
 
   cli::cli_alert_info("Closing open pull requests")
   pulls <- gh::gh("GET /repos/{owner}/{repo}/pulls", 
     owner = owner,
     repo = repo,
     per_page = 100,
+    .token = .token,
     .limit = Inf
   )
   if (length(pulls) == 0) {
@@ -474,6 +496,7 @@ close_open_prs <- function(owner, repo) {
       owner = owner,
       repo = repo,
       number = x$number,
+      .token = .token,
       .params = list(
         body = msg
     ))
@@ -481,6 +504,7 @@ close_open_prs <- function(owner, repo) {
       owner = owner,
       repo = repo,
       number = x$number,
+      .token = .token,
       .params = list(
         labels = list("pre-workbench")
     ))
@@ -488,6 +512,7 @@ close_open_prs <- function(owner, repo) {
     gh::gh("POST /repos/{owner}/{repo}/pulls/{number}", 
       owner = owner,
       repo = repo,
+      .token = .token,
       number = x$number,
       .params = list(
         state = "closed"
@@ -499,7 +524,7 @@ close_open_prs <- function(owner, repo) {
 
 # Create a team for maintainers who have confirmed that they have prepared for
 # the transition. The default maintainer team will be locked until they match.
-create_workbench_team <- function(owner, repo) {
+create_workbench_team <- function(owner, repo, .token = NULL) {
   parent_ids <- c(carpentries = 3296124L,
     datacarpentry = 3267328L,
     librarycarpentry = 3276234L,
@@ -509,7 +534,8 @@ create_workbench_team <- function(owner, repo) {
   team <- tryCatch({
     gh::gh("GET /orgs/{owner}/teams/{repo}-maintainers-workbench",
       owner = owner,
-      repo = repo
+      repo = repo,
+      .token = .token
     )
   }, http_error_404 = function(e) {
     # a 404 error from github means that the team does not exist
@@ -517,9 +543,11 @@ create_workbench_team <- function(owner, repo) {
   })
 
   if (is.null(team)) {
+    cli::cli_alert_info("Creating a workbench team for {.path {owner}/{repo}}")
     # if it does not exist, create the team and then add the repository to it
     team <- gh::gh("POST /orgs/{org}/teams",
       org = owner,
+      .token = .token,
       .params = list(
         name = glue::glue("{repo}-maintainers-workbench"),
         description = "A repo", 
@@ -530,19 +558,22 @@ create_workbench_team <- function(owner, repo) {
     gh::gh("PUT /orgs/{org}/teams/{repo}-maintainers-workbench/repos/{org}/{repo}",
       org = owner,
       repo = repo,
+      .token = .token,
       .params = list(permission = "maintain")
     )
   }
-  add_bot_to_repo(owner, repo)
+  cli::cli_alert_info("Adding Carpentries Apprentice to repository")
+  add_bot_to_repo(owner, repo, .token)
   team
 }
 
 # Make sure The Carpentries Bot is allowed to access the repository
-add_bot_to_repo <- function(owner, repo) {
+add_bot_to_repo <- function(owner, repo, .token = NULL) {
   res <- tryCatch({
     gh::gh("PUT /orgs/{org}/teams/bots/repos/{org}/{repo}",
       org = owner,
       repo = repo,
+      .token = .token,
       .params = list(permission = "push")
     )
   }, http_error_422 = function(e) {
@@ -552,19 +583,19 @@ add_bot_to_repo <- function(owner, repo) {
   res
 }
 
-add_workflow_token <- function(owner, repo, token) {
-  scope <- gh::gh_whoami(.token = token)$scopes
+add_workflow_token <- function(owner, repo, .token) {
+  scope <- gh::gh_whoami(.token = .token)$scopes
   if (!grepl("admin[:]org", scope)) {
     cli::cli_alert_danger("need the admin token for this")
     return(NULL)
   }
   id <- gh::gh("GET /repos/{org}/{repo}", 
-    org = owner, repo = repo, .token = token)$id
+    org = owner, repo = repo, .token = .token)$id
   tryCatch({
     gh::gh("PUT /orgs/{org}/actions/secrets/SANDPAPER_WORKFLOW/repositories/{id}",
     org = owner,
     id = id,
-    .token = token)
+    .token = .token)
   }, 
   http_error_403 = function(e) {
     cli::cli_alert_danger("need the admin token for this")
