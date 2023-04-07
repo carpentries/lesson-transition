@@ -1,7 +1,8 @@
-Thank you for your contribution. This lesson has migrated to use [The
-Carpentries Workbench][workbench]. Because of this, we had to close your pull
-request. If you wish to contribute again, **you will need to delete and re-fork
-your repository.**
+Thank you for your contribution. This lesson has migrated to use [The Carpentries Workbench][workbench], but unfortunately, due to various factors, the maintainers of this lesson were unable to address this pull request before the transition. Because of this, we had to close your pull request.
+
+Please note that this does not mean that your contribution was not valued. The maintainers are first and foremost people who work on this on a voluntary basis. Sometimes pull requests become stale because other responsibilities take precedence. Thank you for taking the time to open the pull request in the first place. 
+
+If you wish to contribute again, **you will need to delete and re-fork your repository.**
 
 ## How to contribute
 
