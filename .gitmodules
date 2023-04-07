@@ -18,18 +18,6 @@
 	branch = main
 	path = datacarpentry/R-ecology-lesson
 	url = https://github.com/datacarpentry/R-ecology-lesson/
-[submodule "carpentries-incubator/python-packaging-publishing"]
-	branch = gh-pages
-	path = carpentries-incubator/python-packaging-publishing
-	url = https://github.com/carpentries-incubator/python-packaging-publishing/
-[submodule "carpentries-incubator/docker-introduction"]
-	branch = gh-pages
-	path = carpentries-incubator/docker-introduction
-	url = https://github.com/carpentries-incubator/docker-introduction/
-[submodule "carpentries-incubator/citable-software"]
-	branch = gh-pages
-	path = carpentries-incubator/citable-software
-	url = https://github.com/carpentries-incubator/citable-software/
 [submodule "datacarpentry/wrangling-genomics"]
 	branch = gh-pages
 	path = datacarpentry/wrangling-genomics
