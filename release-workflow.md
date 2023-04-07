@@ -15,8 +15,37 @@ To get this running, you need the requirements for this repo:
  - python version >= 3
  - R version >= 4.1
 
-You must also have a GitHub PAT readily available from your credential store. 
-I have created [a tutorial if you do not have one](https://carpentries.github.io/sandpaper-docs/github-pat.html#creating-a-new-github-personal-access-token)
+#### GitHub PAT
+
+The release workflow REQUIRES a GitHub personal access token to be avaialble via
+the environment variable `RELEASE_PAT`. This token can have one of two forms
+
+##### Fine-Grained PAT (preferred)
+
+As of 2023-04-07, I have updated the workflow to work with fine-grained
+Personal Access Tokens. The benefit of these is that we can restrict the
+tokens to specific repositories so that when we are doing the transition, we do
+not run into a situation where repositories we already transitioned (or have
+yet to transition) are not accidentally clobbered.
+
+To create a new token, head over to <https://github.com/settings/personal-access-tokens/new> and then set the resources this way:
+
+| parameter | value | notes |
+| --------- | ----- | ----- |
+| Resource owner | The GitHub organisation | if you use your personal account, you may not have access |
+| Repository access | Only select repositories | leave this blank until we are ready to work with it |
+| Repository permissions | Read and Write on **actions, administration, contents, pages, pull requests, workflows** |  |
+| Organization permissions | none |  |
+
+
+The good thing about these tokens is that their permissions can be modified on
+the fly and they can be regenerated with one click. This means that it will be
+possible to create one token, store it in your environment, and then update it
+as you work through the release process.
+
+##### Token (classic)
+
+I have created [a tutorial if you do not have one](https://carpentries.github.io/sandpaper-docs/github-pat.html#creating-a-new-github-personal-access-token).
 
 Your token should have the following scopes: `repo,user,workflow`.
 
@@ -66,11 +95,80 @@ You also have a link to the access settings where you can set everyone's access
 to "read". Note that you should leave one maintainer as admin to grant the others
 access ([example comment to admin](https://github.com/carpentries-incubator/bioc-project/issues/48#issuecomment-1435372672)).
 
+
+### Adding Tokens to your environment
+
+One important thing: if you do not want your tokens exposed in your bash
+history, then add a blank space before your commands. This makes fixing mistakes
+annoying, but means that you don't have a bunch of tokens floating in your 
+history to exploit. 
+
+#### If you have installed [vault](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install)
+
+I like to use vault to store my tokens because it's an extra layer that allows
+me to store them without having to export them as variables. I'm pretty sure 
+there is a better way, but I don't know about it.
+
+I've modified [instructions from their tutorial](https://learn.hashicorp.com/tutorials/vault/getting-started-secrets-engines?in=vault/getting-started)
+
+Start by opening two new bash shells.
+
+In one shell, start by running `vault server -dev`. This will display something
+like 
+
+```
+WARNING! dev mode is enabled! In this mode, Vault runs entirely in-memory
+and starts unsealed with a single unseal key. The root token is already
+authenticated to the CLI, so you can immediately begin using Vault.
+
+You may need to set the following environment variables:
+
+    $ export VAULT_ADDR='http://127.0.0.1:8200'
+```
+
+Leave that shell open because that is what's running your vault server. Copy
+and paste the export statement into your original window and the second window.
+
+Now it is time to place your secrets into the key-value (kv) store. Each store
+is labelled by a path, which can store multiple key-value pairs:
+
+```bash
+# note the space at the beginning
+ vault secrets enable -path=tr kv 
+```
+
+Now it's time to place your token(s)  in the store. I like to create the tokens
+on their own lines, so note the slash at the end. 
+
+```bash
+# note the space at the beginning
+ vault kv put -mount=tr auth \
+release=<PASTE TOKEN HERE> \
+pat=<PASTE_TOKEN_HERE>
+```
+
+From there, I can use [`./pat.sh release`](pat.sh) to extract the release token
+to pass into a new variable.
+
+#### If you do not have vault installed
+
+If you do not have vault installed, you can still store your tokens as local
+variables,
+
+```bash
+# note the space at the beginning
+ RELEASE_TOKEN=<PASTE_TOKEN_HERE>
+ GITHUB_PAT=<PASTE_TOKEN_HERE>
+```
+
 ### Creating the Release
 
 To create the release, you will use the following command:
 
 ```bash
+# if you are using vault
+RELEASE_TOKEN=$(./pat.sh release) make release/[org]/[repo].json
+# otherwise
 make release/[org]/[repo].json
 ```
 
@@ -78,7 +176,7 @@ where `[org]` is the organisattion and `[repo]` is the lesson name. For example,
 this created the release for the bioc intro lesson for carpentries incubator:
 
 ```
-make release/carpentries-incubator/bioc-intro.json
+RELEASE_TOKEN=$(./pat.sh release) make release/carpentries-incubator/bioc-intro.json
 ```
 
 The release process will take a few minutes depending on the speed of your
