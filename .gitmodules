@@ -1,7 +1,7 @@
 [submodule "swcarpentry/r-novice-inflammation"]
 	branch = main
 	path = swcarpentry/r-novice-inflammation
-	url = https://github.com/swcarpentry/r-novice-inflammation
+	url = https://github.com/swcarpentry/r-novice-inflammation/
 [submodule "swcarpentry/python-novice-inflammation"]
 	branch = gh-pages
 	path = swcarpentry/python-novice-inflammation
