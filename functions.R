@@ -470,9 +470,6 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .to
 
   # CLOSING any remaining pull requests
   close_open_prs(owner, repo, .token)
-
-  # Creating a team to work on this lesson
-  create_workbench_team(owner, repo, .token)
 }
 
 close_open_prs <- function(owner, repo, .token = NULL) {
