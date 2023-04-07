@@ -19,7 +19,9 @@ This workflow will create a submodule for this that will be kept up-to-date
 until you release the transitioned lesson. 
 
 The transition process uses tools built for R, python, Git, and BASH and is
-described in [The Release Workflow Documentation](release-workflow.md).
+described in [The Release Workflow Documentation](release-workflow.md). Tests of
+the release workflow are outlined in [The Release Workflow Testing
+Documentation](test-workflow.md)
 
 > **Warning**
 > This process is necessarily destructive and can only be perforemd one-way
