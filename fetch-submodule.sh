@@ -66,7 +66,7 @@ IN_IGNORE=$(grep -c ${REPO%%[/]} .module-ignore)
 if [[ "${IN_IGNORE}" -ne 0 || -e "${BETA}" || -e "${RELEASE}" ]]; then
   if [[ ${IN_MODULES} -ne 0 ]]; then
     echo -e "\033[1mRemoving \033[38;5;208m${REPO}\033[0;00m as a submodule\033[22m"
-    git rm "${REPO}"
+    git rm -rf "${REPO}"
     rm -rf ".git/modules/${REPO}"
     git config --remove-section "submodule.${REPO%%[/]}" || echo ""
   else
