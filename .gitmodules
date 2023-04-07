@@ -73,10 +73,6 @@
 	path = zkamvar/transition-test-2
 	url = https://github.com/zkamvar/transition-test-2/
 	branch = gh-pages
-[submodule "fishtree-attempt/znk-transition-test"]
-	path = fishtree-attempt/znk-transition-test
-	url = https://github.com/fishtree-attempt/znk-transition-test/
-	branch = gh-pages
 [submodule "datacarpentry/sql-ecology-lesson"]
 	path = datacarpentry/sql-ecology-lesson
 	url = https://github.com/datacarpentry/sql-ecology-lesson/
