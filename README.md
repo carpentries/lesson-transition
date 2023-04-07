@@ -678,8 +678,11 @@ because I want to be difficult, I am using a [vault secrets engine called
 tr](https://learn.hashicorp.com/tutorials/vault/getting-started-secrets-engines?in=vault/getting-started) by running `vault server -dev` in a separate window and then:
 
 ```bash
-vault secrets enable -path=tr kv && \
-vault kv put tr/auth bot=<token> del=<token> new=<token>
+ vault secrets enable -path=tr kv
+ vault kv put -mount=tr auth \
+bot=<token> \
+del=<token> \
+new=<token>
 ```
 
 From there, I can use [`./pat.sh bot`](pat.sh) to extract the bot token so that
