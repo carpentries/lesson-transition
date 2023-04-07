@@ -381,12 +381,12 @@ setup_github <- function(path = NULL, owner, repo, action = "close-pr.yaml", .to
 
   cli::cli_h1("Setting up default branch")
 
-  default_origin <- gert::git_remote_info(repo = repo)$url
+  default_origin <- gert::git_remote_info(repo = path)$url
   new_origin <- setup_gert_url(user, default_origin)
   on.exit(git_remote_set_url(default_origin, remote = "origin", repo = repo),
     add = TRUE)
   cli::cli_alert("New origin: {.url {new_origin}}")
-  git_remote_set_url(new_origin, remote = "origin", repo = repo)
+  gert::git_remote_set_url(new_origin, remote = "origin", repo = path)
   # FORCE push main branch ----------------------------------------------------
   cli::cli_alert_info("pushing the main branch")
   gert::git_push(repo = path, remote = "origin", 
