@@ -12,6 +12,7 @@ Usage:
 <issue> issue number. if this is not provided, the list will be printed to the console
 }' -> doc
 library("docopt")
+source("functions.R")
 
 
 `%||%` <- function(a, b) if (length(a) < 1L || identical(a, FALSE) || identical(a, "")) b else a

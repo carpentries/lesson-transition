@@ -583,6 +583,22 @@ add_bot_to_repo <- function(owner, repo, .token = NULL) {
   res
 }
 
+# restrict team access to read
+set_team_to_read <- function(owner, repo, .token = NULL) {
+  res <- tryCatch({
+    gh::gh("PUT /orgs/{org}/teams/{repo}-maintainers/repos/{org}/{repo}",
+      org = owner,
+      repo = repo,
+      .token = .token,
+      .params = list(permission = "read")
+    )
+  }, http_error_422 = function(e) {
+    cli::cli_alert_danger("could not modify @{org}/{repo}-maintainers")
+    print(e)
+  })
+  res
+}
+
 add_workflow_token <- function(owner, repo, .token) {
   scope <- gh::gh_whoami(.token = .token)$scopes
   if (!grepl("admin[:]org", scope)) {
