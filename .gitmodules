@@ -65,3 +65,167 @@
 	path = datacarpentry/sql-socialsci
 	url = https://github.com/datacarpentry/sql-socialsci/
 	branch = gh-pages
+[submodule "swcarpentry/git-novice-es"]
+	path = swcarpentry/git-novice-es
+	url = https://github.com/swcarpentry/git-novice-es/
+	branch = gh-pages
+[submodule "swcarpentry/git-novice"]
+	path = swcarpentry/git-novice
+	url = https://github.com/swcarpentry/git-novice/
+	branch = gh-pages
+[submodule "swcarpentry/hg-novice"]
+	path = swcarpentry/hg-novice
+	url = https://github.com/swcarpentry/hg-novice/
+	branch = gh-pages
+[submodule "swcarpentry/hpc-novice"]
+	path = swcarpentry/hpc-novice
+	url = https://github.com/swcarpentry/hpc-novice/
+	branch = gh-pages
+[submodule "swcarpentry/make-novice"]
+	path = swcarpentry/make-novice
+	url = https://github.com/swcarpentry/make-novice/
+	branch = gh-pages
+[submodule "swcarpentry/matlab-novice-inflammation"]
+	path = swcarpentry/matlab-novice-inflammation
+	url = https://github.com/swcarpentry/matlab-novice-inflammation/
+	branch = gh-pages
+[submodule "swcarpentry/python-novice-gapminder"]
+	path = swcarpentry/python-novice-gapminder
+	url = https://github.com/swcarpentry/python-novice-gapminder/
+	branch = gh-pages
+[submodule "swcarpentry/r-novice-gapminder-es"]
+	path = swcarpentry/r-novice-gapminder-es
+	url = https://github.com/swcarpentry/r-novice-gapminder-es/
+	branch = main
+[submodule "swcarpentry/shell-novice-es"]
+	path = swcarpentry/shell-novice-es
+	url = https://github.com/swcarpentry/shell-novice-es/
+	branch = gh-pages
+[submodule "swcarpentry/sql-novice-survey"]
+	path = swcarpentry/sql-novice-survey
+	url = https://github.com/swcarpentry/sql-novice-survey/
+	branch = gh-pages
+[submodule "datacarpentry/cloud-genomics"]
+	path = datacarpentry/cloud-genomics
+	url = https://github.com/datacarpentry/cloud-genomics/
+	branch = gh-pages
+[submodule "datacarpentry/genomics-r-intro"]
+	path = datacarpentry/genomics-r-intro
+	url = https://github.com/datacarpentry/genomics-r-intro/
+	branch = main
+[submodule "datacarpentry/image-processing"]
+	path = datacarpentry/image-processing
+	url = https://github.com/datacarpentry/image-processing/
+	branch = gh-pages
+[submodule "datacarpentry/openrefine-socialsci"]
+	path = datacarpentry/openrefine-socialsci
+	url = https://github.com/datacarpentry/openrefine-socialsci/
+	branch = gh-pages
+[submodule "datacarpentry/organization-genomics"]
+	path = datacarpentry/organization-genomics
+	url = https://github.com/datacarpentry/organization-genomics/
+	branch = gh-pages
+[submodule "datacarpentry/python-ecology-lesson"]
+	path = datacarpentry/python-ecology-lesson
+	url = https://github.com/datacarpentry/python-ecology-lesson/
+	branch = gh-pages
+[submodule "datacarpentry/python-socialsci"]
+	path = datacarpentry/python-socialsci
+	url = https://github.com/datacarpentry/python-socialsci/
+	branch = gh-pages
+[submodule "datacarpentry/rr-automation"]
+	path = datacarpentry/rr-automation
+	url = https://github.com/datacarpentry/rr-automation/
+	branch = gh-pages
+[submodule "datacarpentry/rr-intro"]
+	path = datacarpentry/rr-intro
+	url = https://github.com/datacarpentry/rr-intro/
+	branch = gh-pages
+[submodule "datacarpentry/rr-literate-programming"]
+	path = datacarpentry/rr-literate-programming
+	url = https://github.com/datacarpentry/rr-literate-programming/
+	branch = gh-pages
+[submodule "datacarpentry/rr-organization1"]
+	path = datacarpentry/rr-organization1
+	url = https://github.com/datacarpentry/rr-organization1/
+	branch = gh-pages
+[submodule "datacarpentry/rr-publication"]
+	path = datacarpentry/rr-publication
+	url = https://github.com/datacarpentry/rr-publication/
+	branch = gh-pages
+[submodule "datacarpentry/rr-version-control"]
+	path = datacarpentry/rr-version-control
+	url = https://github.com/datacarpentry/rr-version-control/
+	branch = gh-pages
+[submodule "datacarpentry/shell-economics"]
+	path = datacarpentry/shell-economics
+	url = https://github.com/datacarpentry/shell-economics/
+	branch = gh-pages
+[submodule "datacarpentry/shell-genomics"]
+	path = datacarpentry/shell-genomics
+	url = https://github.com/datacarpentry/shell-genomics/
+	branch = gh-pages
+[submodule "datacarpentry/spreadsheet-ecology-lesson"]
+	path = datacarpentry/spreadsheet-ecology-lesson
+	url = https://github.com/datacarpentry/spreadsheet-ecology-lesson/
+	branch = gh-pages
+[submodule "datacarpentry/spreadsheets-socialsci"]
+	path = datacarpentry/spreadsheets-socialsci
+	url = https://github.com/datacarpentry/spreadsheets-socialsci/
+	branch = gh-pages
+[submodule "datacarpentry/stata-economics"]
+	path = datacarpentry/stata-economics
+	url = https://github.com/datacarpentry/stata-economics/
+	branch = main
+[submodule "librarycarpentry/23-rd-things"]
+	path = librarycarpentry/23-rd-things
+	url = https://github.com/librarycarpentry/23-rd-things/
+	branch = 14-identifiers-cleanup
+[submodule "librarycarpentry/lc-data-intro-archives"]
+	path = librarycarpentry/lc-data-intro-archives
+	url = https://github.com/librarycarpentry/lc-data-intro-archives/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-data-intro"]
+	path = librarycarpentry/lc-data-intro
+	url = https://github.com/librarycarpentry/lc-data-intro/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-dig-pres"]
+	path = librarycarpentry/lc-dig-pres
+	url = https://github.com/librarycarpentry/lc-dig-pres/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-git"]
+	path = librarycarpentry/lc-git
+	url = https://github.com/librarycarpentry/lc-git/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-marcedit"]
+	path = librarycarpentry/lc-marcedit
+	url = https://github.com/librarycarpentry/lc-marcedit/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-open-refine"]
+	path = librarycarpentry/lc-open-refine
+	url = https://github.com/librarycarpentry/lc-open-refine/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-python-intro"]
+	path = librarycarpentry/lc-python-intro
+	url = https://github.com/librarycarpentry/lc-python-intro/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-spreadsheets"]
+	path = librarycarpentry/lc-spreadsheets
+	url = https://github.com/librarycarpentry/lc-spreadsheets/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-sql"]
+	path = librarycarpentry/lc-sql
+	url = https://github.com/librarycarpentry/lc-sql/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-webscraping"]
+	path = librarycarpentry/lc-webscraping
+	url = https://github.com/librarycarpentry/lc-webscraping/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-wikidata"]
+	path = librarycarpentry/lc-wikidata
+	url = https://github.com/librarycarpentry/lc-wikidata/
+	branch = gh-pages
+[submodule "carpentries/instructor-training-bonus-modules"]
+	path = carpentries/instructor-training-bonus-modules
+	url = https://github.com/carpentries/instructor-training-bonus-modules/
+	branch = gh-pages
