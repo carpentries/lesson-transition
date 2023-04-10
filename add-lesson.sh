@@ -28,14 +28,6 @@ if [[ ${FILE} != "empty" && ! -e "${FILE}.R" ]]; then
   echo '' >> "${FILE}.R"
 
 
-curl \
-  -X POST \
-  -H "Accept: application/vnd.github.v3+json" \
-  -H "Authorization: token $(./pat.sh)" \
-  https://api.github.com/repos/carpentries/lesson-transition/issues \
-  -d "{\"title\":\"${FILE}\", \"body\":\"tracking issues for <https://github.com/${FILE}>/\"}" \
-  | jq -r ".html_url"
-
 else
 
   echo
