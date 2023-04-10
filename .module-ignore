@@ -8,3 +8,6 @@ carpentries-incubator/citable-software
 carpentries-incubator/python-packaging-publishing
 carpentries-incubator/docker-introduction
 carpentries/sandpaper-docs
+carpentries/lesson-development-training
+carpentries/workbench-template-md
+carpentries/workbench-template-rmd
