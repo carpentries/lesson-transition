@@ -262,6 +262,13 @@ add_experiment_info <- function(episode) {
   episode$add_md(experiment, 0L)
 }
 
+# REPOSITORY FUNCTIONS ---------------------------------------------------------
+#
+# In this section, we have functions that help modify the source repository.
+# 
+# As with all projects, these functions really should be sent into a different
+# file, but it is a little late for that now.
+
 #' Retrieve a GitHub token for a given user
 #'
 #' Use this function to provision an alternate account password or a temporary
@@ -760,4 +767,6 @@ create_release_checklist <- function() {
   res <- lessons[c("number", "lesson", "released", "date", "status", "issue")]
   print(knitr::kable(res, col.names = c("#", "Lesson", "Released", "Date", "Artifacts", "Issue"), align = "rlcrll", row.names = FALSE))
 
+  invisible(res)
 }
+
