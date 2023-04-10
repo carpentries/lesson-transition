@@ -1,6 +1,6 @@
-Thank you for your contribution. This lesson has migrated to use [The Carpentries Workbench][workbench], but unfortunately, due to various factors, the maintainers of this lesson were unable to address this pull request before the transition. Because of this, we had to close your pull request.
+Thank you for your contribution. This lesson has migrated to use [The Carpentries Workbench][workbench], but unfortunately, due to various factors, the Maintainers of this lesson were unable to address this pull request before the transition. Because of this, we had to close your pull request.
 
-Please note that this does not mean that your contribution was not valued. The maintainers are first and foremost people who work on this on a voluntary basis. Sometimes pull requests become stale because other responsibilities take precedence. Thank you for taking the time to open the pull request in the first place. 
+Please note that this does not mean that your contribution was not valued. There are many reasons why a pull request is not merged. It's important to remember that the Maintainers are first and foremost people---people who maintain this lesson on a voluntary basis. Sometimes pull requests become stale because other responsibilities take precedence. Thank you for taking the time to open the pull request in the first place.
 
 If you wish to contribute again, **you will need to delete and re-fork your repository.**
 
@@ -19,8 +19,6 @@ strategy](https://happygitwithr.com/burn.html)):
 
 ## Questions
 
-If you have any questions or would like assistance, please contact
-@core-team-curriculum (curriculum@carpentries.org) or you can respond to this
-message.
+If you have any questions or would like assistance, please contact @core-team-curriculum (email: curriculum@carpentries.org) or you can respond to this message.
 
 [workbench]: https://carpentries.github.io/workbench

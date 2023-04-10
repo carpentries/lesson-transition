@@ -487,8 +487,18 @@ close_open_prs <- function(owner, repo, .token = NULL) {
     return(invisible())
   }
   cli::cli_alert("Found {length(pulls)} pull requests")
+
+  # read in PR closer message and tag the appropriate team
   msg <- paste(readLines("close-pr-msg.md"), collapse = "\n")
-  
+  team_tag <- switch(tolower(owner), 
+    swcarpentry = "@swcarpentry/staff-curriculum",
+    librarycarpentry = "@librarycarpentry/staff-curriculum",
+    datacarepentry = "@datacarpentry/core-team-curriculum",
+    carpentries = "@carpentries/core-team-curriculum",
+    `carpentries-lab` = "@carpentries-lab/core-team-curriculum"
+  )
+  msg <- sub("@core-team-curriculum", team_tag, msg, fixed = TRUE)
+  # comment on each PR, tag it, and close it
   purrr::walk(pulls, function(x, msg) {
     cli::cli_status("{cli::symbol$play} Processing #{x$number} ({x$title})")
     cli::cli_status_update("{cli::symbol$info} Commenting on #{x$number} ({x$title})")
