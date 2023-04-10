@@ -133,30 +133,6 @@
 	path = datacarpentry/python-socialsci
 	url = https://github.com/datacarpentry/python-socialsci/
 	branch = gh-pages
-[submodule "datacarpentry/rr-automation"]
-	path = datacarpentry/rr-automation
-	url = https://github.com/datacarpentry/rr-automation/
-	branch = gh-pages
-[submodule "datacarpentry/rr-intro"]
-	path = datacarpentry/rr-intro
-	url = https://github.com/datacarpentry/rr-intro/
-	branch = gh-pages
-[submodule "datacarpentry/rr-literate-programming"]
-	path = datacarpentry/rr-literate-programming
-	url = https://github.com/datacarpentry/rr-literate-programming/
-	branch = gh-pages
-[submodule "datacarpentry/rr-organization1"]
-	path = datacarpentry/rr-organization1
-	url = https://github.com/datacarpentry/rr-organization1/
-	branch = gh-pages
-[submodule "datacarpentry/rr-publication"]
-	path = datacarpentry/rr-publication
-	url = https://github.com/datacarpentry/rr-publication/
-	branch = gh-pages
-[submodule "datacarpentry/rr-version-control"]
-	path = datacarpentry/rr-version-control
-	url = https://github.com/datacarpentry/rr-version-control/
-	branch = gh-pages
 [submodule "datacarpentry/shell-economics"]
 	path = datacarpentry/shell-economics
 	url = https://github.com/datacarpentry/shell-economics/
