@@ -138,16 +138,30 @@ if [[ ${SCRIPT} == 'datacarpentry/R-ecology-lesson.R' ]]; then
     ${REPO} \
     2>&1 | tee ${CWD}/${OUT}-filter.log 
 else
-  if [[ ${REPO} == 'librarycarpentry/lc-shell' ]]; then
-    # replace bash with .language bash in the new repository until
-    # https://github.com/LibraryCarpentry/lc-shell/commit/6807b96f674764469047346f435ba74ee44f6617
-    # is merged.
-    tmp=$(mktemp -d)
-    rm -r ${tmp}
-    cp -r ${REPO} ${tmp}
-    sed -i -r -e 's/\.bash/\.language-bash/' ${tmp}/{_episodes,_extras,}/*.md
-    REPO=${tmp}
-  fi
+  case ${REPO} in 
+    'librarycarpentry/lc-shell')
+      # replace bash with .language bash in the new repository until
+      # https://github.com/LibraryCarpentry/lc-shell/commit/6807b96f674764469047346f435ba74ee44f6617
+      # is merged.
+      tmp=$(mktemp -d)
+      rm -r ${tmp}
+      cp -r ${REPO} ${tmp}
+      sed -i -r -e 's/\.bash/\.language-bash/' ${tmp}/{_episodes,_extras,}/*.md
+      REPO=${tmp}
+      ;;
+    'datacarpentry/ecology-workshop' | 'datacarpentry/genomics-workshop' | 'datacarpentry/socialsci-workshop' | 'datacarpentry/geospatial-workshop')
+        # Workshop lessons need an episode seed before running
+      tmp=$(mktemp -d)
+      rm -r ${tmp}
+      cp -r ${REPO} ${tmp}
+      REPO=${tmp}
+      mkdir -p ${REPO}/_episodes ${OUT}/episodes/
+      cp ${CWD}/placeholder-episode.txt ${REPO}/_episodes/placeholder.md
+      ;;
+    *)
+      :
+      ;;
+  esac
   PROD="${PRODUCTION}" GITHUB_PAT="${GHP}" Rscript transform-lesson.R \
     --build \
     --fix-liquid \
