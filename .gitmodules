@@ -133,10 +133,6 @@
 	path = datacarpentry/python-socialsci
 	url = https://github.com/datacarpentry/python-socialsci/
 	branch = gh-pages
-[submodule "datacarpentry/shell-economics"]
-	path = datacarpentry/shell-economics
-	url = https://github.com/datacarpentry/shell-economics/
-	branch = gh-pages
 [submodule "datacarpentry/shell-genomics"]
 	path = datacarpentry/shell-genomics
 	url = https://github.com/datacarpentry/shell-genomics/
@@ -149,14 +145,6 @@
 	path = datacarpentry/spreadsheets-socialsci
 	url = https://github.com/datacarpentry/spreadsheets-socialsci/
 	branch = gh-pages
-[submodule "datacarpentry/stata-economics"]
-	path = datacarpentry/stata-economics
-	url = https://github.com/datacarpentry/stata-economics/
-	branch = main
-[submodule "librarycarpentry/23-rd-things"]
-	path = librarycarpentry/23-rd-things
-	url = https://github.com/librarycarpentry/23-rd-things/
-	branch = 14-identifiers-cleanup
 [submodule "librarycarpentry/lc-data-intro-archives"]
 	path = librarycarpentry/lc-data-intro-archives
 	url = https://github.com/librarycarpentry/lc-data-intro-archives/
@@ -192,10 +180,6 @@
 [submodule "librarycarpentry/lc-sql"]
 	path = librarycarpentry/lc-sql
 	url = https://github.com/librarycarpentry/lc-sql/
-	branch = gh-pages
-[submodule "librarycarpentry/lc-webscraping"]
-	path = librarycarpentry/lc-webscraping
-	url = https://github.com/librarycarpentry/lc-webscraping/
 	branch = gh-pages
 [submodule "librarycarpentry/lc-wikidata"]
 	path = librarycarpentry/lc-wikidata
