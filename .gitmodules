@@ -181,3 +181,19 @@
 	path = carpentries/instructor-training-bonus-modules
 	url = https://github.com/carpentries/instructor-training-bonus-modules/
 	branch = gh-pages
+[submodule "datacarpentry/ecology-workshop"]
+	path = datacarpentry/ecology-workshop
+	url = https://github.com/datacarpentry/ecology-workshop/
+	branch = gh-pages
+[submodule "datacarpentry/genomics-workshop"]
+	path = datacarpentry/genomics-workshop
+	url = https://github.com/datacarpentry/genomics-workshop/
+	branch = gh-pages
+[submodule "datacarpentry/socialsci-workshop"]
+	path = datacarpentry/socialsci-workshop
+	url = https://github.com/datacarpentry/socialsci-workshop/
+	branch = gh-pages
+[submodule "librarycarpentry/lc-overview"]
+	path = librarycarpentry/lc-overview
+	url = https://github.com/librarycarpentry/lc-overview/
+	branch = gh-pages
