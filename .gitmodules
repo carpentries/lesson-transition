@@ -73,10 +73,6 @@
 	path = swcarpentry/git-novice
 	url = https://github.com/swcarpentry/git-novice/
 	branch = gh-pages
-[submodule "swcarpentry/hg-novice"]
-	path = swcarpentry/hg-novice
-	url = https://github.com/swcarpentry/hg-novice/
-	branch = gh-pages
 [submodule "swcarpentry/hpc-novice"]
 	path = swcarpentry/hpc-novice
 	url = https://github.com/swcarpentry/hpc-novice/

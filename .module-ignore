@@ -19,7 +19,7 @@ datacarpentry/rr-publication
 datacarpentry/rr-version-control
 datacarpentry/stata-economics
 datacarpentry/shell-economics
-datacarpentry/hg-novice
 librarycarpentry/23-rd-things
 librarycarpentry/lc-webscraping
 librarycarpentry/lc-dig-pres
+swcarpentry/hg-novice
