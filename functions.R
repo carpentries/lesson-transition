@@ -770,3 +770,41 @@ create_release_checklist <- function() {
   invisible(res)
 }
 
+
+# extract tasks for all the lessons in 
+get_tasks <- function(repo = "carpentries/lesson-transition", tags = "lesson") {
+  issues <- gh::gh("GET /repos/{repo}/issues", per_page = 100, .limit = Inf,
+    repo = repo, .params = list(labels = tags))
+  purrr::map_dfr(issues, extract_tasklist)
+}
+
+extract_tasklist <- function(issue) {
+  title <- issue$title
+  nr <- issue$number
+  url <- issue$html_url
+  f <- textConnection(issue$body)
+  on.exit(close(f), add = TRUE)
+  y <- tinkr::yarn$new(f)
+  status <- as.logical(NA)
+  complete <- 0
+  total    <- 0
+  tasks <- xml2::xml_find_all(y$body, ".//md:tasklist", ns = y$ns)
+  if (length(tasks)) {
+    status <- xml2::xml_attr(tasks, "completed") == "true"
+    complete <- sum(status)
+    total <- length(status)
+    tasks <- xml2::xml_text(tasks)
+  } else {
+    tasks <- NA_character_
+  }
+  msg <- "{complete}/{total} tasks complete: (#{sprintf('%02d', nr)}) {title}"
+  if (complete == total) {
+    complete <- cli::style_bold(cli::col_blue(complete))
+    cli::cli_alert_success(msg)
+  } else {
+    cli::cli_alert_info(msg)
+  }
+
+  tibble::tibble(lesson = title, issue = nr, task = tasks, complete = status, url = url)
+
+}
