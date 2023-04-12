@@ -57,8 +57,8 @@ REPO="${1%.*}"
 
 BETA="beta/${REPO%%[/]}-invalid.hash"
 RELEASE="release/${REPO%%[/]}-invalid.hash"
-IN_MODULES=$(grep -c ${REPO%%[/]} .gitmodules)
-IN_IGNORE=$(grep -c ${REPO%%[/]} .module-ignore)
+IN_MODULES=$(grep -c "${REPO%%[/]}$" .gitmodules)
+IN_IGNORE=$(grep -c "${REPO%%[/]}$" .module-ignore)
 
 # DELETE SUBMODULE ------------------------------------------------------------
 # If we are ignoring the repository, or it has been released, then we want to
