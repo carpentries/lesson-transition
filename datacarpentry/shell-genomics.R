@@ -20,3 +20,6 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+# add definition list links back into reference -----------------
+dl_auto_id(to("learners/reference.md"))
+
