@@ -47,6 +47,55 @@ fix_images <- function(episode, from = "([.][.][/])?(img|fig|images)/", to = "fi
   episode
 }
 
+fix_carpentries_reference_links <- function() {
+  links <- episode$validate_links(warn = FALSE)
+  if (length(links) == 0 || nrow(links) == 0) {
+    return(invisible(episode))
+  }
+  lesson_protocols <- c("carpentries.github.io", "swcarpentry.github.io",
+    "datacarpentry.github.io", "librarycarpentry.github.io", 
+    "datacarpentry.org", "librarycarpentry.org")
+  # extract the nodes that specifically fail the internal file test
+  missing <- links[!links$internal_file, ]$node
+  # loop through the nodes and fix.
+  purrr::map(http, \(x) {
+    dest <- sub("^http\\:", "https:", xml2::xml_attr(x, "destination"))
+    xml2::xml_set_attr(x, "destination", dest)
+  })
+  invisible(episode)
+  
+}
+
+# turn links that are self-referential, but will become invalid into relative links
+become_self_aware <- function(links, ep) {
+  dst <- tolower(links$path)
+  srv <- tolower(links$server)
+  rmd <- fs::path_ext(ep$path)
+  # determine the lesson 
+  lsn <- tolower(fs::path_file(ep$lesson))
+  org <- tolower(fs::path_file(fs::path_dir(ep$lesson)))
+  # allows for the source to be either the lesson or the github page
+  in_page <- paste0(org, c(".org", ".github.io"))
+  # TODO: split github links into separate function
+  in_gh   <- c("raw.githubusercontent.com", "github.com")
+  in_this_lesson <- (srv %in% in_page & startsWith(dst, lsn)) |
+    (srv %in% in_gh & startsWith(dst, glue::glue("{org}/{lsn}")))
+  if (!any(in_this_lesson)) {
+    return(invisible)
+  }
+  # TODO: address situation for new links
+  links <- links[in_this_lesson, ]
+  dst   <- dst[in_this_lesson]
+  is_index <- fs::path_file(dst) == "index.html"
+  ext <- if (rmd) "rmd" else "md"
+  dst[is_index] <- fs::path_ext_set(fs::path_dir(dst[is_index]), ext)
+
+  dst <- sub(glue::glue("[/]?{lsn}/"), "", dst)
+  purrr::map2(links$node, dst, function(lnk, url) {
+    xml2::xml_set_attr(lnk, "destination", url)
+  })
+}
+
 # Fix all links that are http and not https because that's just kind of an annoying
 # thing to have to fix manually when we know what the solution is.
 fix_https_links <- function(episode) {
