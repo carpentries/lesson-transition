@@ -53,8 +53,12 @@ fix_all_links <- function(episode) {
   if (length(links) == 0 || nrow(links) == 0) {
     return(invisible(episode))
   }
+  # make sure all links have https and not http
   fix_https_links(links)
+  # make sure  internal links do not end in /index.html or /
   fix_internal_slash_links(links)
+  # make sure links out (e.g. to data via the raw directive are relative)
+  fix_actually_internal_links(links, episode$lesson)
   invisible(episode)
 }
 
@@ -62,7 +66,7 @@ fix_all_links <- function(episode) {
 # thing to have to fix manually when we know what the solution is.
 fix_https_links <- function(links) {
   # extract the nodes that specifically fail the https test
-  http <- links[!links$enforce_https, ]$node
+  http <- links$node[!links$enforce_https]
   # loop through the nodes and fix.
   purrr::map(http, \(x) {
     dest <- sub("^http\\:", "https:", xml2::xml_attr(x, "destination"))
@@ -78,89 +82,64 @@ fix_internal_slash_links <- function(links) {
   needs_fixing <- links$server == "" & 
     links$scheme == "" & 
     (endsWith(links$path, "/") | endsWith(links$path, "/index.html"))
-  fixme <- links$node[needs_fixing]
+  nodes <- links$node[needs_fixing]
   # loop through the nodes and fix.
-  purrr::map(fixme, \(x) {
-    dest <- sub("/(index.html)?$", ".html", xml2::xml_attr(x, "destination"))
-    xml2::xml_set_attr(x, "destination", dest)
+  purrr::map(nodes, \(x) {
+    dest <- xml2::xml_attr(x, "destination")
+    new <- sub("/(index.html)?(([#].+?)?([?].+?)?$)", ".html\\2", dest)
+    xml2::xml_set_attr(x, "destination", new)
   })
   invisible(links)
 }
 
-fix_carpentries_reference_links <- function() {
-  links <- episode$validate_links(warn = FALSE)
-  if (length(links) == 0 || nrow(links) == 0) {
-    return(invisible(episode))
+become_self_aware <- function(node, org, lesson) {
+  dst <- xml2::url_parse(xml2::xml_attr(node, "destination"))$path
+  if (fs::path_file(dst) == "index.html") {
+    dst <- fs::path_dir(dst)
   }
-  # extract the nodes that specifically fail the internal file test
-  missing <- links[!links$internal_file, ]$node
-  # loop through the nodes and fix.
-  purrr::map(http, \(x) {
-    dest <- sub("^http\\:", "https:", xml2::xml_attr(x, "destination"))
-    xml2::xml_set_attr(x, "destination", dest)
-  })
-  invisible(episode)
-  
+  if (fs::path_ext(dst) %in% c("html", "")) {
+    dst <- fs::path_ext_set(dst, "md")
+  }
+  # regex to find and replace paths from either github or the lesson site
+  branches <- "([/](raw[/])?(gh.pages|main|master))?"
+  trkt <- glue::glue("[/]?({org})?[/]?{gsub('-', '.', lesson)}{branches}[/]")
+  local_dst <- sub(trkt, "", dst, ignore.case = TRUE)
+  # only update the node if the destination has changed
+  if (local_dst != dst) {
+    xml2::xml_set_attr(node, "destination", local_dst)
+  }
+  return(invisible(node))
 }
 
-# turn links that are self-referential, but will become invalid into relative links
-self_own_links <- function(links, ep) {
-  dst[is_index] <- fs::path_ext_set(fs::path_dir(dst[is_index]), ext)
-
-  dst <- sub(glue::glue("[/]?{lsn}/"), "", dst)
-  purrr::map2(links$node, dst, function(lnk, url) {
-    xml2::xml_set_attr(lnk, "destination", url)
-  })
-}
-
-
-
-get_gh_raw_links <- function(links, lesson) {
+# @param links a data frame returned by the `$validate_links()` method in
+#   {pegboard}
+# @param lesson the path to the lesson from which the episode originated.
+fix_actually_internal_links <- function(links, lesson) {
   dst <- tolower(links$path)
   srv <- tolower(links$server)
   ext <- fs::path_ext(links$filepath[[1]])
   # determine the lesson 
   lsn <- tolower(fs::path_file(lesson))
   org <- tolower(fs::path_file(fs::path_dir(lesson)))
-  # allows for the source to be either the lesson or the github page
-  our_orgs <- c("carpentries.github.io", "swcarpentry.github.io",
-    "datacarpentry.github.io", "librarycarpentry.github.io", 
-    "datacarpentry.org", "librarycarpentry.org")
   this_org <- paste0(org, c(".org", ".github.io"))
+  github   <- c("github.com", "raw.githubusercontent")
   in_this_org <- srv %in% this_org
+  in_github   <- srv %in% github
   # The links are coming from inside the house if they are in this org and
   # the first part of the URL is this lesson
-  in_this_lesson <- in_this_org & startsWith(dst, lsn) 
-  if (!any(in_this_lesson)) {
+  raw_gh1 <- startsWith(dst, fs::path(org, lsn, "raw"))
+  raw_gh2 <- grepl(glue::glue("{org}/{lsn}[/](raw[/])?(gh.pages|main|master)"), dst)
+  in_this_lesson <- in_this_org & startsWith(dst, lsn)
+  is_raw_link <-  in_github & ( raw_gh1 | raw_gh2 )
+  if (!any(in_this_lesson | is_raw_link)) {
     return(invisible(links))
   }
-  # TODO: address situation for new links
-  links[in_this_lesson, ]
-
+  cli::cli_alert("processing {sum(in_this_lesson)} links in this lesson")
+  purrr::walk(links$node[in_this_lesson], become_self_aware, org, lsn)
+  cli::cli_alert("processing {sum(is_raw_link)} github raw links")
+  purrr::walk(links$node[is_raw_link], become_self_aware, org, lsn)
 }
 
-get_self_org_links <- function(links, lesson) {
-  dst <- tolower(links$path)
-  srv <- tolower(links$server)
-  ext <- fs::path_ext(links$filepath[[1]])
-  # determine the lesson 
-  lsn <- tolower(fs::path_file(lesson))
-  org <- tolower(fs::path_file(fs::path_dir(lesson)))
-  # allows for the source to be either the lesson or the github page
-  our_orgs <- c("carpentries.github.io", "swcarpentry.github.io",
-    "datacarpentry.github.io", "librarycarpentry.github.io", 
-    "datacarpentry.org", "librarycarpentry.org")
-  this_org <- paste0(org, c(".org", ".github.io"))
-  in_this_org <- srv %in% this_org
-  # The links are coming from inside the house if they are in this org and
-  # the first part of the URL is this lesson
-  in_this_lesson <- in_this_org & startsWith(dst, lsn) 
-  if (!any(in_this_lesson)) {
-    return(invisible(links))
-  }
-  # TODO: address situation for new links
-  links[in_this_lesson, ]
-}
 
 # fix HTML that is indented and accidentally becomes code blocks
 fix_html_indents <- function(episode) {
