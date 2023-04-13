@@ -59,7 +59,26 @@ fix_all_links <- function(episode) {
   fix_internal_slash_links(links)
   # make sure links out (e.g. to data via the raw directive are relative)
   fix_actually_internal_links(links, episode$lesson)
+
+  # rerun to re-parse links
+  links <- episode$validate_links(warn = FALSE)
+  rename_local_links(links, from = "setup.html", to = "learners/setup.md")
+  rename_local_links(links, from = "guide.html", to = "instructors/instructor-notes.md")
   invisible(episode)
+}
+
+rename_local_links <- function(links, from = "setup.html", to = "learners/setup.md") {
+  needs_fixing <- links$server == "" & 
+    links$scheme == "" & 
+    links$path == from
+  nodes <- links$node[needs_fixing]
+  # loop through the nodes and fix.
+  purrr::map(nodes, \(x) {
+    dest <- xml2::xml_attr(x, "destination")
+    new <- sub(from , to, dest, fixed = TRUE)
+    xml2::xml_set_attr(x, "destination", new)
+  })
+  invisible(links)
 }
 
 # Fix all links that are http and not https because that's just kind of an annoying
