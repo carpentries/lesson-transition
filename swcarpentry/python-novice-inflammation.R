@@ -22,19 +22,23 @@
 
 
 # Renamed files ------------------------------------------------
-# episodes/11-debugging.md:93 [missing file] 01-numpy/
-# episodes/12-cmdline.md:707 [missing file] 04-files/
+# episodes/11-debugging.md:93 [missing file] 01-numpy.html
+# episodes/12-cmdline.md:707 [missing file] 04-files.html
 links <- old_lesson$get("links")
 ep11 <- links[["11-debugging.md"]]
 dst <- xml2::xml_attr(ep11, "destination")
-to_fix <- dst =="01-numpy/"
+to_fix <- dst =="01-numpy.html"
 xml2::xml_set_attr(ep11[to_fix], "destination", "02-numpy.html")
 write_out_md(old_lesson$episodes[["11-debugging.md"]])
 ep12 <- links[["12-cmdline.md"]]
 dst <- xml2::xml_attr(ep12, "destination")
-to_fix <- dst =="04-files/"
+to_fix <- dst =="04-files.html"
 xml2::xml_set_attr(ep12[to_fix], "destination", "06-files.html")
 write_out_md(old_lesson$episodes[["12-cmdline.md"]])
+inote <- pegboard::Episode$new(to("instructors/instructor-notes.md"))
+to_fix <- xml2::xml_attr(inote$links, "destination") == "01-numpy.html"
+xml2::xml_set_attr(inote$links[to_fix], "destination", "02-numpy.html")
+write_out_md(inote, "instructors")
 
 # add definition list links back into reference -----------------
 ref_lines <- readLines(to("learners/reference.md"))
