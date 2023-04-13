@@ -62,14 +62,14 @@ end_block <- find_position(e$body, chillins[[length(chillins)]])
 xml2::xml_remove(the_fence)
 e$add_md(xml2::xml_text(the_fence), where = end_block)
 
-e$write(path = fs::path(new, "episodes"), format = "Rmd")
+e$write(path = to("episodes"), format = "Rmd")
 
 # Episode 06 has a stray NA block that used to be output --------------
 e6 <- old_lesson$episodes[["06-data-subsetting.Rmd"]]
 code <- e6$code
 offender <- code[grepl("NA", code, fixed = TRUE)]
 xml2::xml_remove(offender)
-e6$write(path = fs::path_dir(e6$path), format = "Rmd")
+e6$write(path = to("episodes"), format = "Rmd")
 
 # add definition list links back into reference -----------------
 dl_auto_id(to("learners/reference.md"))
