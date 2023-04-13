@@ -96,15 +96,19 @@ become_self_aware <- function(links, ep) {
   })
 }
 
-# Fix all links that are http and not https because that's just kind of an annoying
-# thing to have to fix manually when we know what the solution is.
-fix_https_links <- function(episode) {
-  # extract the table of links that do not pass checks
-  
+# Fix all link problems that remain.
+fix_all_links <- function(episode) {
   links <- episode$validate_links(warn = FALSE)
   if (length(links) == 0 || nrow(links) == 0) {
     return(invisible(episode))
   }
+  fix_https_links(links)
+  invisible(episode)
+}
+
+# Fix all links that are http and not https because that's just kind of an annoying
+# thing to have to fix manually when we know what the solution is.
+fix_https_links <- function(links) {
   # extract the nodes that specifically fail the https test
   http <- links[!links$enforce_https, ]$node
   # loop through the nodes and fix.
@@ -112,8 +116,9 @@ fix_https_links <- function(episode) {
     dest <- sub("^http\\:", "https:", xml2::xml_attr(x, "destination"))
     xml2::xml_set_attr(x, "destination", dest)
   })
-  invisible(episode)
+  invisible(links)
 }
+
 
 fix_html_indents <- function(episode) {
   html <- xml_find_all(episode$body, ".//md:html_block", episode$ns)
@@ -230,8 +235,8 @@ transform <- function(e, out = new, verbose = getOption("carpentries.transition.
   cli::cli_status_update("fixing html indents")
   fix_html_indents(e)
 
-  cli::cli_status_update("fixing http -> https")
-  fix_https_links(e)
+  cli::cli_status_update("fixing links (http -> https)")
+  fix_all_links(e)
 
   cli::cli_status_update("fixing level 1 headings")
   fix_level_one_headings(e)
@@ -264,7 +269,7 @@ rewrite <- function(x, out, verbose = getOption("carpentries.transition.loud", T
     if (fs::path_file(x) == "reference.md") {
       ref$add_md("## Glossary")
     }
-    fix_https_links(ref)
+    fix_all_links(ref)
     ref$write(out, format = fs::path_ext(x))
   }, error = function(e) {
     if (verbose) cli::cli_alert_warning("Could not process {.file {x}}: {e$message}")
