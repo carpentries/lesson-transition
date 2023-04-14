@@ -55,6 +55,8 @@ fix_all_links <- function(episode) {
   }
   # make sure all links have https and not http
   fix_https_links(links)
+  # make sure links do not start with _episodes or _extras
+  fix_link_directories(links)
   # make sure  internal links do not end in /index.html or /
   fix_internal_slash_links(links)
   # make sure links out (e.g. to data via the raw directive are relative)
@@ -108,6 +110,34 @@ fix_internal_slash_links <- function(links) {
     new <- sub("/(index.html)?(([#].+?)?([?].+?)?$)", ".html\\2", dest)
     xml2::xml_set_attr(x, "destination", new)
   })
+  invisible(links)
+}
+
+fix_link_directories <- function(links) {
+  # extract the nodes that specifically fail the https test
+  needs_fixing <- links$server == "" & 
+    links$scheme == "" & 
+    (startsWith(links$path, "_episodes") | startsWith(links$path, "_extras"))
+  this_file <- unique(links$filepath)
+  nodes <- links$node[needs_fixing]
+  # loop through the nodes and fix.
+  purrr::map(nodes, \(x, the_file) {
+    new <- xml2::xml_attr(x, "destination")
+    this_dir <- fs::path_dir(this_file)
+    nest <- this_dir != "."
+    is_episode <- grepl("episodes[_]?", this_dir)
+    if (nest) {
+      ep <- if (is_episode) "" else "../episodes"
+      lrn <- "../learners/"
+    } else {
+      ep <- "episodes/"
+      lrn <- "learners/"
+    }
+    cat(glue::glue("Fixing {this_file}, nested: {nest} episode: {is_episode}"))
+    new <- sub("_episodes(_rmd)?[/]", ep, new)
+    new <- sub("_extras[/]", lrn, new)
+    xml2::xml_set_attr(x, "destination", new)
+  }, the_file = this_file)
   invisible(links)
 }
 
