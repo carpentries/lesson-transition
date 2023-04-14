@@ -19,4 +19,4 @@
 # from       <- function(...) fs::path(old, ...)
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
-
+dl_auto_id(to("learners", "reference.md"))
