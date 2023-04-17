@@ -933,3 +933,23 @@ extract_tasklist <- function(issue) {
   tibble::tibble(lesson = title, issue = nr, task = tasks, complete = status, url = url)
 
 }
+
+
+# make the test calls for a given set of lessons
+make_test_calls <- function(tags = "early transition") {
+  # get nested list of orgs and lessons.
+  tasks <- get_tasks(tags = tags)
+  lsn  <- purrr::transpose(strsplit(unique(tasks$lesson), "/"))
+  names(lsn) <- c("org", "lesson")
+  lsn <- lapply(lsn, as.character)
+  make_bash_nest(split(lsn$lesson, lsn$org))
+}
+
+make_bash_nest <- function(lst) {
+  json <- as.character(jsonlite::toJSON(lst))
+  json <- gsub('[:"]', "", json)
+  json <- gsub("\\[", "/{", json)
+  json <- gsub("\\]", "}", json)
+  json <- gsub("[{]([^/,]+?)[}]", "\\1", json)
+  usethis::ui_code_block("make -n -Bj 7 sandpaper/{json}.json") 
+}
