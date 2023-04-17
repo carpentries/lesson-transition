@@ -20,3 +20,17 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+dl_auto_id(to("learners/reference.md"))
+
+mistakes <- old_lesson$episodes[[3]]
+lnks <- mistakes$validate_links(warn = FALSE)
+to_fix <- lnks$node[!lnks$internal_anchor]
+purrr::walk(to_fix, \(x) {
+  dest <- xml2::xml_attr(x, "destination")
+  xml2::xml_set_attr(x, "destination", gsub("_", "-", dest))
+})
+xml2::xml_set_text(mistakes$headings, 
+  gsub("_", "-", xml2::xml_text(mistakes$headings)))
+
+write_out_md(mistakes)
+
