@@ -8,6 +8,7 @@ _episodes_rmd==>episodes
 # We no longer need any styling detritus
 _config_dev.yml
 _site/
+_data/
 _includes/
 _layouts/
 bootstrap/
