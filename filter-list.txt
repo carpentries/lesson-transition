@@ -67,6 +67,6 @@ glob:*.gitkeep
 glob:*.ico
 
 # generated image files
-regex:^fig/(?!grid).*[-][0-9]{1,2}.png$
+regex:^fig/(?!grid|github|inflammation|09-conclusion).*[-][0-9]{1,2}.png$
 regex:^img/(?!grid).*[-][0-9]{1,2}.png$
 regex:^img/R-ecology-*$
