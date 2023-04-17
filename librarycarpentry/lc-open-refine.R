@@ -20,3 +20,7 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+assets <- dir_ls(from("assets/img"))
+figs <- assets[!grepl('^(cp|dc|lc|swc|carp)', fs::path_file(assets))]
+fs::dir_create(to("episodes/fig"))
+fs::file_copy(figs, to("episodes/fig", fs::path_file(figs)))

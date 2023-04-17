@@ -29,7 +29,7 @@ dl_auto_id <- function(path) {
 }
 #
 # transform the image links to be local
-fix_images <- function(episode, from = "([.][.][/])?(img|fig|images)/", to = "fig/") {
+fix_images <- function(episode, from = "([.][.][/])?(assets/)?(img|fig|images)/", to = "fig/") {
   blocks <- xml_find_all(episode$body, 
     ".//md:code_block[contains(text(), 'knitr::include_graphics')]",
     ns = episode$ns
