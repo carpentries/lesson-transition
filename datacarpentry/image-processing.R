@@ -20,3 +20,11 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+cli::cli_alert("Moving files intended for learners")
+fs::file_move(to("instructors/prereqs.md"), to("learners/prereqs.md"))
+fs::file_move(to("instructors/edge-detection.md"), to("learners/edge-detection.md"))
+
+cli::cli_alert("fixing setup file link")
+idx <- sub("(setup.md", "(learners/setup.md", readLines(to("index.md")), fixed = TRUE)
+writeLines(idx, to("index.md"))
+
