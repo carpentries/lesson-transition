@@ -201,6 +201,9 @@ params <- c(
     "cp" # default
   ),
   url = glue::glue("https://preview.carpentries.org/{path_file(new)}"),
+  # wishful thinking
+  analytics = "carpentries",
+  lang = "en", 
   "workbench-beta" = "true"
 )
 set_config(params, path = new, write = TRUE, create = TRUE)
