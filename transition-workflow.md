@@ -41,19 +41,36 @@ The transition will do the following things to the lesson after creating a copy:
 To run the first transition test for this lesson, make sure you have R installed
 and then run, replacing `<org>/<repo>` with the lesson of interest
 
-```r
+```sh
 make sandpaper/<org>/<repo>.json
 ```
 
 For example, here's how to process the librarycarpentry shell lesson:
 
-```r
+```sh
 make sandpaper/librarycarpentry/lc-shell.json
 ```
 
 There will be a lot of output from the transition. It may work it may not. 
 
-#### Common issues
+#### Detecting Issues
+
+You should be able to detect issues for a given run by searching for the 
+reporting patterns from {pegboard}:
+
+```sh
+grep -e '^.*md:' sandpaper/<org>/<repo>-filter.log
+```
+
+For example, here's the librarycarpentry shell lesson:
+
+
+```sh
+grep -e '^.*md:' sandpaper/librarycarpentry/lc-shell-filter.log
+```
+
+
+Note: this will NOT catch issues with lessons that do not build. 
 
 There will be some common issues that you [should report](#reporting-issues) and
 fix in one of three ways:

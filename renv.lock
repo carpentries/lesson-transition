@@ -617,7 +617,7 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "c6777605300b2e677b7997f0fb346205ea71f9c8",
+      "RemoteSha": "42d1ba68f2e166df24f0094eefc998a0ceb31329",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr",
       "Requirements": [
@@ -631,7 +631,7 @@
         "xslt",
         "yaml"
       ],
-      "Hash": "7ca97c385e327ffb363b7271f9748c93"
+      "Hash": "f1af0a4a6b61aaf22fe49768a655ec2b"
     },
     "pillar": {
       "Package": "pillar",
