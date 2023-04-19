@@ -27,16 +27,18 @@
 links <- old_lesson$get("links")
 ep11 <- links[["11-debugging.md"]]
 dst <- xml2::xml_attr(ep11, "destination")
-to_fix <- dst =="01-numpy.html"
+to_fix <- dst =="01-numpy"
 xml2::xml_set_attr(ep11[to_fix], "destination", "02-numpy.html")
 write_out_md(old_lesson$episodes[["11-debugging.md"]])
+
 ep12 <- links[["12-cmdline.md"]]
 dst <- xml2::xml_attr(ep12, "destination")
-to_fix <- dst =="04-files.html"
+to_fix <- dst =="04-files"
 xml2::xml_set_attr(ep12[to_fix], "destination", "06-files.html")
 write_out_md(old_lesson$episodes[["12-cmdline.md"]])
+
 inote <- pegboard::Episode$new(to("instructors/instructor-notes.md"))
-to_fix <- xml2::xml_attr(inote$links, "destination") == "01-numpy.html"
+to_fix <- xml2::xml_attr(inote$links, "destination") == "01-numpy"
 xml2::xml_set_attr(inote$links[to_fix], "destination", "02-numpy.html")
 write_out_md(inote, "instructors")
 
@@ -70,4 +72,5 @@ solutions <- stp$get_divs() |>
 positions <- solutions + (1L:length(solutions) - 1L) * 3
 purrr::walk(positions, function(i) stp$add_md(empty_div, where = i - 1L))
 write_out_md(stp, "learners")
+
 
