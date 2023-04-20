@@ -134,7 +134,7 @@ is labelled by a path, which can store multiple key-value pairs:
 
 ```bash
 # note the space at the beginning
- vault secrets enable -path=tr kv 
+ vault secrets enable -version=2 -path=tr kv 
 ```
 
 Now it's time to place your token(s)  in the store. I like to create the tokens
@@ -149,6 +149,18 @@ pat=<PASTE_TOKEN_HERE>
 
 From there, I can use [`./pat.sh release`](pat.sh) to extract the release token
 to pass into a new variable.
+
+##### Updating the token
+
+As you go through the release process, you will want to update the token based
+on the lesson program you are using. To do that you can use the `patch` method:
+
+```bash
+# note the space at the beginning
+ vault kv patch -mount=tr auth \
+release=<PASTE TOKEN HERE>
+```
+
 
 #### If you do not have vault installed
 
