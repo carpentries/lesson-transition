@@ -10,15 +10,20 @@
 # During iteration: use these to provision the variables and functions
 # that would be normally available when this script is run
 #
-# library("fs")
-# library("xml2")
-# pandoc::pandoc_activate("2.19.2")
-# source("functions.R")
-# old        <- 'swcarpentry/python-novice-inflammation'
-# new        <- 'sandpaper/swcarpentry/python-novice-inflammation'
-# from       <- function(...) fs::path(old, ...)
-# to         <- function(...) fs::path(new, ...)
-# old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
+library("fs")
+library("xml2")
+pandoc::pandoc_activate("2.19.2")
+source("functions.R")
+old        <- 'swcarpentry/python-novice-inflammation'
+new        <- 'sandpaper/swcarpentry/python-novice-inflammation'
+from       <- function(...) fs::path(old, ...)
+to         <- function(...) fs::path(new, ...)
+old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
+
+# fix code dir kerfuffle ---------------------------------------
+fs::dir_create(to("episodes/files"))
+copy_dir(to("code"), to("episodes/files/code"))
+del_dir(to("code"))
 
 
 # Renamed files ------------------------------------------------
@@ -37,9 +42,12 @@ to_fix <- dst =="04-files"
 xml2::xml_set_attr(ep12[to_fix], "destination", "06-files.html")
 write_out_md(old_lesson$episodes[["12-cmdline.md"]])
 
-inote <- pegboard::Episode$new(to("instructors/instructor-notes.md"))
-to_fix <- xml2::xml_attr(inote$links, "destination") == "01-numpy"
+inote <- pegboard::Episode$new(to("instructors/instructor-notes.md"))$confirm_sandpaper()
+lnks <- xml2::xml_attr(inote$links, "destination")
+to_fix <- lnks == "01-numpy"
 xml2::xml_set_attr(inote$links[to_fix], "destination", "02-numpy.html")
+to_fix <- startsWith(lnks, "code/")
+xml2::xml_set_attr(inote$links[to_fix], "destination", fs::path("../episodes/files/", lnks[to_fix]))
 write_out_md(inote, "instructors")
 
 # add definition list links back into reference -----------------
@@ -71,6 +79,9 @@ solutions <- stp$get_divs() |>
   purrr::map_int(find_node_position, stp$body)
 positions <- solutions + (1L:length(solutions) - 1L) * 3
 purrr::walk(positions, function(i) stp$add_md(empty_div, where = i - 1L))
+lnks <- xml2::xml_attr(stp$links, "destination")
+to_fix <- startsWith(lnks, "code/")
+xml2::xml_set_attr(stp$links[to_fix], "destination", fs::path("../episodes/files/", lnks[to_fix]))
 write_out_md(stp, "learners")
 
 
