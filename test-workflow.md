@@ -36,6 +36,7 @@ to damange things (you don't, trust me).
    will allow you to destroy and set up the repository. I suggest a
    fine-grained token:
    To create a new token, head over to <https://github.com/settings/personal-access-tokens/new> and then set the resources this way:
+   
   | parameter | value | notes |
   | --------- | ----- | ----- |
   | Resource owner | fishtree-attempt | |
