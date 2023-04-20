@@ -74,3 +74,7 @@ purrr::walk(positions, function(i) stp$add_md(empty_div, where = i - 1L))
 write_out_md(stp, "learners")
 
 
+# fix index 
+idx <- sub("fig/lesson-overview.svg", "episodes/fig/lesson-overview.svg", readLines(to("index.md")))
+writeLines(idx, to("index.md"))
+
