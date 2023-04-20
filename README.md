@@ -19,7 +19,7 @@ This workflow will create a submodule for this that will be kept up-to-date
 until you release the transitioned lesson. 
 
 The release process uses tools built for R, python, Git, and BASH and is
-described in [The Transition Workflow Documentation](transition-workflow) and 
+described in [The Transition Workflow Documentation](transition-workflow.md) and 
 [The Release Workflow Documentation](release-workflow.md). Tests of the release
 workflow are outlined in [The Release Workflow Testing
 Documentation](test-workflow.md)
@@ -649,6 +649,9 @@ For the curious, this is the path of the makefile for a single target:
 
 
 ### Sending lessons to GitHub
+
+Note: this is for creating the lesson previews. For deploying a full transition,
+see the [Release Workflow Document](release-workflow.md).
 
 Because my changes will be stacked on top of the last commit of the previous
 lesson, every time a new commit is added or I change something in the build
