@@ -1,11 +1,51 @@
 ## Transition Release Workflow
 
-The transition release workflow consists of four steps:
+The transition release workflow consists of the following steps:
 
 1. alerting the maintainers of the impending release
 2. restricting access for maintainers
 3. creating the release
 4. committing artifacts and tagging the release
+
+### Pre-transition
+
+Before you enter this workflow, for Carpentries Lessons, it's important to do
+the following steps:
+
+1. update the repository with [carpentries/styles] using the [update styles
+   script](https://github.com/carpentries/actions/blob/main/update-styles/update-styles.sh)
+   and create a pull request
+   ```sh
+   REPO=[repo]
+   git clone ${REPO} ${REPO} && cd ${REPO}
+   git switch -c update-styles-2023-04
+   curl -sSL https://raw.githubusercontent.com/carpentries/actions/main/update-styles/update-styles.sh | bash /dev/stdin
+   git commit -m 'update styles 2023-04'
+   git push --set-upstream origin update-styles-2023-04
+   ```
+2. After styles is merged, Create a lesson release using the [{chisel}
+   package](https://github.com/carpentries/chisel) (NOTE: this is only for Core
+   Team use). Create a Pull Request
+3. Use the [{gitcellar} package](https://docs.ropensci.org/gitcellar/) to
+   create an archive of the repository and store it in an archive like AWS Glacier
+   (note: this will take some time)
+   ```r
+   library("gitcellar")
+   library("future")
+   plan(multisession)
+   get_repo <- function(slug) {
+     repo <- strsplit(slug, "/")[[1]]
+     future({
+       download_organization_repos(repo[[1]], keep = repo[[2]])
+     })
+   }
+   today <- lapply(c("carpentries/instructor-training", "swcarpentry/python-novice-inflammation"),
+     get_repo)
+   ```
+4. as an extra precaution, clone a bare mirror of the repository using `git clone --mirror ${REPO}`
+
+Once these steps are done, we can then proceed with the transition.
+
 
 ### Requirements
 
