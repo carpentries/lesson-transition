@@ -22,5 +22,7 @@ echo "Beginning transition test in 1 second"
 sleep 1
 make -B fishtree-attempt/znk-transition-test/.git
 rm -rf release/fishtree-attempt/znk-transition-test*
-RELEASE_PAT=$(./pat.sh test-release) make release/fishtree-attempt/znk-transition-test.json
+RELEASE_PAT=$(./pat.sh test-release) make release/fishtree-attempt/znk-transition-test.json || echo "commit changes; switch back to main; delete the local test repo and try again"
+echo "test complete. Inspect logs, commit changes, switch back to main, delete the test repo and test branch"
+
 
