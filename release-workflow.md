@@ -227,8 +227,16 @@ recommend that you _sign_ your tag:
 git tag -s release_[abbrev]/[lesson] -m '[your message here]'
 ```
 
-You can use `git tag -n` to view the previous tags to get an idea of the naming
-conventions.
+Here are the naming conventions for `[abbrev]`:
+
+| tag | organisation     |
+| --- | ---------------- |
+| cp  | carpentries      |
+| dc  | datacarpentry    |
+| swc | swcarpentry      |
+| lc  | librarycarpentry |
+| lab | carpentries-lab  |
+| incubator | carpentries-incubator |
 
 
 Once you do that, then you can push the commit and tag up with:
@@ -246,12 +254,24 @@ that you just converted.
 ### After pushing commits and tags
 
 After the commits and tags are pushed, comment on the issue with the link to the
-live lesson AND the link to the commit map:
+live lesson AND the link to the commit map.
 
-```markdown
-The Workbench version is now live: https://{repo}.github.io/{repo}/
+You can use the `create-success-comment` to create this comment
 
-In addition, here is [map of commits that were changed during the transition](https://github.com/carpentries/lesson-transition/blob/{hash}/release/{org}/{repo}-commit-map.hash)
+```sh
+Rscript create-success-comment.R [abbrev]/[lesson]
 ```
 
-The `{hash}` will be the hash from the commit you created earlier
+For example, this is how to do it for the the lc-git release:
+
+```sh
+Rscript create-success-comment.R lc/lc-git
+```
+
+```markdown
+The Workbench version is now live: https://{org}.github.io/{repo}/
+
+In addition, here is [map of commits that were changed during the transition](https://github.com/carpentries/lesson-transition/blob/release_{tag}/release/{org}/{repo}-commit-map.hash)
+```
+
+The `{tag}` will be the `[abbrev]/[lesson]` part of the signed tag you created earlier.
