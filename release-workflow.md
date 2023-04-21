@@ -197,6 +197,20 @@ processor and the speed of your connection. When it is finished, you will have
 extension](https://github.com/carpentries/lesson-transition/commit/747030b61359a61bd01e299ab2d7ff5714af69d9).
 These are the outputs from the commit process.
 
+### On GitHub
+
+When it is finished, you must comment on the original issue. Here is a template:
+
+```markdown
+The deed is done. The infrastructure takes a few minutes to bootstrap and cache the packages for the lesson build. Once the build is done, I will switch github pages to deploy from the `gh-pages` branch and you will have your workbench lesson. 
+
+Thank you all for your enthusiasm and your patience!
+```
+
+From there, you actually do need to wait for the build to complete before setting
+github pages to deploy from `gh-pages`
+
+
 ### Commit and create tag
 
 You should commit these release hash files:
@@ -228,3 +242,16 @@ If you have a set of releases that you want to do, I would recommend to not push
 until you are finished. This way, when the submodules update on the remote, you 
 don't have to worry about conflicts due to the changed histories of the lessons
 that you just converted.
+
+### After pushing commits and tags
+
+After the commits and tags are pushed, comment on the issue with the link to the
+live lesson AND the link to the commit map:
+
+```markdown
+The Workbench version is now live: https://{repo}.github.io/{repo}/
+
+In addition, here is [map of commits that were changed during the transition](https://github.com/carpentries/lesson-transition/blob/{hash}/release/{org}/{repo}-commit-map.hash)
+```
+
+The `{hash}` will be the hash from the commit you created earlier
