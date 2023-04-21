@@ -23,3 +23,14 @@
 # add definition list links back into reference -----------------
 dl_auto_id(to("learners/reference.md"))
 
+ref <- pegboard::Episode$new(to("learners/reference.md"))$confirm_sandpaper()
+ank <- ref$validate_links(warn = FALSE)
+to_fix <- ank$node[!ank$internal_anchor]
+txts <- paste("##", purrr::map_chr(to_fix, xml2::xml_text))
+headings <- pandoc::pandoc_convert(text = txts, to = "html")
+ids <- paste(headings, collapse = "\n")
+ids <- xml2::xml_text(xml2::xml_find_all(xml2::read_html(ids), ".//h2/@id"))
+purrr::walk2(to_fix, ids, function(node, id) {
+  xml2::xml_set_attr(node, "destination", paste0("#", id))
+})
+write_out_md(ref, "learners")
