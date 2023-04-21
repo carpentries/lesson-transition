@@ -20,3 +20,12 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+ep <- old_lesson$episodes[["02-common-mistakes.md"]]
+lnks <- ep$validate_links(warn = FALSE)
+to_fix <- lnks$node[!lnks$internal_anchor]
+purrr::walk(to_fix, function(node) {
+  dst <- xml2::xml_attr(node, "destination")
+  xml2::xml_set_attr(node, "destination", gsub("_", "-", dst))
+})
+write_out_md(ep)
+
