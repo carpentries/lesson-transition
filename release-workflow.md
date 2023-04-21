@@ -250,6 +250,38 @@ Thank you all for your enthusiasm and your patience!
 From there, you actually do need to wait for the build to complete before setting
 github pages to deploy from `gh-pages`
 
+### Add invalid hash
+
+The transition process will remove and/or overwrite commits. This allows us to
+detect if someone is attempting to create a pull request from an old fork.
+
+For each lesson, a file called `release/{org}/{lesson}-invalid.hash` is created.
+This contains a single hash representing a has that was present in the
+repository just before the transition that was no longer present. These hashes
+are stored in JSON format in <https://files.carpentries.org/invalid-hashes.json>.
+
+To add to this, update the file in <https://github.com/carpentries/reactables>. 
+
+#### lessons built with carpentries/styles
+
+Lessons that were originally built with carpentries/styles will all have a
+common ancestor commit that can be safely ignored: 
+[e83e2c9bd](https://github.com/carpentries/styles/commit/e83e2c9bdeb259fcb7b12ae21da8f6eac8ff34a4)
+
+However, the commit that appears in `release/{org}/{lesson}-invalid.hash` may not
+be that one. 
+
+#### lesson built with remote theme
+
+For lessons that were built with the remote theme, such as 
+<https://carpentries-incubator.github.io/bioc-intro>, they will all have
+different invalid hashes and there will be fewer empty hashes. One thing to
+watch out for, however, are lessons that started with remote theme and
+accidentally merged with styles at some point in time. If
+`release/{org}/{lesson}-invalid.hash` contains [e83e2c9bd](https://github.com/carpentries/styles/commit/e83e2c9bdeb259fcb7b12ae21da8f6eac8ff34a4),
+then there is a chance that this commit may not capture all the potential forks.
+To solve this issue, find the first commit of the repository and reference the
+commit map to find the invalid commit.
 
 ### Commit and create tag
 

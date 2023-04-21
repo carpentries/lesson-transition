@@ -67,7 +67,7 @@ git pull --recurse-submodules
 
 There will be times when the submodules update on GitHub and you forget to use
 `--recurse-submodules`. When this happens, you will end up with mysterious
-staged changes in your local clone. You can run `make modules` and the
+staged changes in your local clone. You can run `make -B modules` and the
 submodules will recurse for you (note that this has the same effect as
 `--recurse-submodules` and you may see an increase in the size of your
 repository).
@@ -89,6 +89,20 @@ module:
 ```sh
 git restore --staged .gitmodules ORG/REPO
 git restore .gitmodules ORG/REPO
+```
+
+
+### Submodules removed on lesson release
+
+When a lesson is transitioned to use The Workbench, it will be automatically
+deleted from this repositoriy via GitHub Actions. When you pull from the remote
+repository, the module will be gone, but the folder will remain. These folders
+cannot be cleaned with `git clean -fd`, so you will need to manually remove them
+The easiest way to do this is to use the git log and xargs, but **NOTE: this
+will destroy any uncommitted or unstaged work**:
+
+```sh
+git status --porcelain | awk '{print $2}' | xargs rm -r
 ```
 
 ### Storage requirements
