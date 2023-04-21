@@ -2,10 +2,6 @@
 	branch = main
 	path = swcarpentry/r-novice-inflammation
 	url = https://github.com/swcarpentry/r-novice-inflammation/
-[submodule "swcarpentry/python-novice-inflammation"]
-	branch = gh-pages
-	path = swcarpentry/python-novice-inflammation
-	url = https://github.com/swcarpentry/python-novice-inflammation/
 [submodule "swcarpentry/r-novice-gapminder"]
 	branch = main
 	path = swcarpentry/r-novice-gapminder
@@ -149,10 +145,6 @@
 	path = librarycarpentry/lc-data-intro
 	url = https://github.com/librarycarpentry/lc-data-intro/
 	branch = gh-pages
-[submodule "librarycarpentry/lc-git"]
-	path = librarycarpentry/lc-git
-	url = https://github.com/librarycarpentry/lc-git/
-	branch = gh-pages
 [submodule "librarycarpentry/lc-marcedit"]
 	path = librarycarpentry/lc-marcedit
 	url = https://github.com/librarycarpentry/lc-marcedit/
@@ -176,10 +168,6 @@
 [submodule "librarycarpentry/lc-wikidata"]
 	path = librarycarpentry/lc-wikidata
 	url = https://github.com/librarycarpentry/lc-wikidata/
-	branch = gh-pages
-[submodule "carpentries/instructor-training-bonus-modules"]
-	path = carpentries/instructor-training-bonus-modules
-	url = https://github.com/carpentries/instructor-training-bonus-modules/
 	branch = gh-pages
 [submodule "datacarpentry/ecology-workshop"]
 	path = datacarpentry/ecology-workshop
