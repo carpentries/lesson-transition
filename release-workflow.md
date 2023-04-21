@@ -169,7 +169,7 @@ variables,
 
 ```bash
 # note the space at the beginning
- RELEASE_TOKEN=<PASTE_TOKEN_HERE>
+ RELEASE_PAT=<PASTE_TOKEN_HERE>
  GITHUB_PAT=<PASTE_TOKEN_HERE>
 ```
 
@@ -179,7 +179,7 @@ To create the release, you will use the following command:
 
 ```bash
 # if you are using vault
-RELEASE_TOKEN=$(./pat.sh release) make release/[org]/[repo].json
+RELEASE_PAT=$(./pat.sh release) make release/[org]/[repo].json
 # otherwise
 make release/[org]/[repo].json
 ```
@@ -188,7 +188,7 @@ where `[org]` is the organisattion and `[repo]` is the lesson name. For example,
 this created the release for the bioc intro lesson for carpentries incubator:
 
 ```
-RELEASE_TOKEN=$(./pat.sh release) make release/carpentries-incubator/bioc-intro.json
+RELEASE_PAT=$(./pat.sh release) make release/carpentries-incubator/bioc-intro.json
 ```
 
 The release process will take a few minutes depending on the speed of your
