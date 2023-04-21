@@ -21,3 +21,17 @@
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
 dl_auto_id(to("learners/reference.md"))
+
+# fix code dir kerfuffle ---------------------------------------
+fs::dir_create(to("episodes/files"))
+copy_dir(to("code"), to("episodes/files/code"))
+del_dir(to("code"))
+
+suppressMessages(lnks <- old_lesson$validate_links())
+to_fix <- startsWith(lnks$orig, "code/")
+purrr::walk(lnks$node[to_fix], function(node) {
+  dst <- xml2::xml_attr(node, "destination")
+  xml2::xml_set_attr(node, "destination", fs::path("files", dst))
+})
+eps <- unique(lnks$episode[to_fix])
+purrr::walk(old_lesson$episodes[eps], write_out_md, "episodes")
