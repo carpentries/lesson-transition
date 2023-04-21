@@ -37,10 +37,6 @@
 	path = zkamvar/transition-test-2
 	url = https://github.com/zkamvar/transition-test-2/
 	branch = gh-pages
-[submodule "datacarpentry/sql-ecology-lesson"]
-	path = datacarpentry/sql-ecology-lesson
-	url = https://github.com/datacarpentry/sql-ecology-lesson/
-	branch = gh-pages
 [submodule "librarycarpentry/lc-r"]
 	path = librarycarpentry/lc-r
 	url = https://github.com/librarycarpentry/lc-r/
@@ -156,10 +152,6 @@
 [submodule "librarycarpentry/lc-python-intro"]
 	path = librarycarpentry/lc-python-intro
 	url = https://github.com/librarycarpentry/lc-python-intro/
-	branch = gh-pages
-[submodule "librarycarpentry/lc-spreadsheets"]
-	path = librarycarpentry/lc-spreadsheets
-	url = https://github.com/librarycarpentry/lc-spreadsheets/
 	branch = gh-pages
 [submodule "librarycarpentry/lc-sql"]
 	path = librarycarpentry/lc-sql
