@@ -12,6 +12,14 @@ if [[ ! ${IN_IGNORE} -eq 0 ]]; then
   echo
   exit 0
 fi
+echo "Beginning transition test in 5 seconds"
+sleep 2
+echo "Beginning transition test in 3 seconds"
+sleep 1
+echo "Beginning transition test in 2 seconds"
+sleep 1
+echo "Beginning transition test in 1 second"
+sleep 1
 make -B fishtree-attempt/znk-transition-test/.git
 rm -rf release/fishtree-attempt/znk-transition-test*
 RELEASE_PAT=$(./pat.sh test-release) make release/fishtree-attempt/znk-transition-test.json
