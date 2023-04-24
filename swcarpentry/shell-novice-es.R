@@ -34,3 +34,4 @@ purrr::walk2(to_fix, ids, function(node, id) {
   xml2::xml_set_attr(node, "destination", paste0("#", id))
 })
 write_out_md(ref, "learners")
+sandpaper::set_config(c(lang = "'es'"), path = to(), write = TRUE)
