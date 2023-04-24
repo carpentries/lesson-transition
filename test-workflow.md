@@ -22,7 +22,56 @@ did not mention user IDs in commits, so they would not be notified If I push
 their commits up. Moreover, it was a test repository for the Turing Way that
 they no longer use.
 
-### Setup 
+### Provisioning
+
+There are two scripts used to provision the repository and the external pull
+request: [`create-transition-test.R`](create-transition-test.R) and 
+[`create-ravmakz-pr.R`](create-ravmakz-pr.R). 
+
+#### Create Transition Test
+
+This script will destroy and then create the `znk-transition-test` repository
+from <https://github.com/sgibson91/cross-stitch-carpentry>. Note that this can
+also be used to create a transition test a different repository, but I have not
+tested it. 
+
+There are two steps:
+
+1. Obtain a Fine Grained PAT with access to all repositories in the 
+   <https://github.com/fishtree-attempt> organisation. It must have Read and
+   Write access to actions, administration, code, pages, pull requests, and
+   workflows and to members.
+2. run the script with the token set to `SETUP_PAT`
+
+```sh
+ SETUP_PAT=github_XXXX Rscript create-transition-test.R
+```
+
+#### Create ravmakz PR
+
+To create the PR from an external account, we use the `ravmakz` GitHub account, 
+which does not have permissions in the organization to create a pull request.
+This demonstrates what happens to open pull requests after the transition.
+
+Because this involves a separate account, we obtain the token interactively.
+To run this, open R and run:
+
+```r
+source("create-ravmakz-pr.R")
+```
+
+This will prompt you to create a token and paste it into your R console. After
+that, it will create the Pull Request.
+
+Once you have completed these two steps, you will be ready to test the transition.
+
+### Transition
+
+The transition step uses the same machinery as the release process. Once this is
+done, if you want to try again, you must go back to the [provisioning 
+instructions](#provisioning) to reset the source repository.
+
+#### Setup 
 
 To set up the transition test, it's best to be in a new branch unless you want
 to damange things (you don't, trust me). 
@@ -44,7 +93,7 @@ to damange things (you don't, trust me).
   | Repository permissions | Read and Write on **actions, administration, contents, pages, pull requests, workflows** |  |
   | Organization permissions | Read and Write access to members |  |
 
-### Running
+#### Running
 
 There are three steps to the process:
 
