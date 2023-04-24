@@ -23,3 +23,4 @@
 # add definition list links back into reference -----------------
 dl_auto_id(to("learners/reference.md"))
 
+sandpaper::set_config(c(lang = "'es'"), path = to(), write = TRUE)
