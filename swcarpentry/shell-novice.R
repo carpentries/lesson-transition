@@ -16,3 +16,4 @@ ep <- Episode$new(f, fix_liquid = TRUE)
 transform(ep, new)
 
 
+dl_auto_id(to("learners/reference.md"))
