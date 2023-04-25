@@ -47,6 +47,49 @@ There are two steps:
  SETUP_PAT=github_XXXX Rscript create-transition-test.R
 ```
 
+
+The output will look something like this:
+
+<details>
+<summary>Output of create-transition-test.R</summary>
+
+```
+Linking to libgit2 v1.4.2, ssh support: YES
+Global config: /home/zhian/.gitconfig
+Default user: Zhian N. Kamvar <zkamvar@gmail.com>
+ℹ creating a new repository called `fishtree-attempt/znk-transition-test`
+ℹ importing `sgibson91/cross-stitch-carpentry` to `fishtree-attempt/znk-transition-test`
+ℹ Setting gh-pages as default
+ℹ Setting permissions
+trying URL 'https://github.com/carpentries/actions/raw/main/update-styles/update-styles.sh'
+Content type 'text/plain; charset=utf-8' length 2448 bytes
+==================================================
+downloaded 2448 bytes
+
+Running bash /tmp/RtmpaLsTG4/file99447fafb9ef
+::group::Fetch Styles
+From https://github.com/carpentries/styles
+ * [new branch]      gh-pages   -> styles-ref
+ * [new branch]      gh-pages   -> styles/gh-pages
+::endgroup::
+::group::Synchronize Styles
+There are 238 changes upstream
+Testing merge using recursive strategy, accepting upstream changes without committing
+Automatic merge went well; stopped before committing as requested
+Creating squash commit later
+/tmp/RtmpaLsTG4/file99447fafb9ef: line 80: $GITHUB_OUTPUT: ambiguous redirect
+Error in "callr::run(\"bash\", run_styles, echo = TRUE, echo_cmd = TRUE)" : 
+  ! System command 'bash' failed
+Error in eval(handler$expr, handler$envir) : 
+  argument is missing, with no default
+Calls: <Anonymous> -> deferred_run -> execute_handlers
+```
+
+</details>
+
+This might error, but that's okay. You can check to make sure the repository is
+up and running by going to <https://github.com/fishtree-attempt/znk-transition-test>.
+
 #### Create ravmakz PR
 
 To create the PR from an external account, we use the `ravmakz` GitHub account, 
