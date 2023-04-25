@@ -907,6 +907,7 @@ extract_tasklist <- function(issue) {
   title <- issue$title
   nr <- issue$number
   url <- issue$html_url
+  labels <- purrr::map_chr(issue$labels, "name")
   f <- textConnection(issue$body)
   on.exit(close(f), add = TRUE)
   y <- tinkr::yarn$new(f)
@@ -930,8 +931,38 @@ extract_tasklist <- function(issue) {
     cli::cli_alert_info(msg)
   }
 
-  tibble::tibble(lesson = title, issue = nr, task = tasks, complete = status, url = url)
+  tibble::tibble(lesson = title, issue = nr, task = tasks, complete = status, url = url, labels = list(labels))
 
+}
+
+open_workbench_issues <- function() {
+  lessons <- unique(get_tasks()[c("lesson", "url", "labels")])
+  orglsn  <- purrr::transpose(strsplit(lessons$lesson, "/"))
+  names(orglsn) <- c("org", "repo")
+  orglsn <- lapply(orglsn, as.character)
+  lessons <- dplyr::bind_cols(lessons, orglsn)
+  txt <- readLines("workbench-issue-text.md")
+  lessons <- lessons |> dplyr::rowwise() |> 
+    dplyr::mutate(body = whisker::whisker.render(txt, 
+        data = list(url = url, org = org, lesson = lesson)))
+  msgs <- purrr::transpose(lessons)
+  late <- purrr::discard(msgs, function(x) "early transition" %in% x$labels)
+  purrr::map(late, post_gh_transition_issue)
+}
+
+post_gh_transition_issue <- function(lsn) {
+  cli::cli_alert("Opening issue for {.path {lsn$org}/{lsn$repo}}")
+  res <- gh::gh("POST /repos/{org}/{repo}/issues",
+    org = trimws(lsn$org),
+    repo = trimws(lsn$repo),
+    .params = list(
+      title = "Transition To Workbench in May",
+      body = lsn$body,
+      labels = list("type:template and tools")
+    )
+  )
+  cli::cli_alert_success("Issue opened at {.url {res$html_url}}")
+  res
 }
 
 
