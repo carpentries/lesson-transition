@@ -93,10 +93,6 @@
 	path = datacarpentry/genomics-r-intro
 	url = https://github.com/datacarpentry/genomics-r-intro/
 	branch = main
-[submodule "datacarpentry/image-processing"]
-	path = datacarpentry/image-processing
-	url = https://github.com/datacarpentry/image-processing/
-	branch = gh-pages
 [submodule "datacarpentry/openrefine-socialsci"]
 	path = datacarpentry/openrefine-socialsci
 	url = https://github.com/datacarpentry/openrefine-socialsci/
@@ -128,10 +124,6 @@
 [submodule "librarycarpentry/lc-data-intro"]
 	path = librarycarpentry/lc-data-intro
 	url = https://github.com/librarycarpentry/lc-data-intro/
-	branch = gh-pages
-[submodule "librarycarpentry/lc-marcedit"]
-	path = librarycarpentry/lc-marcedit
-	url = https://github.com/librarycarpentry/lc-marcedit/
 	branch = gh-pages
 [submodule "librarycarpentry/lc-open-refine"]
 	path = librarycarpentry/lc-open-refine
