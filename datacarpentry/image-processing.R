@@ -28,3 +28,7 @@ cli::cli_alert("fixing setup file link")
 idx <- sub("(setup.md", "(learners/setup.md", readLines(to("index.md")), fixed = TRUE)
 writeLines(idx, to("index.md"))
 
+stp <- readLines(to("learners/setup.md"))
+to_fix <- grepl("  [^ ]", stp)
+stp[to_fix] <- sub("^  ", "   ", stp[to_fix])
+writeLines(stp, to("learners/setup.md"))
