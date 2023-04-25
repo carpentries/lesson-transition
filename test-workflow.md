@@ -138,26 +138,12 @@ to damange things (you don't, trust me).
 
 #### Running
 
-There are three steps to the process:
-
-1. delete and reset the repository (optional: add pull request)
-2. re-add fishtree-attempt/znk-transition-test to the token
-3. run the release process
-
-Once you are in your new branch, and have your tokens set up in vault or
-wherever, you can run the setup script via:
-
-```bash
-# make sure you have a setup key in your vault
-SETUP_PAT=$(./pat.sh setup) Rscript create-transition-test.R
-```
-
-NOTE: If this errors, just try to run it again, sometimes network issues bite
-you.
-
-Once you do that, you will want to go to your RELEASE_PAT token
-<https://github.com/settings/tokens?type=beta> and edit it so that it has access
-to the `fishtree-attempt/znk-transition-test` repository.
+Once you do that, you will want to create a `test-release` key in your vault
+store that will be read as the `RELEASE_PAT` environment variable in the release
+process. Head to: <https://github.com/settings/tokens?type=beta> and edit the
+token so that it ONLY has access to the `fishtree-attempt/znk-transition-test`
+repository. Add this token to the `test-release` in your vault (see the release
+workflow for details)
 
 From here, you can run the workflow by running:
 
