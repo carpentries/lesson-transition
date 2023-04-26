@@ -340,7 +340,7 @@ rewrite <- function(x, out, verbose = getOption("carpentries.transition.loud", T
     }
     if (is_reference) {
       ref$yaml[2] = if (ref$yaml[2] == "{}") "title: 'Reference'" else ref$yaml[2]
-      if (xml2::xml_length(x$body) == 0L) {
+      if (xml2::xml_length(ref$body) == 0L) {
         ref$add_md("FIXME This is a placeholder file. Please add content here.")
       }
       if (length(ref$headings) == 0L) {
