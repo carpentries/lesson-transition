@@ -331,14 +331,21 @@ rewrite <- function(x, out, verbose = getOption("carpentries.transition.loud", T
       fix_links = TRUE, 
       fix_liquid = TRUE)
     ref$unblock()$use_sandpaper()
-    if (ref$yaml[2] == "{}") {
+    is_reference <- fs::path_file(x) == "reference.md"
+    if (!is_reference && ref$yaml[2] == "{}") {
       ref$yaml[2] = "title: 'FIXME'"
     }
-    if (length(xml2::xml_children(ref$body)) == 0L) {
+    if (!is_reference && length(xml2::xml_children(ref$body)) == 0L) {
       ref$add_md("FIXME This is a placeholder file. Please add content here.")
     }
-    if (fs::path_file(x) == "reference.md") {
-      ref$add_md("## Glossary")
+    if (is_reference) {
+      ref$yaml[2] = if (ref$yaml[2] == "{}") "title: 'Reference'" else ref$yaml[2]
+      if (xml2::xml_length(x$body) == 0L) {
+        ref$add_md("FIXME This is a placeholder file. Please add content here.")
+      }
+      if (length(ref$headings) == 0L) {
+        ref$add_md("## Glossary")
+      }
     }
     fix_all_links(ref)
     ref$write(out, format = fs::path_ext(x))
