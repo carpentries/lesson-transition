@@ -69,10 +69,6 @@
 	path = swcarpentry/hpc-novice
 	url = https://github.com/swcarpentry/hpc-novice/
 	branch = gh-pages
-[submodule "swcarpentry/matlab-novice-inflammation"]
-	path = swcarpentry/matlab-novice-inflammation
-	url = https://github.com/swcarpentry/matlab-novice-inflammation/
-	branch = gh-pages
 [submodule "swcarpentry/python-novice-gapminder"]
 	path = swcarpentry/python-novice-gapminder
 	url = https://github.com/swcarpentry/python-novice-gapminder/
