@@ -339,13 +339,19 @@ rewrite <- function(x, out, verbose = getOption("carpentries.transition.loud", T
       ref$add_md("FIXME This is a placeholder file. Please add content here.")
     }
     if (is_reference) {
-      ref$yaml[2] = if (ref$yaml[2] == "{}") "title: 'Reference'" else ref$yaml[2]
-      if (xml2::xml_length(ref$body) == 0L) {
-        ref$add_md("FIXME This is a placeholder file. Please add content here.")
-      }
-      if (length(ref$headings) == 0L) {
+      # NO I DON"T LIKE THIS NESTING BUT I"M ON A TIME BUDGET
+      empty_head <- length(ref$headings) == 0L
+      nothing    <- xml2::xml_length(ref$body) == 0L
+      if (empty_head) {
+        ref_title <- "title: 'Reference'"
+        if (nothing) {
+          ref$add_md("FIXME This is a placeholder file. Please add content here.")
+        }
         ref$add_md("## Glossary")
+      } else {
+        ref_title <- glue::glue("title: '{xml2::xml_text(ref$headings[[1]])}'")
       }
+      ref$yaml[2] = if (ref$yaml[2] == "{}") ref_title else ref$yaml[2]
     }
     fix_all_links(ref)
     ref$write(out, format = fs::path_ext(x))
