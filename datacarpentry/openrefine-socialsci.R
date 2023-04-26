@@ -20,3 +20,18 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+dl_auto_id(to("learners/reference.md"))
+stp <- readLines(to("learners/setup.md"))
+to_fix <- grepl("^[- ] ", stp)
+stp[to_fix] <- paste0(" ", stp[to_fix])
+callouts <- grepl("^   [:]{3,}", stp)
+the_tail <- grepl("^   [:]+$", stp)
+the_head <- which(callouts & !the_tail)
+the_tail <- which(the_tail)
+stp <- c(stp[1:(the_head - 1L)], 
+  "   ", 
+  stp[the_head:the_tail],
+  "   ",
+  stp[(the_tail + 1):length(stp)]
+)
+writeLines(stp, to("learners/setup.md"))
