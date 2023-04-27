@@ -80,3 +80,5 @@ targets <- xml2::xml_attr(inote$links, "destination")
 targets <- sub("https://raw.githubusercontent.com/swcarpentry/r-novice-gapminder/gh-pages/_episodes_rmd/", "", targets, fixed = TRUE)
 xml2::xml_set_attr(inote$links, "destination", targets)
 write_out_md(inote, "instructors")
+
+sandpaper::set_config(c(lang = "'es'"), path = to(), write = TRUE)
