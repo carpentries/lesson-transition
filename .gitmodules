@@ -57,10 +57,6 @@
 	path = datacarpentry/sql-socialsci
 	url = https://github.com/datacarpentry/sql-socialsci/
 	branch = gh-pages
-[submodule "swcarpentry/git-novice-es"]
-	path = swcarpentry/git-novice-es
-	url = https://github.com/swcarpentry/git-novice-es/
-	branch = gh-pages
 [submodule "swcarpentry/git-novice"]
 	path = swcarpentry/git-novice
 	url = https://github.com/swcarpentry/git-novice/
@@ -73,10 +69,6 @@
 	path = swcarpentry/python-novice-gapminder
 	url = https://github.com/swcarpentry/python-novice-gapminder/
 	branch = gh-pages
-[submodule "swcarpentry/r-novice-gapminder-es"]
-	path = swcarpentry/r-novice-gapminder-es
-	url = https://github.com/swcarpentry/r-novice-gapminder-es/
-	branch = main
 [submodule "swcarpentry/sql-novice-survey"]
 	path = swcarpentry/sql-novice-survey
 	url = https://github.com/swcarpentry/sql-novice-survey/
