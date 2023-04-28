@@ -662,7 +662,7 @@ For the curious, this is the path of the makefile for a single target:
 ![an example of the target sandpaper/swcarpentry/r-novice-gapminder.json](example-path.png)
 
 
-### Sending lessons to GitHub
+### Sending lesson previews to GitHub
 
 Note: this is for creating the lesson previews. For deploying a full transition,
 see the [Release Workflow Document](release-workflow.md).
@@ -698,6 +698,7 @@ because I want to be difficult, I am using a [vault secrets engine called
 tr](https://learn.hashicorp.com/tutorials/vault/getting-started-secrets-engines?in=vault/getting-started) by running `vault server -dev` in a separate window and then:
 
 ```bash
+ # note the blank space before these commands hides these from the shell history
  vault secrets enable -version=2 -path=tr kv
  vault kv put -mount=tr auth \
 bot=<token> \

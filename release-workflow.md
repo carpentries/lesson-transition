@@ -215,20 +215,21 @@ variables,
 
 ### Creating the Release
 
-To create the release, you will use the following command:
+To create the release, you will use the following command (note the spaces at
+the beginning of the command to hide it from the shell history).
 
 ```bash
 # if you are using vault
-RELEASE_PAT=$(./pat.sh release) make release/[org]/[repo].json
+ RELEASE_PAT=$(./pat.sh release) make release/[org]/[repo].json
 # otherwise
-make release/[org]/[repo].json
+ RELEASE_PAT=github_XXX make release/[org]/[repo].json
 ```
 
 where `[org]` is the organisattion and `[repo]` is the lesson name. For example,
 this created the release for the bioc intro lesson for carpentries incubator:
 
 ```
-RELEASE_PAT=$(./pat.sh release) make release/carpentries-incubator/bioc-intro.json
+ RELEASE_PAT=$(./pat.sh release) make release/carpentries-incubator/bioc-intro.json
 ```
 
 The release process will take a few minutes depending on the speed of your
@@ -273,15 +274,18 @@ be that one.
 
 #### lesson built with remote theme
 
-For lessons that were built with the remote theme, such as 
-<https://carpentries-incubator.github.io/bioc-intro>, they will all have
-different invalid hashes and there will be fewer empty hashes. One thing to
-watch out for, however, are lessons that started with remote theme and
-accidentally merged with styles at some point in time. If
-`release/{org}/{lesson}-invalid.hash` contains [e83e2c9bd](https://github.com/carpentries/styles/commit/e83e2c9bdeb259fcb7b12ae21da8f6eac8ff34a4),
-then there is a chance that this commit may not capture all the potential forks.
-To solve this issue, find the first commit of the repository and reference the
-commit map to find the invalid commit.
+For lessons that were built with the remote theme, such as
+<https://carpentries-incubator.github.io/managing-computational-projects>, they
+will all have different invalid hashes and there will be fewer empty hashes (in
+the case of this lesson, there is only [one empty
+hash](https://github.com/carpentries/lesson-transition/blob/e5fc4ff9e810e6bda9ebc2730d55f9639fc9177d/release/carpentries-incubator/managing-computational-projects-commit-map.hash#L255).
+One thing to watch out for, however, are lessons that started with remote theme
+and accidentally merged with styles at some point in time. If
+`release/{org}/{lesson}-invalid.hash` contains
+[e83e2c9bd](https://github.com/carpentries/styles/commit/e83e2c9bdeb259fcb7b12ae21da8f6eac8ff34a4),
+then there is a chance that this commit may not capture all the potential
+forks. To solve this issue, find the first commit of the repository and
+reference the commit map to find the invalid commit.
 
 ### Commit and create tag
 

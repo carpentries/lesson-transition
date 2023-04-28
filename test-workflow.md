@@ -152,7 +152,14 @@ bash run-transition-test.sh
 ```
 
 
-The output should look something like this:
+> **Note**
+> 
+> If you have previously run this test _and you **should**_, then there will be
+> an interactive step that will do a merge commit update of the submodule that
+> will be hiding in the `.git/modules` folder. This is normal. Just accept the
+> merge when the commit message window pops up.
+
+The output should look something like this.
 
 <details>
 <summary>output of workflow</summary>
