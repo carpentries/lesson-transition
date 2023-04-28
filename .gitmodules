@@ -81,10 +81,6 @@
 	path = datacarpentry/genomics-r-intro
 	url = https://github.com/datacarpentry/genomics-r-intro/
 	branch = main
-[submodule "datacarpentry/openrefine-socialsci"]
-	path = datacarpentry/openrefine-socialsci
-	url = https://github.com/datacarpentry/openrefine-socialsci/
-	branch = gh-pages
 [submodule "datacarpentry/organization-genomics"]
 	path = datacarpentry/organization-genomics
 	url = https://github.com/datacarpentry/organization-genomics/
