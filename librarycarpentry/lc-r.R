@@ -81,7 +81,8 @@ transform(old_lesson$episodes[[4]])
 
 # Fix preamble code ---------------------------------------------
 fs::dir_create(to("episodes/files/"))
-fs::file_copy(from("bin/download_data.R"), to("episodes/files/download_data.R"))
+fs::file_move(to("bin/download_data.R"), to("episodes/files/download_data.R"))
+fs::dir_delete(to("bin"))
 replace_source <- function(ep) {
   setup <- ep$code[1]
   txt <- sub("../bin/", "files/", xml2::xml_text(setup))
