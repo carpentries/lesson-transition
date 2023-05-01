@@ -20,3 +20,27 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+# fix broken link in Episode 2 -----------------------------------
+e2 <- old_lesson$episodes[["02-variables.md"]]
+lnks <- e2$validate_links(warn = FALSE)
+to_fix <- lnks$node[[which(!lnks$internal_file)]]
+dst <- xml2::xml_attr(to_fix, "destination")
+xml2::xml_set_attr(to_fix, "destination", 
+  sub("15-scope", "17-scope.md", dst, fixed = TRUE))
+write_out_md(e2)
+
+# fix path to zip ------------------------------------------------
+idx <- pegboard::Episode$new(to("index.md"))$confirm_sandpaper()
+lnks <- idx$validate_links(warn = FALSE)
+to_fix <- lnks$node[[which(!lnks$internal_file)]]
+dst <- xml2::xml_attr(to_fix, "destination")
+xml2::xml_set_attr(to_fix, "destination", paste0("episodes/", dst))
+write_out_md(idx, ".")
+
+# # fix paths in design --------------------------------------------
+
+# dsn <- pegboard::Episode$new(to("instructors/design.md"))$confirm_sandpaper()
+# lnks <- dsn$validate_links(warn = FALSE)
+# to_fix <- lnks$node[!lnks$internal_file]
+
+
