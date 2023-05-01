@@ -20,3 +20,6 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+inot <- readLines(to("instructors/instructor-notes.md"))
+inot <- sub("episodes08_sqlite-command-lines.md", "episodes/08-sqlite-command-line.md", inot, fixed = TRUE)
+writeLines(inot, to("instructors/instructor-notes.md"))
