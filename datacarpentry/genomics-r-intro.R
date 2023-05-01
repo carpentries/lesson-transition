@@ -38,10 +38,9 @@ k <- sub(
   k, fixed = TRUE)
 writeLines(k, f)
 
+# fix code blocks that still contain references to ../data ---------------------
 codes <- old_lesson$get("code") 
-
 to_fix <- purrr::map(codes, function(x) grepl("../data", xml2::xml_text(x), fixed = TRUE))
-
 purrr::walk2(codes, to_fix, function(blocks, fix) {
   if (any(fix)) {
     for (block in blocks[fix]) {
@@ -51,7 +50,11 @@ purrr::walk2(codes, to_fix, function(blocks, fix) {
   }
   return(blocks)
 })
-
 to_write <- purrr::map_lgl(to_fix, any)
 purrr::walk(old_lesson$episodes[to_write], write_out_rmd)
 
+# fixing busted block quote syntax in final episode --------------------------
+ep8 <- old_lesson$episodes[["08-r-help.Rmd"]]
+ep8$get_blocks()[-1] |> purrr::walk(pegboard:::elevate_children)
+ep8$code[1] |> xml2::xml_remove()
+write_out_rmd(ep8)
