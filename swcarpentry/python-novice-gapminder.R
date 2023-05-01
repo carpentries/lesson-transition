@@ -37,7 +37,21 @@ dst <- xml2::xml_attr(to_fix, "destination")
 xml2::xml_set_attr(to_fix, "destination", paste0("episodes/", dst))
 write_out_md(idx, ".")
 
-# # fix paths in design --------------------------------------------
+# re-add links.md ------------------------------------------------
+lnks <- readLines(from("_includes/links.md"))
+lnks <- sub("http:", "https:", lnks, fixed = TRUE)
+lnks <- lnks[!grepl("{", lnks, fixed = TRUE)]
+writeLines(lnks, to("links.md"))
+
+# fix setup instructions -----------------------------------------
+stp <- readLines(to("learners/setup.md"))
+stp[stp == "<br>"] <- ""
+stp[startsWith(stp, "{%")] <- "Please refer to the [Python section of the workshop website for installation instructions.](https://carpentries.github.io/workshop-template/#python)"
+writeLines(stp, to("learners/setup.md"))
+
+
+
+# # fix paths in design ------------------------------------------
 
 # dsn <- pegboard::Episode$new(to("instructors/design.md"))$confirm_sandpaper()
 # lnks <- dsn$validate_links(warn = FALSE)
