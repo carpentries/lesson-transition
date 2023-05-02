@@ -19,6 +19,7 @@
 # from       <- function(...) fs::path(old, ...)
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
+#
 # Episode 15 has a problem with the translation because they used the HTML code
 # for the backtic, but commonmark "helpfully" translated it back to a backtic.
 #
@@ -72,16 +73,17 @@ suppressMessages(lnks <- lsn$validate_links())
 to_fix <- startsWith(lnks$server, "raw.github")
 purrr::walk(lnks$node[to_fix], function(node) {
   target <- xml2::xml_attr(node, "destination")
-  target <- sub("https://raw.githubusercontent.com/swcarpentry/r-novice-gapminder/gh-pages/_episodes_rmd/", "", target, fixed = TRUE)
-  xml2::xml_set_attr(node, "destination", target)
+  new <- sub("https://raw.githubusercontent.com/swcarpentry/r-novice-gapminder/gh-pages/_episodes_rmd/", "", target, fixed = TRUE)
+  xml2::xml_set_attr(node, "destination", new)
 })
 
 to_write <- unique(lnks$filepath[to_fix])
 purrr::walk(to_write, function(ep) {
   folder <- fs::path_dir(ep)
   file   <- fs::path_file(ep)
+  cli::cli_alert("writing {ep}")
   if (folder == "episodes") {
-    write_out_md(lsn$episodes[[file]], folder)
+    write_out_rmd(lsn$episodes[[file]], folder)
   } else {
     write_out_md(lsn$extra[[file]], folder)
   }
