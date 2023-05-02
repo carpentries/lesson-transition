@@ -1,3 +1,24 @@
+# Available variables
+#
+# old        - path to the old lesson
+# from()     - function that constructs a path to the old lesson
+# new        - path to the new lesson
+# to()       - function that constructs a path to the new lesson
+# old_lesson - a pegboard::Lesson object containing the transformed files from
+#              the old lesson
+
+# During iteration: use these to provision the variables and functions
+# that would be normally available when this script is run
+#
+# library("fs")
+# library("xml2")
+# pandoc::pandoc_activate("2.19.2")
+# source("functions.R")
+# old        <- 'swcarpentry/r-novice-gapminder'
+# new        <- 'sandpaper/swcarpentry/r-novice-gapminder'
+# from       <- function(...) fs::path(old, ...)
+# to         <- function(...) fs::path(new, ...)
+# old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 # Episode 15 has a problem with the translation because they used the HTML code
 # for the backtic, but commonmark "helpfully" translated it back to a backtic.
 #
@@ -41,3 +62,28 @@ xml2::xml_remove(the_fence)
 e$add_md(xml2::xml_text(the_fence), where = end_block)
 
 e$write(path = fs::path(new, "episodes"), format = "Rmd")
+
+# fix anchor links ------------------------------------------
+dl_auto_id(to("learners/reference.md"))
+
+# fix raw links ---------------------------------------------
+lsn <- pegboard::Lesson$new(new, jekyll = FALSE)
+suppressMessages(lnks <- lsn$validate_links())
+to_fix <- startsWith(lnks$server, "raw.github")
+purrr::walk(lnks$node[to_fix], function(node) {
+  target <- xml2::xml_attr(node, "destination")
+  target <- sub("https://raw.githubusercontent.com/swcarpentry/r-novice-gapminder/gh-pages/_episodes_rmd/", "", target, fixed = TRUE)
+  xml2::xml_set_attr(node, "destination", target)
+})
+
+to_write <- unique(lnks$filepath[to_fix])
+purrr::walk(to_write, function(ep) {
+  folder <- fs::path_dir(ep)
+  file   <- fs::path_file(ep)
+  if (folder == "episodes") {
+    write_out_md(lsn$episodes[[file]], folder)
+  } else {
+    write_out_md(lsn$extra[[file]], folder)
+  }
+})
+
