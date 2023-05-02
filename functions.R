@@ -990,10 +990,12 @@ make_test_calls <- function(tags = "early transition") {
 }
 
 make_bash_nest <- function(lst) {
+  n <- sum(lengths(lst))
+  n <- if (n >= 7L) 7L else n
   json <- as.character(jsonlite::toJSON(lst))
   json <- gsub('[:"]', "", json)
   json <- gsub("\\[", "/{", json)
   json <- gsub("\\]", "}", json)
   json <- gsub("[{]([^/,]+?)[}]", "\\1", json)
-  usethis::ui_code_block("make -n -Bj 7 sandpaper/{json}.json") 
+  usethis::ui_code_block("make -n -Bj {n} sandpaper/{json}.json") 
 }
