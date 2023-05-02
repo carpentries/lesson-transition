@@ -48,7 +48,7 @@ that <- "/librarycarpentry/lc-data-intro/blob/gh-pages/"
 to_fix <- startsWith(tolower(lnks$path), this) | startsWith(tolower(lnks$path), that)
 purrr::walk(lnks$node[to_fix], function(node) {
   dst <- xml2::xml_attr(node, "destination")
-  new <- sub("gh-pages", "main", dst)
+  new <- sub("gh-pages", "main/episodes/", dst)
   if (endsWith(new, "files")) {
     xml2::xml_set_text(node, "episodes/files")
   }
