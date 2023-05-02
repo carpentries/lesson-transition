@@ -20,3 +20,6 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+e2 <- readLines(to("episodes/02-common-mistakes.md"))
+e2 <- sub("[_](name|pretty)", "-\\1", e2)
+writeLines(e2, to("episodes/02-common-mistakes.md"))
