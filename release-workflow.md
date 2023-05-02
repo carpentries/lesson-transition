@@ -238,6 +238,83 @@ processor and the speed of your connection. When it is finished, you will have
 extension](https://github.com/carpentries/lesson-transition/commit/747030b61359a61bd01e299ab2d7ff5714af69d9).
 These are the outputs from the commit process.
 
+#### Recovering from failure
+
+Because this involves networking, there are different modes of failure that can
+lead to a borked transfer. I will be adding situations as they come up
+
+##### Invalid token
+
+if you see an error that looks something like this, then it's likely that your
+PAT (hopefully a fine-grained PAT) does not have the right permissions.
+
+```r
+ℹ renaming default branch (gh-pages) to legacy/gh-pages
+POST /repos/fishtree-attempt/znk-transition-test/branches/gh-pages/rename
+Error in `gh::gh()`:
+! GitHub API error (403): Resource not accessible by personal access token
+ℹ Read more at <https://docs.github.com/rest/branches/branches#rename-a-branch>
+Backtrace:
+    ▆
+ 1. └─global setup_github(...)
+ 2.   └─gh::gh(RENAME, new_name = glue::glue("legacy/{default}"), .token = .token)
+ 3.     └─gh:::gh_make_request(req)
+ 4.       └─gh:::gh_error(resp, error_call = error_call)
+ 5.         └─cli::cli_abort(...)
+ 6.           └─rlang::abort(...)
+Execution halted
+```
+
+The solution is to set the correct permissions for your token (listed above).
+
+<details>
+<summary>Full error message</summary>
+
+```r
+→ preparing to run `setup_github(path = 'release/fishtree-attempt/znk-transition-test', owner = 'fishtree-attempt', repo = 'znk-transition-test')` in
+→ 5...
+→ 4...
+→ 3...
+→ 2...
+→ 1...
+
+── Credentials ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+{
+  "name": "Zhian N. Kamvar",
+  "login": "zkamvar",
+  "html_url": "https://github.com/zkamvar",
+  "token": "gith...xNYl"
+} 
+
+── Setting up repository ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ℹ Writing to /home/zhian/Documents/Carpentries/Git/carpentries/lesson-transition/release/fishtree-attempt/znk-transition-test/config.yaml
+→ created:  -> created: '2023-05-02'
+Running git add config.yaml
+Running git commit --amend --no-edit
+[main dba8b15] [automation] final workbench updates
+ Date: Tue May 2 07:52:10 2023 -0700
+ 2 files changed, 3 insertions(+), 64 deletions(-)
+ delete mode 100644 .github/workflows/workbench-beta-phase.yml
+ℹ renaming default branch (gh-pages) to legacy/gh-pages
+POST /repos/fishtree-attempt/znk-transition-test/branches/gh-pages/rename
+Error in `gh::gh()`:
+! GitHub API error (403): Resource not accessible by personal access token
+ℹ Read more at <https://docs.github.com/rest/branches/branches#rename-a-branch>
+Backtrace:
+    ▆
+ 1. └─global setup_github(...)
+ 2.   └─gh::gh(RENAME, new_name = glue::glue("legacy/{default}"), .token = .token)
+ 3.     └─gh:::gh_make_request(req)
+ 4.       └─gh:::gh_error(resp, error_call = error_call)
+ 5.         └─cli::cli_abort(...)
+ 6.           └─rlang::abort(...)
+Execution halted
+make: *** [Makefile:106: release/fishtree-attempt/znk-transition-test.json] Error 1
+```
+
+</details>
+
+
 ### On GitHub
 
 When it is finished, you must comment on the original issue. Here is a template:
