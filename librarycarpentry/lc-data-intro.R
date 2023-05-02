@@ -20,3 +20,54 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+new_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
+suppressMessages(lnks <- new_lesson$validate_links())
+
+to_fix <- grepl("^[/].+?[/]\\d{2}-", lnks$path)
+lc_fix <- lnks$node[to_fix & lnks$server == "librarycarpentry.org"]
+purrr::walk(lc_fix, function(node) {
+  dst <- xml2::url_parse(xml2::xml_attr(node, "destination"))
+  if (!startsWith(dst$path, "/lc-data-intro")) {
+    lnk <- fs::path(dst$server, fs::path_dir(dst$path))
+    lnk <- paste0(dst$scheme, "://", lnk)
+  } else {
+    lnk <- fs::path_ext_set(fs::path_split(dst$path)[[1]][[3]], "md")
+  }
+  if (lnk == "05-ordering-commenting.md") {
+    # episode name was changed at some point in the past
+    lnk <- "04-ordering-commenting.md"
+  }
+  lnk <- ifelse(dst$fragment == "", lnk, paste0(lnk, "#", dst$fragment))
+  xml2::xml_set_attr(node, "destination", lnk)
+})
+
+all_fix <- to_fix
+
+this <- "/librarycarpentry/lc-data-intro/tree/gh-pages/"
+that <- "/librarycarpentry/lc-data-intro/blob/gh-pages/"
+to_fix <- startsWith(tolower(lnks$path), this) | startsWith(tolower(lnks$path), that)
+purrr::walk(lnks$node[to_fix], function(node) {
+  dst <- xml2::xml_attr(node, "destination")
+  new <- sub(paste0("https://github.com", this), "", dst, ignore.case = TRUE)
+  new <- sub(paste0("https://github.com", that), "", new, ignore.case = TRUE)
+  if (startsWith(new, "files")) {
+    xml2::xml_set_attr(node, "destination", paste0("../episodes/", new))
+    if (new == "files") {
+      xml2::xml_set_text(node, "episodes/files")
+    }
+  } else {
+    xml2::xml_set_attr(node, "destination", new)
+  }
+})
+all_fix <- to_fix | all_fix
+
+to_write <- unique(lnks$filepath[all_fix])
+purrr::walk(to_write, function(ep) {
+  folder <- fs::path_dir(ep)
+  file   <- fs::path_file(ep)
+  if (folder == "episodes") {
+    write_out_md(new_lesson$episodes[[file]], folder)
+  } else {
+    write_out_md(new_lesson$extra[[file]], folder)
+  }
+})
