@@ -35,6 +35,12 @@ lnks <- idx$validate_links(warn = FALSE)
 to_fix <- lnks$node[[which(!lnks$internal_file)]]
 dst <- xml2::xml_attr(to_fix, "destination")
 xml2::xml_set_attr(to_fix, "destination", paste0("episodes/", dst))
+# remove liquid declaration {% include gh_variables %}
+spill <- xml2::xml_find_first(idx$body,
+  ".//md:paragraph[md:text[starts-with(text(), '{')]]",
+  ns = idx$ns
+)
+xml2::xml_remove(spill)
 write_out_md(idx, ".")
 
 # re-add links.md ------------------------------------------------
@@ -51,10 +57,5 @@ writeLines(stp, to("learners/setup.md"))
 
 
 
-# # fix paths in design ------------------------------------------
-
-# dsn <- pegboard::Episode$new(to("instructors/design.md"))$confirm_sandpaper()
-# lnks <- dsn$validate_links(warn = FALSE)
-# to_fix <- lnks$node[!lnks$internal_file]
 
 
