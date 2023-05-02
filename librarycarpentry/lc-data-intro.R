@@ -48,16 +48,11 @@ that <- "/librarycarpentry/lc-data-intro/blob/gh-pages/"
 to_fix <- startsWith(tolower(lnks$path), this) | startsWith(tolower(lnks$path), that)
 purrr::walk(lnks$node[to_fix], function(node) {
   dst <- xml2::xml_attr(node, "destination")
-  new <- sub(paste0("https://github.com", this), "", dst, ignore.case = TRUE)
-  new <- sub(paste0("https://github.com", that), "", new, ignore.case = TRUE)
-  if (startsWith(new, "files")) {
-    xml2::xml_set_attr(node, "destination", paste0("../episodes/", new))
-    if (new == "files") {
-      xml2::xml_set_text(node, "episodes/files")
-    }
-  } else {
-    xml2::xml_set_attr(node, "destination", new)
+  new <- sub("gh-pages", "main", dst)
+  if (endsWith(new, "files")) {
+    xml2::xml_set_text(node, "episodes/files")
   }
+  xml2::xml_set_attr(node, "destination", new)
 })
 all_fix <- to_fix | all_fix
 
