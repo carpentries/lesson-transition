@@ -14,10 +14,6 @@
 	branch = gh-pages
 	path = datacarpentry/wrangling-genomics
 	url = https://github.com/datacarpentry/wrangling-genomics/
-[submodule "swcarpentry/shell-novice"]
-	path = swcarpentry/shell-novice
-	url = https://github.com/swcarpentry/shell-novice/
-	branch = gh-pages
 [submodule "git-filter-repo"]
 	path = git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git
@@ -45,10 +41,6 @@
 	path = datacarpentry/geospatial-workshop
 	url = https://github.com/datacarpentry/geospatial-workshop/
 	branch = gh-pages
-[submodule "datacarpentry/sql-socialsci"]
-	path = datacarpentry/sql-socialsci
-	url = https://github.com/datacarpentry/sql-socialsci/
-	branch = gh-pages
 [submodule "swcarpentry/git-novice"]
 	path = swcarpentry/git-novice
 	url = https://github.com/swcarpentry/git-novice/
@@ -57,10 +49,6 @@
 	path = swcarpentry/hpc-novice
 	url = https://github.com/swcarpentry/hpc-novice/
 	branch = gh-pages
-[submodule "swcarpentry/python-novice-gapminder"]
-	path = swcarpentry/python-novice-gapminder
-	url = https://github.com/swcarpentry/python-novice-gapminder/
-	branch = gh-pages
 [submodule "swcarpentry/sql-novice-survey"]
 	path = swcarpentry/sql-novice-survey
 	url = https://github.com/swcarpentry/sql-novice-survey/
@@ -68,10 +56,6 @@
 [submodule "datacarpentry/cloud-genomics"]
 	path = datacarpentry/cloud-genomics
 	url = https://github.com/datacarpentry/cloud-genomics/
-	branch = gh-pages
-[submodule "datacarpentry/organization-genomics"]
-	path = datacarpentry/organization-genomics
-	url = https://github.com/datacarpentry/organization-genomics/
 	branch = gh-pages
 [submodule "datacarpentry/python-ecology-lesson"]
 	path = datacarpentry/python-ecology-lesson
@@ -100,10 +84,6 @@
 [submodule "librarycarpentry/lc-python-intro"]
 	path = librarycarpentry/lc-python-intro
 	url = https://github.com/librarycarpentry/lc-python-intro/
-	branch = gh-pages
-[submodule "librarycarpentry/lc-sql"]
-	path = librarycarpentry/lc-sql
-	url = https://github.com/librarycarpentry/lc-sql/
 	branch = gh-pages
 [submodule "datacarpentry/ecology-workshop"]
 	path = datacarpentry/ecology-workshop
