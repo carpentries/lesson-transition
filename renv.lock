@@ -527,14 +527,14 @@
     },
     "later": {
       "Package": "later",
-      "Version": "1.3.0",
+      "Version": "1.3.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "Rcpp",
         "rlang"
       ],
-      "Hash": "7e7b457d7766bc47f2a5f21cc2984f8e"
+      "Hash": "40401c9cf2bc2259dfe83311c9384710"
     },
     "lifecycle": {
       "Package": "lifecycle",
@@ -881,9 +881,9 @@
     },
     "servr": {
       "Package": "servr",
-      "Version": "0.26",
+      "Version": "0.27",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "httpuv",
@@ -891,7 +891,7 @@
         "mime",
         "xfun"
       ],
-      "Hash": "fd76750552bad91bbb9b89662f3a3f87"
+      "Hash": "f4d1414c2ddc0a34ea27923134ac3c7b"
     },
     "stringi": {
       "Package": "stringi",
