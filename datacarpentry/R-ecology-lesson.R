@@ -68,6 +68,7 @@ if (arguments$quiet) {
   sink()
 }
 
+# source the functions from `functions.R`
 source(arguments$funs)
 
 old  <- path_abs(arguments$repo)
@@ -210,6 +211,8 @@ walk(eps, wrap_solutions)
 walk(eps, replace_text_answers)
 cli::cli_h2("fixing image paths")
 walk(eps, fix_images)
+cli::cli_h2("fixing image paths")
+walk(eps, function(ep) fix_https_links(ep$validate_links(warn = FALSE)))
 cli::cli_h2("removing page built on chunks")
 walk(eps, remove_date_built_on)
 
@@ -223,7 +226,9 @@ invisible(xml_set_text(extra_alligator, sub("\\n[>]\\n$", "\n", ea_txt)))
 
 # Modify the index to include our magic header
 idx <- Episode$new(from("index.Rmd"))
-add_experiment_info(idx)
+if (Sys.getenv("PROD") != "true") {
+  add_experiment_info(idx)
+}
 remove_date_built_on(idx)
 idx$yaml[length(idx$yaml) + 0:1] <- c("site: sandpaper::sandpaper_site", "---")
 idx$label_divs() # fee our image from it's HTML prison
@@ -232,7 +237,9 @@ invisible(fix_images(idx))
 # add notice in README
 rdm <- Episode$new(from("README.md"))
 remove_date_built_on(rdm)
-add_experiment_info(rdm)
+if (Sys.getenv("PROD") != "true") {
+  add_experiment_info(idx)
+}
 
 # write episodes, index, and readme
 walk(eps, ~.x$write(path = to("episodes"), format = "Rmd"))
@@ -267,6 +274,7 @@ file_delete(to("reference.md"))
 # copy instructor notes and modify links
 ino <- Episode$new(from("instructor-notes.md"))
 ino$confirm_sandpaper()
+fix_https_links(ino$validate_links(warn = FALSE))
 remove_date_built_on(ino)
 ilinks <- xml2::xml_attr(ino$links, "destination")
 ilinks[grepl("code-handout.R", ilinks)] <- "files/code-handout.R"
@@ -288,7 +296,7 @@ cli::cli_h1("Setting the configuration parameters in config.yaml")
 params <- c(
   title      = "Data Analysis and Visualisation in R for Ecologists",
   source     = "https://github.com/fishtree-attempt/R-ecology-lesson/",
-  contact    = "zkamvar@carpentries.org",
+  contact    = "curriculum@carpentries.org",
   life_cycle = "stable",
   carpentry  = "dc",
   url = "https://preview.carpentries.org/R-ecology-lesson",
@@ -304,6 +312,7 @@ yaml <- c(yaml[1:(l - 1L)],
   paste0(pad, "options(sandpaper.handout = TRUE)"), 
   yaml[l:length(yaml)]
 )
+writeLines(yaml, to(".github/workflows/sandpaper-main.yaml"))
 
 # Remembering to provision the site folder
 if (!dir_exists(path(new, "site"))) {

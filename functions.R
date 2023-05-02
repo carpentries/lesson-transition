@@ -86,6 +86,9 @@ rename_local_links <- function(links, from = "setup.html", to = "learners/setup.
 # Fix all links that are http and not https because that's just kind of an annoying
 # thing to have to fix manually when we know what the solution is.
 fix_https_links <- function(links) {
+  if (nrow(links) == 0 || sum(!links$enforce_https) == 0) {
+    return(invisible(links))
+  }
   # extract the nodes that specifically fail the https test
   http <- links$node[!links$enforce_https]
   # loop through the nodes and fix.
