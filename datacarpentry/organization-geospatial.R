@@ -30,3 +30,7 @@ replace_source <- function(ep) {
   write_out_rmd(ep)
 }
 purrr::walk(old_lesson$episodes, replace_source)
+
+gign <- readLines(to(".gitignore"))
+gign[gign == "fig/"] <- ""
+writeLines(gign, to(".gitignore"))
