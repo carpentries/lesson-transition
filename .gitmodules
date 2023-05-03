@@ -1,15 +1,7 @@
-[submodule "swcarpentry/r-novice-gapminder"]
-	branch = main
-	path = swcarpentry/r-novice-gapminder
-	url = https://github.com/swcarpentry/r-novice-gapminder/
 [submodule "datacarpentry/astronomy-python"]
 	branch = gh-pages
 	path = datacarpentry/astronomy-python
 	url = https://github.com/datacarpentry/astronomy-python/
-[submodule "datacarpentry/R-ecology-lesson"]
-	branch = main
-	path = datacarpentry/R-ecology-lesson
-	url = https://github.com/datacarpentry/R-ecology-lesson/
 [submodule "datacarpentry/wrangling-genomics"]
 	branch = gh-pages
 	path = datacarpentry/wrangling-genomics
@@ -68,18 +60,6 @@
 [submodule "datacarpentry/shell-genomics"]
 	path = datacarpentry/shell-genomics
 	url = https://github.com/datacarpentry/shell-genomics/
-	branch = gh-pages
-[submodule "datacarpentry/spreadsheet-ecology-lesson"]
-	path = datacarpentry/spreadsheet-ecology-lesson
-	url = https://github.com/datacarpentry/spreadsheet-ecology-lesson/
-	branch = gh-pages
-[submodule "datacarpentry/spreadsheets-socialsci"]
-	path = datacarpentry/spreadsheets-socialsci
-	url = https://github.com/datacarpentry/spreadsheets-socialsci/
-	branch = gh-pages
-[submodule "librarycarpentry/lc-data-intro"]
-	path = librarycarpentry/lc-data-intro
-	url = https://github.com/librarycarpentry/lc-data-intro/
 	branch = gh-pages
 [submodule "librarycarpentry/lc-python-intro"]
 	path = librarycarpentry/lc-python-intro
