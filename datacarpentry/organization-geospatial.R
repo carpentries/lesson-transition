@@ -22,7 +22,7 @@
 
 # Fix preamble code ---------------------------------------------
 fs::dir_create(to("episodes/files/"))
-fs::file_copy(to("setup.R"), to("episodes/files/setup.R"))
+fs::file_move(to("setup.R"), to("episodes/files/setup.R"))
 replace_source <- function(ep) {
   setup <- ep$code[1]
   txt <- sub("../setup.R", "files/setup.R", xml2::xml_text(setup))
