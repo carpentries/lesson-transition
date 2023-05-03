@@ -20,3 +20,9 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+fs::file_move(to("instructors/LaunchingInstances.md"), to("learners/LaunchingInstances.md"))
+
+e2 <- old_lesson$episodes[[2]]
+dst <- xml2::xml_attr(e2$links, "destination")
+xml2::xml_set_attr(e2$links, "destination", sub("instructors", "learners", dst))
+write_out_md(e2)
