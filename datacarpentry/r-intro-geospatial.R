@@ -25,11 +25,23 @@ e7path <- old_lesson$episodes[["07-plot-ggplot2.Rmd"]]$path
 tmp <- withr::local_tempdir()
 tmpfile <- fs::path(tmp, "07-plot-ggplot2.Rmd")
 e7 <- readLines(e7path)
-e7[96] <- paste0("> >", e7[96])
-writeLines(e7, tmpfile)
-old_lesson$episodes[["07-plot-ggplot2.Rmd"]] <- pegboard::Episode$new(tmpfile)
-transform(old_lesson$episodes[["07-plot-ggplot2.Rmd"]])
+if (!startsWith(e7[96], ">")) {
+  e7[96] <- paste0("> >", e7[96])
+  writeLines(e7, tmpfile)
+  old_lesson$episodes[["07-plot-ggplot2.Rmd"]] <- pegboard::Episode$new(tmpfile)
+  transform(old_lesson$episodes[["07-plot-ggplot2.Rmd"]])
+}
 
 
 # add definition list links back into reference -----------------
 dl_auto_id(to("learners/reference.md"))
+
+# fix bad download links in code
+e4 <- old_lesson$episodes[[4]]
+to_fix <- e4$code[grepl("raw.github", xml2::xml_text(e4$code))]
+purrr::walk(to_fix, function(node) {
+  txt <- xml2::xml_text(node)
+  bad <- "raw.githubusercontent.com/datacarpentry/r-intro-geospatial/master/_episodes_rmd/"
+  txt <- gsub(bad, "datacarpentry.org/r-intro-geospatial/", txt)
+  xml2::xml_set_text(node, txt)
+})
