@@ -61,9 +61,9 @@ purrr::walk(lnks$node[to_fix], function(node) {
 
 all_fix <- to_fix | all_fix
 
-e5 <- new_lesson$episodes[[05]]
+e5 <- new_lesson$episodes[[5]]
 to_fix <- e5$code[grepl("raw.githubuser", xml2::xml_text(e5$code))][[1]]
-txt <- sub("raw.githubusercontent.com/datacarpentry/wrangling-genomics/pages/", "datacarpentry.org/wrangling-genomics/", xml2::xml_text(to_fix), fixed = TRUE)
+txt <- sub("raw.githubusercontent.com/datacarpentry/wrangling-genomics/gh-pages/", "datacarpentry.org/wrangling-genomics/", xml2::xml_text(to_fix), fixed = TRUE)
 xml2::xml_set_text(to_fix, txt)
 
 
