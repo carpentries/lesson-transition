@@ -23,5 +23,5 @@
 dl_auto_id(to("learners/reference.md"))
 
 idx <- readLines(to("index.md"))
-idx <- sub("(files/survey", "(episodes/files/survey", idx)
+idx <- sub("(files/survey", "(episodes/files/survey", idx, fixed = TRUE)
 writeLines(idx, to("index.md"))
