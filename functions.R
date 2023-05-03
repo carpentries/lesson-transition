@@ -994,11 +994,16 @@ make_test_calls <- function(tags = "early transition") {
 
 make_bash_nest <- function(lst) {
   n <- sum(lengths(lst))
+  # make -n -Bj 5 sandpaper/{datacarpentry/{wrangling-genomics,cloud-genomics,python-socialsci,organization-geospatial,r-intro-geospatial}}.json
   n <- if (n >= 7L) 7L else n
-  json <- as.character(jsonlite::toJSON(lst))
+  json <- jsonlite::toJSON(lst)
+  json <- as.character(json)
   json <- gsub('[:"]', "", json)
   json <- gsub("\\[", "/{", json)
   json <- gsub("\\]", "}", json)
   json <- gsub("[{]([^/,]+?)[}]", "\\1", json)
+  if (length(lst) == 1L) {
+    json <- gsub("(^[{])|([}]$)", "", json)
+  }
   usethis::ui_code_block("make -n -Bj {n} sandpaper/{json}.json") 
 }
