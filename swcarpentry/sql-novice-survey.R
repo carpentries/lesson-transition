@@ -20,3 +20,8 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+dl_auto_id(to("learners/reference.md"))
+
+idx <- readLines(to("index.md"))
+idx <- sub("(files/survey", "(episodes/files/survey", idx)
+writeLines(idx, to("index.md"))
