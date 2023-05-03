@@ -36,7 +36,17 @@ if (!startsWith(e7[96], ">")) {
 # add definition list links back into reference -----------------
 dl_auto_id(to("learners/reference.md"))
 
-# fix bad download links in code
+# fix bad download links ----------------------------------------
+e2 <- old_lesson$episodes[[2]]
+dests <- xml2::xml_attr(e2$links, "destination")
+bad <- "raw.githubusercontent.com/datacarpentry/r-intro-geospatial/master/_episodes_rmd/"
+new_destiny <- sub(bad, "datacarpentry.org/r-intro-geospatial/", dests)
+xml2::xml_set_attr(e2$links, "destination", new_destiny)
+write_out_rmd(e2)
+
+
+
+# fix bad download links in code --------------------------------
 e4 <- old_lesson$episodes[[4]]
 to_fix <- e4$code[grepl("raw.github", xml2::xml_text(e4$code))]
 purrr::walk(to_fix, function(node) {
@@ -45,3 +55,5 @@ purrr::walk(to_fix, function(node) {
   txt <- gsub(bad, "datacarpentry.org/r-intro-geospatial/", txt)
   xml2::xml_set_text(node, txt)
 })
+
+write_out_rmd(e4)
