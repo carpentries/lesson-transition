@@ -2,10 +2,6 @@
 	branch = gh-pages
 	path = datacarpentry/astronomy-python
 	url = https://github.com/datacarpentry/astronomy-python/
-[submodule "datacarpentry/wrangling-genomics"]
-	branch = gh-pages
-	path = datacarpentry/wrangling-genomics
-	url = https://github.com/datacarpentry/wrangling-genomics/
 [submodule "git-filter-repo"]
 	path = git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git
@@ -21,14 +17,6 @@
 	path = zkamvar/transition-test-2
 	url = https://github.com/zkamvar/transition-test-2/
 	branch = gh-pages
-[submodule "datacarpentry/organization-geospatial"]
-	path = datacarpentry/organization-geospatial
-	url = https://github.com/datacarpentry/organization-geospatial/
-	branch = main
-[submodule "datacarpentry/r-intro-geospatial"]
-	path = datacarpentry/r-intro-geospatial
-	url = https://github.com/datacarpentry/r-intro-geospatial/
-	branch = main
 [submodule "datacarpentry/geospatial-workshop"]
 	path = datacarpentry/geospatial-workshop
 	url = https://github.com/datacarpentry/geospatial-workshop/
@@ -45,17 +33,9 @@
 	path = swcarpentry/sql-novice-survey
 	url = https://github.com/swcarpentry/sql-novice-survey/
 	branch = gh-pages
-[submodule "datacarpentry/cloud-genomics"]
-	path = datacarpentry/cloud-genomics
-	url = https://github.com/datacarpentry/cloud-genomics/
-	branch = gh-pages
 [submodule "datacarpentry/python-ecology-lesson"]
 	path = datacarpentry/python-ecology-lesson
 	url = https://github.com/datacarpentry/python-ecology-lesson/
-	branch = gh-pages
-[submodule "datacarpentry/python-socialsci"]
-	path = datacarpentry/python-socialsci
-	url = https://github.com/datacarpentry/python-socialsci/
 	branch = gh-pages
 [submodule "datacarpentry/shell-genomics"]
 	path = datacarpentry/shell-genomics
