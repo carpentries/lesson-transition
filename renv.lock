@@ -769,7 +769,7 @@
       "Package": "renv",
       "Version": "0.17.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
@@ -829,13 +829,13 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.11.15",
+      "Version": "0.11.16",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "3d088c7fe81191d665cb8a812aff737e5c1b145f",
+      "RemoteSha": "6989c39f4482b51c22c8ceb38146d08ed8ca4069",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
       "Requirements": [
@@ -863,7 +863,7 @@
         "whisker",
         "yaml"
       ],
-      "Hash": "b1a75dfb38ffb6582cb45b132a2c4aa7"
+      "Hash": "c407f3f7b1877a6e7c7a17c8fba9c55b"
     },
     "sass": {
       "Package": "sass",
