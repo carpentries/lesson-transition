@@ -829,13 +829,13 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.11.15",
+      "Version": "0.11.16",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "3d088c7fe81191d665cb8a812aff737e5c1b145f",
+      "RemoteSha": "ed786cf9466b1b29b1bac1572b9e0e043dc9e7a1",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
       "Requirements": [
@@ -863,7 +863,7 @@
         "whisker",
         "yaml"
       ],
-      "Hash": "b1a75dfb38ffb6582cb45b132a2c4aa7"
+      "Hash": "137d5a8fb7834b1505e0276567588f57"
     },
     "sass": {
       "Package": "sass",
