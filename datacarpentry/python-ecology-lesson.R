@@ -56,3 +56,21 @@ rewrite(path(tmp, "setup.md"), to("learners"))
 fs::dir_create(to("episodes/files/"))
 fs::file_move(to("environment.yml"), to("episodes/files/"))
 fs::file_move(to("instructors/jupyter_notebooks.md"), to("learners/"))
+
+copy_dir(from("_includes/scripts"), to("episodes/files/scripts"))
+ino <- pegboard::Episode$new(to("instructors/instructor-notes.md"))
+dst <- xml2::xml_attr(ino$links, "destination")
+ndst <- sub("gh-pages/sample", "main/sample", dst, fixed = TRUE)
+ndst <- sub("https://github.com/datacarpentry/python-ecology-lesson/tree/gh-pages/_includes/scripts", 
+  "../episodes/files/scripts/check_env.py", 
+  ndst)
+xml2::xml_set_attr(ino$links, "destination", ndst)
+xml2::xml_set_text(ino$links[[1]], "episodes/files/scripts/check_env.py")
+write_out_md(ino, "instructors")
+# re-add links.md ------------------------------------------------
+lnks <- readLines(from("_includes/links.md"))
+lnks <- sub("http:", "https:", lnks, fixed = TRUE)
+lnks <- lnks[!grepl("{", lnks, fixed = TRUE)]
+lnks <- c(lnks, "[lesson-setup]: ../learners/setup.md")
+writeLines(lnks, to("links.md"))
+
