@@ -23,3 +23,14 @@
 # add definition list links back into reference -----------------
 dl_auto_id(to("learners/reference.md"))
 
+# fix table in episode 2 ----------------------------------------
+e2 <- readLines(to("episodes/02-setup.md"))
+dash <- function(n, thing = "-") paste(rep(thing, n), collapse = "")
+sp <- c("| :", dash(11), dash(25, " "), " | :", dash(30), " |")
+e2[startsWith(e2, "| :")] <- paste(sp, collapse = "")
+writeLines(e2, to("episodes/02-setup.md"))
+
+# fix caption in episode 5 ---------------------------------------
+e5 <- readLines(to("episodes/05-history.md"))
+e5[startsWith(e5, "![http")] <- "![https://figshare.com/articles/How_Git_works_a_cartoon/1328266](fig/git_staging.svg)"
+writeLines(e5, to("episodes/05-history.md"))
