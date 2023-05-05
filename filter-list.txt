@@ -23,6 +23,11 @@ tools/
 # no need for boilerplate or tools
 bin/boilerplate/
 bin/chunk-options.R
+bin/check-lesson
+bin/check-workshop
+bin/initialize
+bin/jekyllcat
+bin/validator
 bin/dependencies.R
 bin/extract_figures.py
 bin/generate_md_episodes.R
