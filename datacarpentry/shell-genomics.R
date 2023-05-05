@@ -23,3 +23,29 @@
 # add definition list links back into reference -----------------
 dl_auto_id(to("learners/reference.md"))
 
+# fix weird thing in episode 5
+
+e5 <- old_lesson$episodes[[5]]
+e5$reset()
+xml2::xml_set_attr(e5$get_blocks(level = 2)[[1]], "ktag", "{: .solution}")
+transform(e5)
+
+
+# Reading new lesson to fix old sins -------------------------
+new_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
+purrr::walk(new_lesson$get("links"), function(lnks) {
+  if (length(lnks) == 0) {
+    return(NULL)
+  }
+  dst <- xml2::xml_attr(lnks, "destination")
+  no <- "https...(www.)?datacarpentry.org[/]shell-genomics[/]([^/]+?)[/]?(index.html)?$"
+  dst <- sub(no, "\\2.md", dst)
+  no <- "https://www.datacarpentry"
+  dst <- sub(no, "https://datacarpentry", dst)
+  to_fix <- startsWith(dst, "https://datacarpentry")
+  dst[to_fix] <- sub("[/](index.html)?([#].+?)?$", "\\2", dst[to_fix])
+  xml2::xml_set_attr(lnks, "destination", dst)
+})
+
+# write out episodes
+purrr::walk(new_lesson$episodes, write_out_md)
