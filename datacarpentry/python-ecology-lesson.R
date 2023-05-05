@@ -20,3 +20,39 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+# fix glossary ids -----------------------------------------------------------
+dl_auto_id(to("learners/reference.md"))
+
+# fix dang HTML --------------------------------------------------------------
+stp <- readLines(from("setup.md"))
+stp[startsWith(stp, "{::options")] <- ""
+stp[startsWith(stp, "3.")] <- paste0("\n", stp[startsWith(stp, "3.")])
+html_like <- function(x) startsWith(x, "<") | (endsWith(x, ">") & !startsWith(x, ">"))
+htmls <- which(html_like(stp))
+arts <- htmls[startsWith(stp[htmls], "<article")]
+closers <- htmls[startsWith(stp[htmls], "</article")]
+osnames <- stp[arts] |> 
+  paste(collapse = "\n") |>
+  xml2::read_html() |>
+  xml2::xml_find_all(".//@id") |>
+  xml2::xml_text() |>
+  purrr::map_chr(function(x) switch(x, 
+      "anaconda-windows" = "Windows {#anaconda-windows}", 
+      "anaconda-macos" = "MacOS {#anaconda-macos}", 
+      "anaconda-linux" = "Linux {#anaconda-linux}"))
+stp[arts] <- glue::glue(":::::::::::: solution\n\n### {osnames}\n\n")
+stp[closers] <- "\n::::::::::::"
+stp <- stp[-htmls[c(1:7, 25:26)]]
+conda <- which(stp == "## Installing Anaconda")
+stp[conda - 1L] <- ":::::::::::::::::::: discussion\n\n"
+stp[conda + 1L] <- "\n\nSelect your operating system from the options below.\n\n:::::::::::::::::::::::::::::::::"
+stp <- sub("raw.githubusercontent.com/datacarpentry/python-ecology-lesson/gh-pages", "../episodes/files/environment.yml", stp)
+stp[startsWith(stp, "[Introduction to")] <- "[Introduction to Jupyter Notebooks](jupyter_notebooks.md) page."
+tmp <- withr::local_tempdir()
+writeLines(stp, path(tmp, "setup.md"))
+
+rewrite(path(tmp, "setup.md"), to("learners"))
+
+fs::dir_create(to("episodes/files/"))
+fs::file_move(to("environment.yml"), to("episodes/files/"))
+fs::file_move(to("instructors/jupyter_notebooks.md"), to("learners/"))
