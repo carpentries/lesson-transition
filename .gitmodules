@@ -9,10 +9,6 @@
 	path = datacarpentry/OpenRefine-ecology-lesson
 	url = https://github.com/datacarpentry/OpenRefine-ecology-lesson/
 	branch = gh-pages
-[submodule "librarycarpentry/lc-shell"]
-	path = librarycarpentry/lc-shell
-	url = https://github.com/librarycarpentry/lc-shell/
-	branch = gh-pages
 [submodule "zkamvar/transition-test-2"]
 	path = zkamvar/transition-test-2
 	url = https://github.com/zkamvar/transition-test-2/
@@ -21,29 +17,9 @@
 	path = datacarpentry/geospatial-workshop
 	url = https://github.com/datacarpentry/geospatial-workshop/
 	branch = gh-pages
-[submodule "swcarpentry/git-novice"]
-	path = swcarpentry/git-novice
-	url = https://github.com/swcarpentry/git-novice/
-	branch = gh-pages
 [submodule "swcarpentry/hpc-novice"]
 	path = swcarpentry/hpc-novice
 	url = https://github.com/swcarpentry/hpc-novice/
-	branch = gh-pages
-[submodule "swcarpentry/sql-novice-survey"]
-	path = swcarpentry/sql-novice-survey
-	url = https://github.com/swcarpentry/sql-novice-survey/
-	branch = gh-pages
-[submodule "datacarpentry/python-ecology-lesson"]
-	path = datacarpentry/python-ecology-lesson
-	url = https://github.com/datacarpentry/python-ecology-lesson/
-	branch = gh-pages
-[submodule "datacarpentry/shell-genomics"]
-	path = datacarpentry/shell-genomics
-	url = https://github.com/datacarpentry/shell-genomics/
-	branch = gh-pages
-[submodule "librarycarpentry/lc-python-intro"]
-	path = librarycarpentry/lc-python-intro
-	url = https://github.com/librarycarpentry/lc-python-intro/
 	branch = gh-pages
 [submodule "datacarpentry/ecology-workshop"]
 	path = datacarpentry/ecology-workshop
