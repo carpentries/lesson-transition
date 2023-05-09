@@ -5,10 +5,6 @@
 [submodule "git-filter-repo"]
 	path = git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git
-[submodule "datacarpentry/OpenRefine-ecology-lesson"]
-	path = datacarpentry/OpenRefine-ecology-lesson
-	url = https://github.com/datacarpentry/OpenRefine-ecology-lesson/
-	branch = gh-pages
 [submodule "zkamvar/transition-test-2"]
 	path = zkamvar/transition-test-2
 	url = https://github.com/zkamvar/transition-test-2/
