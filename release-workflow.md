@@ -428,3 +428,71 @@ In addition, here is [map of commits that were changed during the transition](ht
 ```
 
 The `{tag}` will be the `[abbrev]/[lesson]` part of the signed tag you created earlier.
+
+## Reinstating Permissions
+
+During the transition, access to everyone but the Core Team Curriculum and 
+Infrastructure is restricted to read-only. This prevents people from
+accidentally force-pushing the lesson. The [message created by
+`create-collab-notice.R`](create-collab-notice.R) lists _anyone_ who has write
+access. Below is a table with the teams and what access they should have after
+the transition and after confirmation:
+
+| Team | slug pattern | access post-transition | access post-confirmation |
+| ---- | ------------ | ---------------------- | ------------------------ |
+| Maintainers | `@{organization}/{lesson}-maintainers` | Triage | Maintain |
+| Curriculum Advisors | `@{organization}/curriculum-advisors{?-{curricula}}` | Triage | Triage |
+| Core Team Curriculum | `@{organization}/core-team-curriculum` | Admin | Admin |
+| Core Team Infrastructure | `varies` | Admin | Admin |
+| Outside Collaborators    | NA       | Read  | determine based on maintainer list | 
+
+Before the transition, Zhian created new _temporary_ teams for all repositories
+called `@{organization}/{lesson}-maintainers-workbench`. This team makes it
+possible for us to give access to the maintainers who have requested it, while
+still giving time for the other maintainers to complete the tasks. The team
+should be removed once all maintainers have requested access.
+
+
+When a maintainer responds to the issue with `I am ready for write access
+:rocket:`, then you should head to
+`https://github.com/{organization}/{lesson}/settings/access` and do the
+following:
+
+### If all the maintainers have requested access
+
+This means that all maintainers are onboarded and do not have risk of borking
+the lesson with an accidentaly force-push. 
+
+Switch the `-maintainers` team to have the "Maintain" role and remove the
+`-maintainers-workbench` team, as that team no longer serves a purpose.
+
+Comment on the issue that all maintainers now have access and close the issue. 
+
+### If not all the maintainers have requested access yet
+
+This means that some maintainers are still at risk for borking the repository
+from an old local clone.
+
+1. Check that they are actually a maintainer
+2. Click on the `-maintainers-workbench` team and then click "Add a member" to
+   add the member to the team via their github user name.
+3. Tag the member in the issue comment and let them know their access has been
+   granted. 
+
+Note: for some LibraryCarpentry repositories, maintainers were not properly
+added to the team and they may remain as outside collaborators. In this case,
+you should notify them that they need to check their email and follow the
+instructions from there to regain access.
+
+### If a curriculum advisor requests access
+
+If a curriculum advisor requests access, let them know that they should not have
+access
+
+(from [Toby's comment on organization-genomics](https://github.com/datacarpentry/organization-genomics/issues/152#issuecomment-1532649463)):
+
+```markdown
+Hey @{NAME} thanks for following up. To shore up the security of the lesson repositories, the Curriculum Team would like to use this opportunity to tidy up the access levels we are providing to community members across the various repos. According to our records, you're not a Maintainer on this lesson, but I think you had previously been granted write access to the repository in your capacity as a {CURRICULUM} Curriculum Advisor. 
+
+For now, we are going to provide write access only to Maintainers - though that decision will be open to review, so please let us know (@ me or {ORGANIZATION}/core-team-curriculum) if this interferes with the CAC's ability to perform their duties.
+```
