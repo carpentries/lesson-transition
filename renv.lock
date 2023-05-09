@@ -446,9 +446,9 @@
     },
     "httr": {
       "Package": "httr",
-      "Version": "1.4.5",
+      "Version": "1.4.6",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "R6",
@@ -457,13 +457,13 @@
         "mime",
         "openssl"
       ],
-      "Hash": "f6844033201269bec3ca0097bc6c97b3"
+      "Hash": "7e5e3cbd2a7bc07880c94e22348fb661"
     },
     "httr2": {
       "Package": "httr2",
-      "Version": "0.2.2",
+      "Version": "0.2.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "R6",
@@ -476,7 +476,7 @@
         "rlang",
         "withr"
       ],
-      "Hash": "5c09fe33064978ede54de42309c8b532"
+      "Hash": "193bb297368afbbb42dc85784a46b36e"
     },
     "ini": {
       "Package": "ini",
