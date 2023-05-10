@@ -20,6 +20,7 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+cli::cli_h2("Fixing missed links in <img> tags")
 new_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 suppressMessages(lnks <- new_lesson$validate_links())
 to_fix <- !lnks$internal_file & lnks$type == "img"
@@ -32,6 +33,12 @@ purrr::walk(files, function(f) {
   writeLines(new, f)
 })
 
+cli::cli_h2("Fixing link in instructor notes")
 ino <- readLines(to("instructors/instructor-notes.md"))
 ino <- sub("/astronomy-python/calculating_MIST_isochrone", "calculating_MIST_isochrone.md", ino, fixed = TRUE)
 writeLines(ino, to("instructors/instructor-notes.md"))
+
+cli::cli_h2("Increasing the size of the HTTP postBuffer to 500MB")
+cli::cli_alert_info("Ref: {.url https://medium.com/swlh/everything-you-need-to-know-to-resolve-the-git-push-rpc-error-1a865fd1ebea}")
+# increase the level of the postbuffer due to large objects
+gert::git_config_set(name = "http.postBuffer", value = "524288000", repo = new)
