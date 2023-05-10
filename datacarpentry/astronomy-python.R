@@ -20,3 +20,18 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+new_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
+suppressMessages(lnks <- new_lesson$validate_links())
+to_fix <- !lnks$internal_file & lnks$type == "img"
+files <- to(unique(lnks$filepath[to_fix]))
+purrr::walk(files, function(f) {
+  cli::cli_alert("reading {f}")
+  l <- readLines(f)
+  new <- gsub("../fig", "fig", l, fixed = TRUE)
+  cli::cli_alert("writing changes to {f}")
+  writeLines(new, f)
+})
+
+ino <- readLines(to("instructors/instructor-notes.md"))
+ino <- sub("/astronomy-python/calculating_MIST_isochrone", "calculating_MIST_isochrone.md", ino, fixed = TRUE)
+writeLines(ino, to("instructors/instructor-notes.md"))
