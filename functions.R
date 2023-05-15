@@ -765,6 +765,8 @@ add_workflow_token <- function(owner, repo, .token) {
   }
   id <- gh::gh("GET /repos/{org}/{repo}", 
     org = owner, repo = repo, .token = .token)$id
+  cli::cli_alert_info("{.path {owner}/{repo}}")
+  cli::cli_alert("{.code PUT /orgs/{owner}/actions/secrets/SANDPAPER_WORKFLOW/repositories/{id}}")
   tryCatch({
     gh::gh("PUT /orgs/{org}/actions/secrets/SANDPAPER_WORKFLOW/repositories/{id}",
     org = owner,
@@ -913,9 +915,9 @@ create_release_checklist <- function() {
 
 
 # extract tasks for all the lessons in 
-get_tasks <- function(repo = "carpentries/lesson-transition", tags = "lesson") {
+get_tasks <- function(repo = "carpentries/lesson-transition", tags = "lesson", state = "open") {
   issues <- gh::gh("GET /repos/{repo}/issues", per_page = 100, .limit = Inf,
-    repo = repo, .params = list(labels = tags))
+    repo = repo, .params = list(labels = tags, state = state))
   purrr::map_dfr(issues, extract_tasklist)
 }
 
