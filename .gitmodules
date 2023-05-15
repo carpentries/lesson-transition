@@ -1,7 +1,3 @@
-[submodule "datacarpentry/astronomy-python"]
-	branch = gh-pages
-	path = datacarpentry/astronomy-python
-	url = https://github.com/datacarpentry/astronomy-python/
 [submodule "git-filter-repo"]
 	path = git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git
