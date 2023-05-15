@@ -431,7 +431,7 @@
     },
     "httpuv": {
       "Package": "httpuv",
-      "Version": "1.6.10",
+      "Version": "1.6.11",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -442,7 +442,7 @@
         "promises",
         "utils"
       ],
-      "Hash": "503490b202c9ae28e7f58b9b5ae21d9f"
+      "Hash": "838602f54e32c1a0f8cc80708cefcefa"
     },
     "httr": {
       "Package": "httr",
@@ -765,7 +765,7 @@
       "Package": "renv",
       "Version": "0.17.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
