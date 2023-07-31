@@ -96,7 +96,7 @@ fi
 CALLBACK=${4:-$(eval echo $(cat ${CWD}/message-callback.txt))}
 echo -e "\033[1mConverting \033[38;5;208m${OUT}\033[0;00m...\033[22m"
 cd ${OUT}
-git-filter-repo \
+${CWD}/git-filter-repo/git-filter-repo \
   --prune-empty=always \
   --invert-paths \
   --paths-from-file ${FILTER} \
