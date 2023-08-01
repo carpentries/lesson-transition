@@ -37,7 +37,7 @@ writeLines(software, to("episodes/03-software.md"))
 
 # escape dollar signs to avoid USD amounts being mistaken for LaTeX syntax
 track_changes <- readLines(to("episodes/06-track_changes.md"))
-track_changes <- gsub('\\$5', '\\\\\\\\$5', track_changes)
+track_changes <- gsub(r'{\$5}', r'{\\\\$5}', track_changes)
 writeLines(track_changes, to("episodes/06-track_changes.md"))
 
 
