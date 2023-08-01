@@ -28,24 +28,11 @@ writeLines(landing_page, to("index.md"))
 # remove double quotes in alt text
 ## data management episode
 dataman <- readLines(to("episodes/02-data_management.md"))
-dialogue = c('The four stages of data loss',
-             'dealing with accidental deletion of months of hard-earned data',
-             'stage 1: denial',
-             'I did not just erase all my data. I surely made a back-up somewhere',
-             'stage 2: anger',
-             'you stupid piece of crap! Where\'s my data\\?!',
-             'stage 3: depression',
-             'Why\\? Why me\\?',
-             'stage 4: acceptance',
-             'I\'m never going to graduate')
-for (d in dialogue) {
-    dataman <- sub(paste0('[\\]{2}["]', d, '[\\]{2}["]'), paste0("'", d, "'"), dataman)
-}
+dataman <- gsub('[\\]{2}["]', "'", dataman)
 writeLines(dataman, to("episodes/02-data_management.md"))
 ## software episode
 software <- readLines(to("episodes/03-software.md"))
-q <- 'I\'m conscious that lots of people would like to see and run the pandemic simulation code we are using to model control measures against COVID-19. To explain the background — I wrote the code \\(thousands of lines on undocumented C\\) 13 plus years ago to model flu pandemics…'
-software <- sub(paste0('[\\]{2}["]', q, '[\\]{2}["]'), paste0("'", q, "'"), software)
+software <- gsub('[\\]{2}["]', "'", software)
 writeLines(software, to("episodes/03-software.md"))
 
 # escape dollar signs to avoid USD amounts being mistaken for LaTeX syntax
