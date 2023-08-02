@@ -114,7 +114,7 @@ prebeta/datacarpentry/R-ecology-lesson.json : datacarpentry/R-ecology-lesson.R d
 renv/library/ :
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore()'
 update:
-	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::record(paste0("renv@", packageVersion("renv"))); renv::restore(library = renv::paths$$library()); renv::update(library = renv::paths$$library()); renv::snapshot()'
+	@GITHUB_PAT=$$(./pat.sh) Rscript renv_update.R
 restore:
 	@GITHUB_PAT=$$(./pat.sh) Rscript -e 'renv::restore(library = renv::paths$$library())'
 
