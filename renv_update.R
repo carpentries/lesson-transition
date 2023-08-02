@@ -5,6 +5,7 @@ if (endsWith(ver, "9000") && length(renvpkg$GithubRef) > 0L) {
 } else {
   ver <- paste0("renv@", ver)
 }
+cat(paste("updating to", ver))
 renv::record(ver)
 renv::restore(library = renv::paths$library())
 renv::update(library = renv::paths$library())
