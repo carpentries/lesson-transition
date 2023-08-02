@@ -571,12 +571,6 @@
       "Version": "0.12",
       "Source": "Repository",
       "Repository": "RSPM",
-      "RemoteType": "standard",
-      "RemotePkgRef": "mime",
-      "RemoteRef": "mime",
-      "RemoteRepos": "https://cran.rstudio.com",
-      "RemotePkgPlatform": "source",
-      "RemoteSha": "0.12",
       "Requirements": [
         "tools"
       ],
@@ -769,8 +763,12 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "rstudio",
       "RemoteRepo": "renv",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "3ab1b49f7ff1da4499244f59ffde442ca3c04d05"
+      "RemoteRef": "1490ee1d41db6c2f38848ae18af5607a549bfdde",
+      "RemoteSha": "1490ee1d41db6c2f38848ae18af5607a549bfdde",
+      "Requirements": [
+        "utils"
+      ],
+      "Hash": "7c93f564e4126bfa863baa54c1871199"
     },
     "rlang": {
       "Package": "rlang",

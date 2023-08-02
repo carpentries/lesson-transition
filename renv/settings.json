@@ -2,6 +2,8 @@
   "bioconductor.version": null,
   "external.libraries": [],
   "ignored.packages": [
+    ".gitignore",
+    ".editorconfig",
     "_config.yml",
     "_episodes_rmd/.ignore-05-databases.Rmd",
     "_extras",
