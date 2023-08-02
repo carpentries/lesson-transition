@@ -603,10 +603,11 @@ The R packages required are provided in the [`renv.lock` file](renv.lock).
 
 To add a lesson for translation, there are two steps:
 
-1. add an R script with the repository name under a folder with the organisation
-   name (e.g. `swcarpentry/r-novice-gapminder.R` or 
-  `datacarpentry/R-ecology-lesson.R`). 
-2. run `make`
+1. Use `bash add-lesson.sh [organization]/[repository]` add an R script with
+   the repository name under a folder with the organisation name (e.g.
+   `swcarpentry/r-novice-gapminder.R` or `datacarpentry/R-ecology-lesson.R`). 
+2. run `make modules` to register it as a submodule (this step is also
+   automatically run when the repository is pushed). 
 
 ### Bootstrapping infrastructure
 

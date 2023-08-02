@@ -15,7 +15,7 @@ get_tasks()
 
 To register a lesson submodule, uset the following steps:
 
-1. run `./add-lesson.sh <org>/<repo>`. This will add an R script that will
+1. run `bash add-lesson.sh <org>/<repo>`. This will add an R script that will
    serve as lesson-specific modificatons after the generic `transform()`
    function from [`functions.R`](functions.R).
 2. open an issue with https://github.com/carpentries/lesson-transition/issues/new
