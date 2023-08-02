@@ -51,10 +51,7 @@ jobs:
           if (!requireNamespace("renv", quietly = TRUE)) {
             install.packages("renv")
           }
-          renv::record(paste0("renv@", packageVersion("renv")))
-          renv::restore(library = renv::paths$library())
-          renv::update(library = renv::paths$library())
-          renv::snapshot()
+          source("renv_update.R")
 
       - name: Push back to main
         run: |
