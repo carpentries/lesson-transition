@@ -94,15 +94,18 @@ template <- function(...) path(path_abs(arguments$template), ...)
 
 cli::cli_h1("Reading in lesson with {.pkg pegboard}")
 old_lesson <- pegboard::Lesson$new(old, fix_liquid = arguments$fix_liquid)
+strict_overview <- old_lesson$overview && length(old_lesson$episodes) == 0L
 cli::cli_h2("Reading configuration file")
 suppressWarnings(cfg <- yaml::read_yaml(from("_config.yml")))
 # copy new directories
 copy_dir(template("instructors"), to("instructors"))
 copy_dir(template("learners"), to("learners"))
 copy_dir(template("profiles"), to("profiles"))
-copy_dir(template("episodes/data"), to("episodes/data"))
-copy_dir(template("episodes/fig"), to("episodes/fig"))
-copy_dir(template("episodes/files"), to("episodes/files"))
+if (!strict_overview) {
+  copy_dir(template("episodes/data"), to("episodes/data"))
+  copy_dir(template("episodes/fig"), to("episodes/fig"))
+  copy_dir(template("episodes/files"), to("episodes/files"))
+}
 copy_dir(template(".github"), to(".github"))
 if (old_lesson$rmd) {
   copy_dir(template("renv"), to("renv"))
@@ -165,18 +168,20 @@ del_file(to("reference.md"))
 del_file(to("setup.md"))
 
 
-# Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
-cli::cli_h2("copying figures, files, and data")
-copy_dir(to("fig"), to("episodes/fig"))
-del_dir(to("fig"))
-copy_dir(to("img"), to("episodes/fig"))
-del_dir(to("img"))
-copy_dir(to("images"), to("episodes/fig"))
-del_dir(to("images"))
-copy_dir(to("files"), to("episodes/files"))
-del_dir(to("files"))
-copy_dir(to("data"), to("episodes/data"))
-del_dir(to("data"))
+if (!strict_overview) {
+  # Copy Figures (N.B. this was one of the pain points for the Jekyll lessons: figures lived above the RMarkdown documents)
+  cli::cli_h2("copying figures, files, and data")
+  copy_dir(to("fig"), to("episodes/fig"))
+  copy_dir(to("img"), to("episodes/fig"))
+  copy_dir(to("images"), to("episodes/fig"))
+  copy_dir(to("files"), to("episodes/files"))
+  copy_dir(to("data"), to("episodes/data"))
+  del_dir(to("fig"))
+  del_dir(to("img"))
+  del_dir(to("images"))
+  del_dir(to("files"))
+  del_dir(to("data"))
+}
 
 cli::cli_h1("Setting the configuration parameters in config.yaml")
 this_carp <- strsplit(arguments$script, "/")[[1]][1]
@@ -214,15 +219,17 @@ if (file_exists(from(".editorconfig"))) {
 }
 
 
-# Transform and write to our episodes folder
-cli::cli_h1("Transforming Episodes")
-purrr::walk(old_lesson$episodes, ~try(transform(.x)))
-if (length(cfg$episode_order)) {
-  eps <- names(old_lesson$episodes)
-  ord <- map_chr(paste0("^", cfg$episode_order, "\\.R?md$"), ~grep(.x, eps, value = TRUE))
-  set_episodes(new, order = ord, write = TRUE)
-} else {
-  set_episodes(new, order = names(old_lesson$episodes), write = TRUE)
+if (!strict_overview) {
+  # Transform and write to our episodes folder
+  cli::cli_h1("Transforming Episodes")
+  purrr::walk(old_lesson$episodes, ~try(transform(.x)))
+  if (length(cfg$episode_order)) {
+    eps <- names(old_lesson$episodes)
+    ord <- map_chr(paste0("^", cfg$episode_order, "\\.R?md$"), ~grep(.x, eps, value = TRUE))
+    set_episodes(new, order = ord, write = TRUE)
+  } else {
+    set_episodes(new, order = names(old_lesson$episodes), write = TRUE)
+  }
 }
 
 # Remembering to provision the site folder
