@@ -763,12 +763,12 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "rstudio",
       "RemoteRepo": "renv",
-      "RemoteRef": "1490ee1d41db6c2f38848ae18af5607a549bfdde",
-      "RemoteSha": "1490ee1d41db6c2f38848ae18af5607a549bfdde",
+      "RemoteRef": "main",
+      "RemoteSha": "f05df67480181d3c8d248547b2c79077487915d7",
       "Requirements": [
         "utils"
       ],
-      "Hash": "7c93f564e4126bfa863baa54c1871199"
+      "Hash": "05b66586f990e637165ccf26d3cfa4ef"
     },
     "rlang": {
       "Package": "rlang",
