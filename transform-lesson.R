@@ -193,7 +193,7 @@ this_carp_domain <- switch(this_carp,
   "https://fishtree-attempt.github.io" # default
 )
 
-params <- c(
+params <- list(
   title      = cfg$title,
   source     = glue::glue("https://github.com/fishtree-attempt/{path_file(new)}/"),
   contact    = cfg$email,
@@ -209,9 +209,13 @@ params <- c(
   # wishful thinking
   analytics = "carpentries",
   lang = "en", 
-  "workbench-beta" = "true"
+  "workbench-beta" = TRUE
 )
+if (strict_overview) {
+  params <- c(params, list(overview = TRUE))
+}
 set_config(params, path = new, write = TRUE, create = TRUE)
+
 
 # copy over the editor config if it exists
 if (file_exists(from(".editorconfig"))) {

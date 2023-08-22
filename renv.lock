@@ -610,8 +610,21 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
-      "RemoteRef": "main",
-      "RemoteSha": "61a30b43eef5e02c6bd22cc93bcba486a3c0230e"
+      "RemoteRef": "allow-overview-pages",
+      "RemoteSha": "61a30b43eef5e02c6bd22cc93bcba486a3c0230e",
+      "Remotes": "ropensci/tinkr",
+      "Requirements": [
+        "R6",
+        "commonmark",
+        "fs",
+        "glue",
+        "purrr",
+        "tinkr",
+        "xml2",
+        "xslt",
+        "yaml"
+      ],
+      "Hash": "65dbd81d5693e152edb0705b69fa9ef3"
     },
     "pillar": {
       "Package": "pillar",
@@ -813,11 +826,38 @@
       "Version": "0.13.0",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
-      "RemoteRef": "main",
-      "RemoteSha": "6598e16be22138da2ffacd84ceb11d9bf2130c60"
+      "RemoteRef": "allow-overview-lessons",
+      "RemoteSha": "2f57438839a864217dd4ba0f92808eca3f58238d",
+      "RemoteHost": "api.github.com",
+      "Remotes": "ropensci/tinkr, carpentries/pegboard@allow-overview-pages, carpentries/varnish@allow-overview-pages",
+      "Requirements": [
+        "assertthat",
+        "callr",
+        "cli",
+        "commonmark",
+        "desc",
+        "fs",
+        "gert",
+        "gh",
+        "glue",
+        "knitr",
+        "pegboard",
+        "pkgdown",
+        "renv",
+        "rlang",
+        "rmarkdown",
+        "rprojroot",
+        "rstudioapi",
+        "servr",
+        "tools",
+        "usethis",
+        "utils",
+        "whisker",
+        "yaml"
+      ],
+      "Hash": "03c8885f02cca6bd2b434dfca794838e"
     },
     "sass": {
       "Package": "sass",
@@ -1024,7 +1064,8 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "46c011f04320737252723d37f9e52b54aa82a6cf"
+      "RemoteSha": "46c011f04320737252723d37f9e52b54aa82a6cf",
+      "Hash": "c420c928a45c3668e4c8644c0a5b965c"
     },
     "vctrs": {
       "Package": "vctrs",

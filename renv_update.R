@@ -1,6 +1,6 @@
 renvpkg <- packageDescription("renv")
 ver <- as.character(renvpkg$Version)
-print(renvpkg)
+# print(renvpkg)
 if (endsWith(ver, "9000") && length(renvpkg$RemoteRef) > 0L) {
   ver <- "rstudio/renv@main"
 } else {
