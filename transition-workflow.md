@@ -1,8 +1,9 @@
 ## Workflow for transitioning lessons
 
 Note: this is not the process for _releasing_ lessons. This is the iteration
-process for setting up the lesson transitions for release. If a lesson is ready
-to be released to The Workbench, see the [Release Workflow](release-workflow.md).
+process for setting up the lesson transitions for release and **is not
+production ready**. If a lesson is ready to be released to The Workbench, see
+the [Release Workflow](release-workflow.md).
 
 To get a list of lessons and the tasks to complete, run the following in R:
 
@@ -27,7 +28,7 @@ To register a lesson submodule, uset the following steps:
 
 The transition will do the following things to the lesson after creating a copy:
 
- - remove infrastructure commits from the lesson
+ - remove infrastructure commits from the lesson (and in the testing workflow, commit references to users and issues are masked) 
  - rename folders
  - update syntax from kramdown -> pandoc
  - fix http -> https links
