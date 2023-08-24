@@ -159,12 +159,13 @@ is necessarily destructive because we are renaming the previous branches. This
 is the full workflow for sending the repository to GitHub if you do not have
 access to the API:
 
-0. (in local) ensure that `created:` is set to the correct date in `config.yaml`
-1. (on GITHUB) rename `gh-pages` to `legacy/gh-pages` (if `main` is your default, then also rename that to `legacy/main`)
-2. (on GITHUB) enable github actions to run
-3. (in local) run `git fetch --prune origin`
-4. (in local) ensure your remote origin is the correct URL
-5. (in local) create an orphan `gh-pages` branch that contains a workflow that will close all PRs 
+0. (in local) move to your lesson with `cd release/[org]/[repo]` (replace `[org]/[repo]`) with the name of your lesson.
+1. (in local) ensure that `created:` is set to the correct date in `config.yaml`
+2. (on GITHUB) rename `gh-pages` to `legacy/gh-pages` (if `main` is your default, then also rename that to `legacy/main`)
+3. (on GITHUB) enable github actions to run
+4. (in local) run `git fetch --prune origin`
+5. (in local) ensure your remote origin is the correct URL
+6. (in local) create an orphan `gh-pages` branch that contains a workflow that will close all PRs 
    to that branch and force-push it up (run below script from the transitioned repo):
    ```
    # checkout and clean gh-pages orphan branch --------------
@@ -180,10 +181,10 @@ access to the API:
    # switch back to main ------------------------------------
    git switch main
    ```
-6. (in local) run `git switch main && git push --force --set-upstream origin main`
-7. (on GITHUB) set the main branch to be the default 
-8. (on GITHUB) (optional) add branch protection to the main branch (to prevent people from accidentally force-pushing)
-9. (on GITHUB) lock all branches that start with `legacy/`
+7. (in local) run `git switch main && git push --force --set-upstream origin main`
+8. (on GITHUB) set the main branch to be the default 
+9. (on GITHUB) (optional) add branch protection to the main branch (to prevent people from accidentally force-pushing)
+10. (on GITHUB) lock all branches that start with `legacy/`
 
 
 ### Alerting the maintainers and restricting access
