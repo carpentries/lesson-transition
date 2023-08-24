@@ -591,7 +591,7 @@
     },
     "pandoc": {
       "Package": "pandoc",
-      "Version": "0.1.0",
+      "Version": "0.2.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -600,7 +600,7 @@
         "rappdirs",
         "rlang"
       ],
-      "Hash": "3a1e43a19c15f4393262606d8409f77b"
+      "Hash": "68f9a8e79f42f1b27258672f15acf632"
     },
     "pegboard": {
       "Package": "pegboard",
@@ -829,7 +829,7 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "allow-overview-lessons",
-      "RemoteSha": "2f57438839a864217dd4ba0f92808eca3f58238d",
+      "RemoteSha": "e46437854ce50d8b0f6f3390f297e6f8c967c7f2",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard@allow-overview-pages, carpentries/varnish@allow-overview-pages",
       "Requirements": [
@@ -857,7 +857,7 @@
         "whisker",
         "yaml"
       ],
-      "Hash": "03c8885f02cca6bd2b434dfca794838e"
+      "Hash": "54fa178f48afd49ba76bea6a1b2cd14c"
     },
     "sass": {
       "Package": "sass",
@@ -1063,9 +1063,9 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
-      "RemoteRef": "main",
-      "RemoteSha": "46c011f04320737252723d37f9e52b54aa82a6cf",
-      "Hash": "c420c928a45c3668e4c8644c0a5b965c"
+      "RemoteRef": "allow-overview-pages",
+      "RemoteSha": "eb2d2a7c2321c311e6e7adc11446519a1c2d2fa3",
+      "Hash": "e4457ac736a7c7b2732dfce38384b856"
     },
     "vctrs": {
       "Package": "vctrs",
