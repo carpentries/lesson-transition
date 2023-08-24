@@ -186,6 +186,8 @@ access to the API:
 9. (on GITHUB) (optional) add branch protection to the main branch (to prevent people from accidentally force-pushing)
 10. (on GITHUB) lock all branches that start with `legacy/`
 
+Once that happens, you can move on to [the manual next steps on GitHub](#on-github).
+
 
 ### Alerting the maintainers and restricting access
 
@@ -333,6 +335,9 @@ processor and the speed of your connection. When it is finished, you will have
 extension](https://github.com/carpentries/lesson-transition/commit/747030b61359a61bd01e299ab2d7ff5714af69d9).
 These are the outputs from the commit process.
 
+If everything worked well without errors, see the [manual next steps on
+GitHub](#on-github), otherwise, read below.
+
 #### Recovering from failure
 
 Because this involves networking, there are different modes of failure that can
@@ -418,7 +423,8 @@ make: *** [Makefile:106: release/fishtree-attempt/znk-transition-test.json] Erro
 
 ### On GitHub
 
-When it is finished, you must comment on the original issue. Here is a template:
+When the transition is finished, you must comment on the original issue. Here
+is a template:
 
 ```markdown
 The deed is done. The infrastructure takes a few minutes to bootstrap and cache the packages for the lesson build. Once the build is done, I will switch github pages to deploy from the `gh-pages` branch and you will have your workbench lesson. 
@@ -426,8 +432,17 @@ The deed is done. The infrastructure takes a few minutes to bootstrap and cache 
 Thank you all for your enthusiasm and your patience!
 ```
 
-From there, you actually do need to wait for the build to complete before setting
-github pages to deploy from `gh-pages`
+The last step is to ensure that GitHub pages deploys The Workbench version of
+the site. During the transition, the original `gh-pages` branch was renamed to
+`legacy/gh-pages` and GitHub knew that it needed to deploy from that branch.
+This allows us to do the transition on the source without disrupting the web
+traffic. 
+
+To switch the site to use The Workbench, wait for the "01 Build and Deploy"
+GitHub workflow to finish running (you can find it under the "Actions" tab on
+GitHub) and then head to Settings > pages and then set the branch that deploys
+GitHub pages to `gh-pages` from the root. Once you do that your transitioned
+lesson will deploy in about 30 seconds.
 
 ### Add invalid hash
 
