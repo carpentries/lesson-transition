@@ -149,7 +149,8 @@ else
       sed -i -r -e 's/\.bash/\.language-bash/' ${tmp}/{_episodes,_extras,}/*.md
       REPO=${tmp}
       ;;
-    *)
+    # Default case: do nothing
+    *) 
       :
       ;;
   esac
