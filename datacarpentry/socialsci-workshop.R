@@ -20,8 +20,10 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
-child_from_include <- function(ep) {
-  rlang::inform(c(i = ep$path))
+child_from_include <- function(from, to = NULL) {
+  to <- if (is.null(to)) fs::path_ext_set(from, "Rmd") else to
+  rlang::inform(c(i = from))
+  ep <- pegboard::Episode$new(from)
   # find all the {% include file.ext %} statements
   includes <- xml2::xml_find_all(ep$body, 
     ".//md:text[starts-with(text(), '{% include')]", ns = ep$ns)
@@ -37,12 +39,12 @@ child_from_include <- function(ep) {
   xml2::xml_set_attr(p, "language", "r")
   xml2::xml_set_attr(p, "child", f)
   xml2::xml_set_attr(p, "name", fname)
-  path <- fs::path_ext_set(ep$path, "Rmd")
-  fs::file_move(ep$path, path)
-  ep$write(fs::path_dir(path), format = "Rmd")
+  fs::file_move(from, to)
+  ep$write(fs::path_dir(to), format = "Rmd")
 }
 
-child_from_include(old_lesson$extra$setup.md)
-child_from_include(old_lesson$extra$"setup-r-workshop.md")
-child_from_include(old_lesson$extra$"setup-python-workshop.md")
+child_from_include(to("learners/setup.md"))
+child_from_include(to("setup-r-workshop.md"))
+child_from_include(to("setup-python-workshop.md"))
+fs::file_move(to("instructors/data.md"), to("learners/data.md"))
 
