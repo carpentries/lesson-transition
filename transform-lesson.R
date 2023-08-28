@@ -234,6 +234,12 @@ if (!strict_overview) {
   } else {
     set_episodes(new, order = names(old_lesson$episodes), write = TRUE)
   }
+} else {
+  cli::cli_h1("Transforming Child Files")
+  files_to_transform <- fs::dir_ls(to("files"), glob = "*md")
+  if (length(files_to_transform)) {
+    purrr::walk(files_to_transform, function(f) try(rewrite(f, to("files"))))
+  }
 }
 
 # Remembering to provision the site folder
