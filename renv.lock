@@ -607,11 +607,11 @@
       "Version": "0.6.0",
       "Source": "GitHub",
       "RemoteType": "github",
+      "RemoteHost": "api.github.com",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
-      "RemoteRef": "allow-overview-pages",
-      "RemoteSha": "c648bc5073b14a4e34544f7967a62b86d29f027c",
-      "RemoteHost": "api.github.com",
+      "RemoteRef": "main",
+      "RemoteSha": "003afeb95e031a650d15c510b9fce949daf2698e",
       "Remotes": "ropensci/tinkr",
       "Requirements": [
         "R6",
@@ -624,7 +624,7 @@
         "xslt",
         "yaml"
       ],
-      "Hash": "bf3fc1eb155d41833ceb9febe97bb623"
+      "Hash": "6d46bb565540069e1391fb822642e290"
     },
     "pillar": {
       "Package": "pillar",
