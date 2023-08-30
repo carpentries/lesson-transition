@@ -20,3 +20,15 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+sandpaper::set_config(
+  pairs = c(
+    sandpaper = "carpentries/sandpaper#496", 
+    varnish = "carpentries/varnish#87"
+  ),
+  write = TRUE,
+  create = TRUE,
+  path = new
+)
+
+to_find <- paste0("$(find ", new, "/ -name '*md')")
+system2("sed", c("-i -r -e", "'s/[^a-z] solution/: spoiler/g'", to_find))
