@@ -236,9 +236,11 @@ if (!strict_overview) {
   }
 } else {
   cli::cli_h1("Transforming Child Files")
-  files_to_transform <- fs::dir_ls(to("files"), glob = "*md")
-  if (length(files_to_transform)) {
-    purrr::walk(files_to_transform, function(f) try(rewrite(f, to("files"))))
+  if (fs::dir_exists(to("files"))) {
+    files_to_transform <- fs::dir_ls(to("files"), glob = "*md")
+    if (length(files_to_transform)) {
+      purrr::walk(files_to_transform, function(f) try(rewrite(f, to("files"))))
+    }
   }
 }
 
