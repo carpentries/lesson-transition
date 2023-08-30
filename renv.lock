@@ -604,14 +604,14 @@
     },
     "pegboard": {
       "Package": "pegboard",
-      "Version": "0.6.0",
+      "Version": "0.6.1",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "003afeb95e031a650d15c510b9fce949daf2698e",
+      "RemoteSha": "94b6d596cc29d75ee70348c21baf62e9ffee491d",
+      "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr",
       "Requirements": [
         "R6",
@@ -624,7 +624,7 @@
         "xslt",
         "yaml"
       ],
-      "Hash": "6d46bb565540069e1391fb822642e290"
+      "Hash": "ebc0a41a1170304c8299eecae6148e5b"
     },
     "pillar": {
       "Package": "pillar",
@@ -829,9 +829,9 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "allow-overview-lessons",
-      "RemoteSha": "e46437854ce50d8b0f6f3390f297e6f8c967c7f2",
+      "RemoteSha": "2b13d19d2ff0108a2b410e5ebae2d799c813859d",
       "RemoteHost": "api.github.com",
-      "Remotes": "ropensci/tinkr, carpentries/pegboard@allow-overview-pages, carpentries/varnish@allow-overview-pages",
+      "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish@allow-overview-pages",
       "Requirements": [
         "assertthat",
         "callr",
@@ -857,7 +857,7 @@
         "whisker",
         "yaml"
       ],
-      "Hash": "54fa178f48afd49ba76bea6a1b2cd14c"
+      "Hash": "0fe43c5b5ba00799c1717202e31e5f3d"
     },
     "sass": {
       "Package": "sass",
@@ -1063,9 +1063,9 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "allow-overview-pages",
-      "RemoteSha": "937e3ce38cf797291a7d7362a53675c85c95750a",
+      "RemoteSha": "7c813e8dc5bed52dea4d0e50434195406c9d453c",
       "RemoteHost": "api.github.com",
-      "Hash": "c97e758e4d9514fe32e16d370101055d"
+      "Hash": "f41564c64361d24465724e4e52224189"
     },
     "vctrs": {
       "Package": "vctrs",
