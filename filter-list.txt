@@ -13,7 +13,10 @@ regex:^_includes/(setup.*\.md)$==>files/\1
 _config_dev.yml
 _site/
 _data/
-regex:^_includes/(?!setup-).*$ # discard everything from includes _except_ setup files
+# discard everything from includes _except_ setup files
+regex:^_includes/(?!setup[-]).*$ 
+_includes/aio-script.md
+_includes/links.md
 _layouts/
 bootstrap/
 assets/
