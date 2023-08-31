@@ -82,3 +82,4 @@ purrr::walk(names(lnks), function(i) {
 
 to_find <- paste0("$(find ", new, "/ -name '*md')")
 system2("sed", c("-i -r -e", "'s/[^a-z] solution/: spoiler/g'", to_find))
+system2("sed", c("-i -r -e", "'s_https://example.com/FIXME_https://github.com/datacarpentry/ecology-workshop_g'", fs::path(new, "CONTRIBUTING.md")))
