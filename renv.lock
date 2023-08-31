@@ -604,13 +604,13 @@
     },
     "pegboard": {
       "Package": "pegboard",
-      "Version": "0.5.3",
+      "Version": "0.6.1",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "10fe819c8aa01cd3487bf0f2423ef6eb5f30be1e",
+      "RemoteSha": "94b6d596cc29d75ee70348c21baf62e9ffee491d",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr",
       "Requirements": [
@@ -624,7 +624,7 @@
         "xslt",
         "yaml"
       ],
-      "Hash": "27aab19d0ffd00c359bbfaf996cf8efd"
+      "Hash": "ebc0a41a1170304c8299eecae6148e5b"
     },
     "pillar": {
       "Package": "pillar",
@@ -823,13 +823,13 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.12.5",
+      "Version": "0.13.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "6394079102282be6da8d952aee6de7489a0d993e",
+      "RemoteSha": "8b2ac2ceb8eab93d2659040126e06b4fe3265994",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
       "Requirements": [
@@ -857,7 +857,7 @@
         "whisker",
         "yaml"
       ],
-      "Hash": "cca5a069448cda99ed0ebb72ef4d3d8f"
+      "Hash": "66703e13710f060ea3b8a8907874efe7"
     },
     "sass": {
       "Package": "sass",
@@ -1057,15 +1057,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "0.2.17",
+      "Version": "0.3.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "05491120472f179fc93fb3acb3ac2bb331c190a8",
+      "RemoteSha": "5acda7d367ec767b6fc7f73c1ece01bbb8527844",
       "RemoteHost": "api.github.com",
-      "Hash": "5beb23b68bd0cb137b1b33ea4fbe59fd"
+      "Hash": "dd2a6047f14d91dadfe2ccab8d1ed3a4"
     },
     "vctrs": {
       "Package": "vctrs",
