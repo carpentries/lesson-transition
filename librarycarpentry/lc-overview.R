@@ -20,6 +20,29 @@
 # to         <- function(...) fs::path(new, ...)
 # old_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 
+new_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
+
+fix_destinations <- function(nodes) {
+  if (is.null(nodes)) {
+    return(NULL)
+  }
+  dest <- xml2::xml_attr(nodes, "destination")
+  dest <- sub("[/]guide[/](index.html)?", "instructor/instructor-notes.html", dest)
+  dest <- sub("[/]setup.html", "/index.html#setup", dest)
+  xml2::xml_set_attr(nodes, "destination", dest)
+  nodes
+}
+
+lnks <- new_lesson$get("links", "extra")
+purrr::walk(names(lnks), function(i) {
+  res <- fix_destinations(lnks[[i]])
+  if (length(res)) {
+    ep <- new_lesson$extra[[i]]
+    path <- ep$path
+    ep$write(fs::path_dir(path), format = fs::path_ext(path))
+  }
+})
+
 sandpaper::set_config(
   pairs = c(
     sandpaper = "carpentries/sandpaper#496", 
