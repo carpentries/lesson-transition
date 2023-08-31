@@ -829,7 +829,7 @@
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "allow-overview-lessons",
-      "RemoteSha": "2b13d19d2ff0108a2b410e5ebae2d799c813859d",
+      "RemoteSha": "b62386bd8e06640a185111674c1abfbfa57844ee",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish@allow-overview-pages",
       "Requirements": [
@@ -857,7 +857,7 @@
         "whisker",
         "yaml"
       ],
-      "Hash": "0fe43c5b5ba00799c1717202e31e5f3d"
+      "Hash": "f3750c3e008f65b5b2b95a9ed45804d4"
     },
     "sass": {
       "Package": "sass",
