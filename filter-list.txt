@@ -5,11 +5,18 @@
 _episodes==>episodes
 _episodes_rmd==>episodes
 
+# overview pages often have setup information in _includes/, so we move that to
+# a top-level files file
+regex:^_includes/(setup.*\.md)$==>files/\1
+
 # We no longer need any styling detritus
 _config_dev.yml
 _site/
 _data/
-_includes/
+# discard everything from includes _except_ setup files
+regex:^_includes/(?!setup[-]).*$ 
+_includes/aio-script.md
+_includes/links.md
 _layouts/
 bootstrap/
 assets/

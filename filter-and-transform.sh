@@ -149,16 +149,8 @@ else
       sed -i -r -e 's/\.bash/\.language-bash/' ${tmp}/{_episodes,_extras,}/*.md
       REPO=${tmp}
       ;;
-    'datacarpentry/ecology-workshop' | 'datacarpentry/genomics-workshop' | 'datacarpentry/socialsci-workshop' | 'datacarpentry/geospatial-workshop')
-        # Workshop lessons need an episode seed before running
-      tmp=$(mktemp -d)
-      rm -r ${tmp}
-      cp -r ${REPO} ${tmp}
-      REPO=${tmp}
-      mkdir -p ${REPO}/_episodes ${OUT}/episodes/
-      cp ${CWD}/placeholder-episode.txt ${REPO}/_episodes/placeholder.md
-      ;;
-    *)
+    # Default case: do nothing
+    *) 
       :
       ;;
   esac
