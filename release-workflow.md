@@ -1,11 +1,14 @@
 ## Transition Release Workflow
 
-The transition release workflow consists of the following steps:
+After you have [met the software and access requirements](#requirements),
+the transition release workflow consists of the following steps:
 
-1. alerting the maintainers of the impending release
-2. restricting access for maintainers
-3. creating the release
-4. committing artifacts and tagging the release
+0. [updating styles and creating an archive](#pre-transition)
+1. [alerting the maintainers of the impending release and restricting access](#alerting-maintainers-and-restricting-access)
+2. [creating the release](#creating-the-release) (see the [details of the release process](#release-details))
+3. [add invalid hash to file.carpentries.org](#add-invalid-hash)
+4. [committing artifacts and tagging the release](#commit-and-create-tag)
+5. [reinstate permissions](#reinstating-permissions)
 
 ### Pre-transition
 
@@ -54,6 +57,7 @@ To get this running, you need the requirements for this repo:
  - git
  - python version >= 3
  - R version >= 4.1
+ - (optional) valut >= v1.12.2
 
 #### GitHub PAT
 
@@ -89,8 +93,101 @@ I have created [a tutorial if you do not have one](https://carpentries.github.io
 
 Your token should have the following scopes: `repo,user,workflow`.
 
-You must also have _admin access_ to whatever organisation you wish to deploy to
-.
+You must also have _admin access_ to whatever organisation you wish to deploy to.
+
+### Release Details
+
+
+
+The release workflow differs from the [transition workflow](transition-workflow.md)
+slightly in a few ways: 
+
+1. the commit messages are _not_ masked in the release workflow. It was
+   necessary to mask references to users and issues in the commit messages for
+   the transition workflow to ensure that users were not accidentally notified
+   during testing.
+2. the `workbenh-beta.yaml` workflow to deploy the lesson to AWS is removed.
+3. the outputs of `git-filter-repo` are written to `*.hash` files in the
+   same folder as the released repository `release/[ORG]/`
+
+The transition steps are completed in the majority of 
+[final-transition.R](final-transition.R). Once they complete successfully you 
+have a fully-transitioned lesson that is ready to be pushed to GitHub. If the
+workflow errors after this point, then you can manually send it to GitHub. 
+
+
+At this point, the transition script will check the `RELEASE_PAT` environmental
+variable for a github token that will enable you to update your repository and
+then call the `setup_github()` function from [functions.R](functions.R), which
+will do the following steps:
+
+
+1. modify the config.yaml file to include the date the repository was created
+2. rename existing GitHub branches (see diagram)
+3. force push `main` and enable github workflows to run
+4. force push an orphan `gh-pages` with the [close-pr.yaml] workflow that will prevent
+   any pull requests acidentally being opened
+5. protect the `main` branch
+
+The branch renaming can be confusing, but this is what it looks like for
+lessons that use R Markdown (which have both a main and gh-pages branch):
+
+```mermaid
+flowchart TD
+    subgraph GitHub
+    gh-pages(["remote@gh-pages"])
+    ngh[gh-pages]
+    legacy/gh-pages
+    main(["remote@main"])
+    nmn[main]
+    legacy/main
+    end
+
+    gh-pages --> legacy/gh-pages
+    ngh      ~~~ legacy/gh-pages
+    main     --> legacy/main
+    nmn      ~~~ legacy/main
+    lgh["local@gh-pages"]  --> ngh
+    lmn["local@main"]      --> nmn
+
+```
+
+One of the challenges here is that GitHub's API is ever changing, so what worked
+yesterday may not work today. If you run into errors in any of the above steps,
+the first thing to do is to keep calm and remember that none of the steps here
+is necessarily destructive because we are renaming the previous branches. This
+is the full workflow for sending the repository to GitHub if you do not have
+access to the API:
+
+0. (in local) move to your lesson with `cd release/[org]/[repo]` (replace `[org]/[repo]`) with the name of your lesson.
+1. (in local) ensure that `created:` is set to the correct date in `config.yaml`
+2. (on GITHUB) rename `gh-pages` to `legacy/gh-pages` (if `main` is your default, then also rename that to `legacy/main`)
+3. (on GITHUB) enable github actions to run
+4. (in local) run `git fetch --prune origin`
+5. (in local) ensure your remote origin is the correct URL
+6. (in local) create an orphan `gh-pages` branch that contains a workflow that will close all PRs 
+   to that branch and force-push it up (run below script from the transitioned repo):
+   ```
+   # checkout and clean gh-pages orphan branch --------------
+   git checkout --orphan gh-pages
+   git rm -rf .
+   # create github workflow for rejecting pull requests -----
+   mkdir -p .github/workflows/
+   curl -o .github/workflows/close-pr.yaml https://raw.githubusercontent.com/carpentries/lesson-transition/main/close-pr.yaml
+   git add .github/workflows/close-pr.yaml
+   # commit and push ----------------------------------------
+   git commit --allow-empty -m "Initializing gh-pages branch"
+   git push --force origin HEAD:gh-pages
+   # switch back to main ------------------------------------
+   git switch main
+   ```
+7. (in local) run `git switch main && git push --force --set-upstream origin main`
+8. (on GITHUB) set the main branch to be the default 
+9. (on GITHUB) (optional) add branch protection to the main branch (to prevent people from accidentally force-pushing)
+10. (on GITHUB) lock all branches that start with `legacy/`
+
+Once that happens, you can move on to [the manual next steps on GitHub](#on-github).
+
 
 ### Alerting the maintainers and restricting access
 
@@ -143,7 +240,7 @@ history, then add a blank space before your commands. This makes fixing mistakes
 annoying, but means that you don't have a bunch of tokens floating in your 
 history to exploit. 
 
-#### If you have installed [vault](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install)
+#### If you have [installed vault](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install)
 
 I like to use vault to store my tokens because it's an extra layer that allows
 me to store them without having to export them as variables. I'm pretty sure 
@@ -238,6 +335,9 @@ processor and the speed of your connection. When it is finished, you will have
 extension](https://github.com/carpentries/lesson-transition/commit/747030b61359a61bd01e299ab2d7ff5714af69d9).
 These are the outputs from the commit process.
 
+If everything worked well without errors, see the [manual next steps on
+GitHub](#on-github), otherwise, read below.
+
 #### Recovering from failure
 
 Because this involves networking, there are different modes of failure that can
@@ -266,6 +366,12 @@ Execution halted
 ```
 
 The solution is to set the correct permissions for your token (listed above).
+
+> **Note**
+> 2023-08-23
+> GitHub API is now throwing permissions errors for the branch rename endpoint.
+> See [issue #93](https://github.com/carpentries/lesson-transition/issues/93) for
+> more details.
 
 <details>
 <summary>Full error message</summary>
@@ -317,7 +423,8 @@ make: *** [Makefile:106: release/fishtree-attempt/znk-transition-test.json] Erro
 
 ### On GitHub
 
-When it is finished, you must comment on the original issue. Here is a template:
+When the transition is finished, you must comment on the original issue. Here
+is a template:
 
 ```markdown
 The deed is done. The infrastructure takes a few minutes to bootstrap and cache the packages for the lesson build. Once the build is done, I will switch github pages to deploy from the `gh-pages` branch and you will have your workbench lesson. 
@@ -325,8 +432,17 @@ The deed is done. The infrastructure takes a few minutes to bootstrap and cache 
 Thank you all for your enthusiasm and your patience!
 ```
 
-From there, you actually do need to wait for the build to complete before setting
-github pages to deploy from `gh-pages`
+The last step is to ensure that GitHub pages deploys The Workbench version of
+the site. During the transition, the original `gh-pages` branch was renamed to
+`legacy/gh-pages` and GitHub knew that it needed to deploy from that branch.
+This allows us to do the transition on the source without disrupting the web
+traffic. 
+
+To switch the site to use The Workbench, wait for the "01 Build and Deploy"
+GitHub workflow to finish running (you can find it under the "Actions" tab on
+GitHub) and then head to Settings > pages and then set the branch that deploys
+GitHub pages to `gh-pages` from the root. Once you do that your transitioned
+lesson will deploy in about 30 seconds.
 
 ### Add invalid hash
 

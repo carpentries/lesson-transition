@@ -29,7 +29,3 @@
 	path = librarycarpentry/lc-overview
 	url = https://github.com/librarycarpentry/lc-overview/
 	branch = gh-pages
-[submodule "carpentries-incubator/good-enough-practices"]
-	path = carpentries-incubator/good-enough-practices
-	url = https://github.com/carpentries-incubator/good-enough-practices/
-	branch = gh-pages
