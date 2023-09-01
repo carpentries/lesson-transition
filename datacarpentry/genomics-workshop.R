@@ -42,10 +42,21 @@ purrr::walk(names(lnks), function(i) {
     ep$write(fs::path_dir(path), format = fs::path_ext(path))
   }
 })
+
+idx <- readLines(fs::path(new, "index.md"))
+fix_table_head <- function(x) {
+  y <- sub(" | ", "---", x, fixed = TRUE)
+  substring(y, floor(nchar(y)/2) - 1L, floor(nchar(y)/2) + 1L) <- " | "
+  y
+}
+heads <- grepl("| ---", idx, fixed = TRUE)
+idx[heads] <- purrr::map_chr(idx[heads], fix_table_head)
+writeLines(idx, fs::path(new, "index.md"))
+
 sandpaper::set_config(
   pairs = c(
-    sandpaper = "carpentries/sandpaper#496", 
-    varnish = "carpentries/varnish#87"
+    sandpaper = "carpentries/sandpaper", 
+    varnish = "carpentries/varnish"
   ),
   write = TRUE,
   create = TRUE,

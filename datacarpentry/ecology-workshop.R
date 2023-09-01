@@ -49,8 +49,8 @@ child_from_include(to("setup-python-workshop.md"))
 fs::file_move(to("instructors/data.md"), to("learners/data.md"))
 sandpaper::set_config(
   pairs = c(
-    sandpaper = "carpentries/sandpaper#496", 
-    varnish = "carpentries/varnish#87"
+    sandpaper = "carpentries/sandpaper", 
+    varnish = "carpentries/varnish"
   ),
   write = TRUE,
   create = TRUE,
@@ -79,6 +79,17 @@ purrr::walk(names(lnks), function(i) {
     ep$write(fs::path_dir(path), format = fs::path_ext(path))
   }
 })
+
+idx <- readLines(fs::path(new, "index.md"))
+fix_table_head <- function(x) {
+  y <- sub(" | ", "---", x, fixed = TRUE)
+  substring(y, floor(nchar(y)/2) - 1L, floor(nchar(y)/2) + 1L) <- " | "
+  y
+}
+heads <- grepl("| ---", idx, fixed = TRUE)
+idx[heads] <- purrr::map_chr(idx[heads], fix_table_head)
+writeLines(idx, fs::path(new, "index.md"))
+
 
 to_find <- paste0("$(find ", new, "/ -name '*md')")
 system2("sed", c("-i -r -e", "'s/[^a-z] solution/: spoiler/g'", to_find))
