@@ -47,15 +47,6 @@ child_from_include(to("learners/setup.md"))
 child_from_include(to("setup-r-workshop.md"))
 child_from_include(to("setup-python-workshop.md"))
 fs::file_move(to("instructors/data.md"), to("learners/data.md"))
-sandpaper::set_config(
-  pairs = c(
-    sandpaper = "carpentries/sandpaper", 
-    varnish = "carpentries/varnish"
-  ),
-  write = TRUE,
-  create = TRUE,
-  path = new
-)
 
 new_lesson <- pegboard::Lesson$new(new, jekyll = FALSE)
 

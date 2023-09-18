@@ -53,15 +53,6 @@ heads <- grepl("| ---", idx, fixed = TRUE)
 idx[heads] <- purrr::map_chr(idx[heads], fix_table_head)
 writeLines(idx, fs::path(new, "index.md"))
 
-sandpaper::set_config(
-  pairs = c(
-    sandpaper = "carpentries/sandpaper", 
-    varnish = "carpentries/varnish"
-  ),
-  write = TRUE,
-  create = TRUE,
-  path = new
-)
 to_find <- paste0("$(find ", new, "/ -name '*md')")
 system2("sed", c("-i -r -e", "'s/[^a-z] solution/: spoiler/g'", to_find))
 system2("sed", c("-i -r -e", "'s_https://example.com/FIXME_https://github.com/datacarpentry/geospatial-workshop_g'", fs::path(new, "CONTRIBUTING.md")))

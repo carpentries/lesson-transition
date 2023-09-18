@@ -43,16 +43,6 @@ purrr::walk(names(lnks), function(i) {
   }
 })
 
-sandpaper::set_config(
-  pairs = c(
-    sandpaper = "carpentries/sandpaper", 
-    varnish = "carpentries/varnish"
-  ),
-  write = TRUE,
-  create = TRUE,
-  path = new
-)
-
 idx <- readLines(fs::path(new, "index.md"))
 fix_table_head <- function(x) {
   y <- sub(" | ", "---", x, fixed = TRUE)
