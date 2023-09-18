@@ -5,27 +5,11 @@
 	path = zkamvar/transition-test-2
 	url = https://github.com/zkamvar/transition-test-2/
 	branch = gh-pages
-[submodule "datacarpentry/geospatial-workshop"]
-	path = datacarpentry/geospatial-workshop
-	url = https://github.com/datacarpentry/geospatial-workshop/
-	branch = gh-pages
 [submodule "swcarpentry/hpc-novice"]
 	path = swcarpentry/hpc-novice
 	url = https://github.com/swcarpentry/hpc-novice/
 	branch = gh-pages
-[submodule "datacarpentry/ecology-workshop"]
-	path = datacarpentry/ecology-workshop
-	url = https://github.com/datacarpentry/ecology-workshop/
-	branch = gh-pages
 [submodule "datacarpentry/genomics-workshop"]
 	path = datacarpentry/genomics-workshop
 	url = https://github.com/datacarpentry/genomics-workshop/
-	branch = gh-pages
-[submodule "datacarpentry/socialsci-workshop"]
-	path = datacarpentry/socialsci-workshop
-	url = https://github.com/datacarpentry/socialsci-workshop/
-	branch = gh-pages
-[submodule "librarycarpentry/lc-overview"]
-	path = librarycarpentry/lc-overview
-	url = https://github.com/librarycarpentry/lc-overview/
 	branch = gh-pages
