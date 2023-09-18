@@ -80,6 +80,11 @@ fix_table_head <- function(x) {
 heads <- grepl("| ---", idx, fixed = TRUE)
 idx[heads] <- purrr::map_chr(idx[heads], fix_table_head)
 writeLines(idx, fs::path(new, "index.md"))
+sandpaper::set_config(
+  c("created" = "2017-05-25"),
+  path = new,
+  write = TRUE
+)
 
 to_find <- paste0("$(find ", new, "/ -name '*md')")
 system2("sed", c("-i -r -e", "'s/[^a-z] solution/: spoiler/g'", to_find))
