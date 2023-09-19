@@ -9,7 +9,3 @@
 	path = swcarpentry/hpc-novice
 	url = https://github.com/swcarpentry/hpc-novice/
 	branch = gh-pages
-[submodule "datacarpentry/genomics-workshop"]
-	path = datacarpentry/genomics-workshop
-	url = https://github.com/datacarpentry/genomics-workshop/
-	branch = gh-pages
