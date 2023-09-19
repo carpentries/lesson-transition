@@ -761,13 +761,13 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "1.0.2",
+      "Version": "1.0.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
-      "Hash": "4b22ac016fe54028b88d0c68badbd061"
+      "Hash": "41b847654f567341725473431dd0d5ab"
     },
     "rlang": {
       "Package": "rlang",
@@ -823,13 +823,13 @@
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.13.0",
+      "Version": "0.13.1",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "sandpaper",
       "RemoteRef": "main",
-      "RemoteSha": "a587d5dddbb68fab5419e8566d4a414a405342ab",
+      "RemoteSha": "7942e441df022f2c3a151f226b05efda79d72db0",
       "RemoteHost": "api.github.com",
       "Remotes": "ropensci/tinkr, carpentries/pegboard, carpentries/varnish",
       "Requirements": [
@@ -857,7 +857,7 @@
         "whisker",
         "yaml"
       ],
-      "Hash": "99b8972f719cfc9831f645934a1e7b72"
+      "Hash": "011cb00461cab2e130642058ba919985"
     },
     "sass": {
       "Package": "sass",
