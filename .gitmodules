@@ -9,3 +9,7 @@
 	path = swcarpentry/hpc-novice
 	url = https://github.com/swcarpentry/hpc-novice/
 	branch = gh-pages
+[submodule "MonashDataFluency/shell-novice"]
+	path = MonashDataFluency/shell-novice
+	url = https://github.com/MonashDataFluency/shell-novice/
+	branch = gh-pages

@@ -4,6 +4,7 @@ DIRS := swcarpentry \
 	librarycarpentry \
 	carpentries-incubator \
 	carpentries-lab \
+	MonashDataFluency \
 	carpentries
 # INPUTS gives you a list of R files that are used to transform the lesson
 INPUTS  := $(foreach dir, $(DIRS), $(wildcard $(dir)/*R))
