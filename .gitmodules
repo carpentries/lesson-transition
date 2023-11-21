@@ -9,3 +9,7 @@
 	path = swcarpentry/hpc-novice
 	url = https://github.com/swcarpentry/hpc-novice/
 	branch = gh-pages
+[submodule "zkamvar/mdf-shell-novice"]
+	path = zkamvar/mdf-shell-novice
+	url = https://github.com/zkamvar/mdf-shell-novice/
+	branch = gh-pages
