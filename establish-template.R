@@ -48,10 +48,10 @@ file_delete(to("README.md"))
 dir_delete(to(".git"))
 dir_delete(to("renv/profiles/lesson-requirements/renv"))
 cli::cli_alert_info("Provisioning pandoc")
-if (!pandoc_is_installed("2.19.2")) {
-  pandoc_install("2.19.2")
+if (!pandoc_is_installed("3.1.2")) {
+  pandoc_install("3.1.2")
 }
-pandoc_activate("2.19.2")
+pandoc_activate("3.1.2")
 for (line in pandoc_run("--version")) {
   cli::cli_text(cli::col_cyan("\t{.emph {line}}"))
 }

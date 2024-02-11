@@ -12,7 +12,7 @@
 #
 # library("fs")
 # library("xml2")
-# pandoc::pandoc_activate("2.19.2")
+# pandoc::pandoc_activate("3.1.2")
 # source("functions.R")
 # old        <- 'librarycarpentry/lc-marcedit'
 # new        <- 'sandpaper/librarycarpentry/lc-marcedit'
