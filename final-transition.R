@@ -89,9 +89,10 @@ if (dir_exists(new)) {
     writeLines(bad_hashes[1], invalidfile)
   }
 }
-
-cli::cli_alert_info("removing workbench beta phase yaml (inserted by template)")
-fs::file_delete(fs::path(new, ".github", "workflows", "workbench-beta-phase.yml"))
+if (fs::file_exists(fs::path(new, ".github", "workflows", "workbench-beta-phase.yml"))) {
+  cli::cli_alert_info("removing workbench beta phase yaml (inserted by template)")
+  fs::file_delete(fs::path(new, ".github", "workflows", "workbench-beta-phase.yml"))
+}
 set_config(c(
   "source" = paste0("https://github.com/", repo),
   "url" = url
