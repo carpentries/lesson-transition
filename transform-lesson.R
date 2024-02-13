@@ -40,7 +40,7 @@ Usage:
 library("fs")
 library("pandoc")
 library("docopt")
-pandoc_activate("2.19.2")
+pandoc_activate("3.1.2")
 options(cli.width = 160)
 
 arguments <- docopt(doc, version = "Stunning Barnacle 2021-11", help = TRUE)
