@@ -1141,7 +1141,7 @@
         "xml2"
       ],
       "Hash": "1ff6a2b18d8937ec8f39bb7c9385d2b8"
-    }
+    },
     "yaml": {
       "Package": "yaml",
       "Version": "2.3.8",
