@@ -5,7 +5,8 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && micromamba clean --all --y
 ARG MAMBA_DOCKERFILE_ACTIVATE=1 
 
 # Set up transition repo
-COPY --chown=$MAMBA_USER:$MAMBA_USER . .
+COPY --chown=$MAMBA_USER:$MAMBA_USER . lesson-transition
+WORKDIR lesson-transition
 RUN R -e 'options(renv.config.pak.enabled = TRUE); renv::restore()'
 
 # This disables the interactive parts of the script
