@@ -18,7 +18,7 @@ if [[ ${FILE} != "empty" && ! -e "${FILE}.R" ]]; then
   echo '#' >> "${FILE}.R"
   echo '# library("fs")' >> "${FILE}.R"
   echo '# library("xml2")' >> "${FILE}.R"
-  echo '# pandoc::pandoc_activate("2.19.2")' >> "${FILE}.R"
+  echo '# pandoc::pandoc_activate("3.1.2")' >> "${FILE}.R"
   echo '# source("functions.R")' >> "${FILE}.R"
   echo "# old        <- '${FILE}'" >> "${FILE}.R"
   echo "# new        <- 'sandpaper/${FILE}'" >> "${FILE}.R"
