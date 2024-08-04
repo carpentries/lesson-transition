@@ -737,6 +737,34 @@ if there are no changes you wish to make
 If your lesson is in a repository that does not belong to an official carpentries
 account, you will need to append the `DIRS` varaible in the makefile.
 
+### Docker
+
+If you don't find it easy to get this project running, you might find the Docker version a bit easier, because it handles all necessary dependencies for you.
+All you need to do is have Docker itself installed.
+
+To perform a conversion using Docker, clone the repo, then:
+
+```
+# Build the container. This need only be done once
+docker build . --tag lesson-transition
+# Prepare the output directory
+mkdir -m a=rwx output
+# Perform the conversion
+docker run \
+   --env GITHUB_PAT=ghp_XXX \
+   --env GITHUB_ACTOR=bot \
+   --volume ${PWD}/output:/tmp/lesson-transition/sandpaper \
+   lesson-transition \
+   make sandpaper/<ORG>/<REPO>.json
+```
+
+For example, for the `carpentries-incubator/docker-introduction` repo, this last line would be:
+```
+make sandpaper/carpentries-incubator/docker-introduction.json
+```
+
+Results will be in `output/<ORG>/<REPO>`, although you might have to `chown` them back to the correct user.
+
 ## Requirements
 
 This repository has package management via {renv}, so there are two steps to
@@ -795,4 +823,3 @@ the pages need to be activated, which you can do via usethis:
 library(usethis)
 use_github_pages()
 ```
-
