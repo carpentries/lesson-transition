@@ -20,12 +20,15 @@
     "README.md",
     "reference.md",
     "setup.md",
-    "setup.R"],
+    "setup.R"
+  ],
   "package.dependency.fields": [
     "Imports",
     "Depends",
     "LinkingTo"
   ],
+  "ppm.enabled": null,
+  "ppm.ignored.urls": [],
   "r.version": [],
   "snapshot.type": "implicit",
   "use.cache": true,
