@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.4.1",
+    "Version": "4.4.0",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -25,24 +25,24 @@
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.0.13",
+      "Version": "1.0.13-1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "methods",
         "utils"
       ],
-      "Hash": "f27411eb6d9c3dada5edd444b8416675"
+      "Hash": "6b868847b365672d6c1677b1608da9ed"
     },
     "askpass": {
       "Package": "askpass",
-      "Version": "1.2.0",
+      "Version": "1.2.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "sys"
       ],
-      "Hash": "cad6cf7f1d5f6e906700b9d3e718c796"
+      "Hash": "c39f4155b3ceb1a9a2799d700fbd4b6a"
     },
     "assertthat": {
       "Package": "assertthat",
@@ -143,10 +143,10 @@
     },
     "commonmark": {
       "Package": "commonmark",
-      "Version": "1.9.1",
+      "Version": "1.9.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "5d8225445acb167abf7797de48b2ee3c"
+      "Hash": "14eb0596f987c71535d07c3aff814742"
     },
     "cpp11": {
       "Package": "cpp11",
@@ -172,7 +172,7 @@
     },
     "credentials": {
       "Package": "credentials",
-      "Version": "2.0.1",
+      "Version": "2.0.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -182,17 +182,17 @@
         "openssl",
         "sys"
       ],
-      "Hash": "c7844b32098dcbd1c59cbd8dddb4ecc6"
+      "Hash": "09fd631e607a236f8cc7f9604db32cb8"
     },
     "curl": {
       "Package": "curl",
-      "Version": "5.2.2",
+      "Version": "6.0.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R"
       ],
-      "Hash": "8f27335f2bcff4d6035edcc82d7d46de"
+      "Hash": "e8ba62486230951fcd2b881c5be23f96"
     },
     "desc": {
       "Package": "desc",
@@ -273,14 +273,13 @@
     },
     "evaluate": {
       "Package": "evaluate",
-      "Version": "0.24.0",
+      "Version": "1.0.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
-        "R",
-        "methods"
+        "R"
       ],
-      "Hash": "a1066cbc05caee9a4bf6d90f194ff4da"
+      "Hash": "3fd29944b231036ad67c3edb32e02201"
     },
     "fansi": {
       "Package": "fansi",
@@ -303,7 +302,7 @@
     },
     "fontawesome": {
       "Package": "fontawesome",
-      "Version": "0.5.2",
+      "Version": "0.5.3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -311,18 +310,18 @@
         "htmltools",
         "rlang"
       ],
-      "Hash": "c2efdd5f0bcd1ea861c2d4e2a883a67d"
+      "Hash": "bd1297f9b5b1fc1372d19e2c4cd82215"
     },
     "fs": {
       "Package": "fs",
-      "Version": "1.6.4",
+      "Version": "1.6.5",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods"
       ],
-      "Hash": "15aeb8c27f5ea5161f9f6a641fafd93a"
+      "Hash": "7f48af39fa27711ea5fbd183b399920d"
     },
     "generics": {
       "Package": "generics",
@@ -337,7 +336,7 @@
     },
     "gert": {
       "Package": "gert",
-      "Version": "2.1.1",
+      "Version": "2.1.4",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -348,7 +347,7 @@
         "sys",
         "zip"
       ],
-      "Hash": "ab2ca7d6bd706ed218d096b7b16d7233"
+      "Hash": "ae855ad6d7be20dd7b05d43d25700398"
     },
     "gh": {
       "Package": "gh",
@@ -380,14 +379,14 @@
     },
     "glue": {
       "Package": "glue",
-      "Version": "1.7.0",
+      "Version": "1.8.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods"
       ],
-      "Hash": "e0b3a53876554bd45879e596cdb10a52"
+      "Hash": "5899f1eaa825580172bb56c08266f37c"
     },
     "here": {
       "Package": "here",
@@ -443,7 +442,7 @@
     },
     "httr2": {
       "Package": "httr2",
-      "Version": "1.0.3",
+      "Version": "1.0.6",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -460,7 +459,7 @@
         "vctrs",
         "withr"
       ],
-      "Hash": "10d93e97faad6b629301bb3a2fd23378"
+      "Hash": "3ef5d07ec78803475a94367d71b40c41"
     },
     "ini": {
       "Package": "ini",
@@ -481,17 +480,17 @@
     },
     "jsonlite": {
       "Package": "jsonlite",
-      "Version": "1.8.8",
+      "Version": "1.8.9",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "methods"
       ],
-      "Hash": "e1b9c55281c5adc4dd113652d9e26768"
+      "Hash": "4e993b65c2c3ffbffce7bb3e2c6f832b"
     },
     "knitr": {
       "Package": "knitr",
-      "Version": "1.48",
+      "Version": "1.49",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -503,7 +502,7 @@
         "xfun",
         "yaml"
       ],
-      "Hash": "acf380f300c721da9fde7df115a5f86f"
+      "Hash": "9fcb189926d93c636dea94fbe4f44480"
     },
     "later": {
       "Package": "later",
@@ -562,13 +561,13 @@
     },
     "openssl": {
       "Package": "openssl",
-      "Version": "2.2.1",
+      "Version": "2.2.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "askpass"
       ],
-      "Hash": "c62edf62de70cadf40553e10c739049d"
+      "Hash": "d413e0fef796c9401a4419485f709ca1"
     },
     "pandoc": {
       "Package": "pandoc",
@@ -585,15 +584,14 @@
     },
     "pegboard": {
       "Package": "pegboard",
-      "Version": "0.7.6",
+      "Version": "0.7.7",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "pegboard",
       "RemoteRef": "main",
-      "RemoteSha": "ad2542f7f7b9c3f90cc871b355ff81ec14a09ca9",
-      "Remotes": "ropensci/tinkr",
+      "RemoteSha": "bad0be19a12f0c6545801b276ddf26c945f8bfd1",
+      "RemoteHost": "api.github.com",
       "Requirements": [
         "R6",
         "commonmark",
@@ -605,7 +603,7 @@
         "xslt",
         "yaml"
       ],
-      "Hash": "896ea59e2b5ee99645de126b99be5f6e"
+      "Hash": "dbe3c94f25ece1554cbfc59ed3b62f18"
     },
     "pillar": {
       "Package": "pillar",
@@ -636,7 +634,7 @@
     },
     "pkgdown": {
       "Package": "pkgdown",
-      "Version": "2.1.0",
+      "Version": "2.1.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -662,7 +660,7 @@
         "xml2",
         "yaml"
       ],
-      "Hash": "0d3d789055c873f48521ce7e23c23f48"
+      "Hash": "df2912d5873422b55a13002510f02c9f"
     },
     "processx": {
       "Package": "processx",
@@ -695,14 +693,14 @@
     },
     "ps": {
       "Package": "ps",
-      "Version": "1.7.7",
+      "Version": "1.8.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "utils"
       ],
-      "Hash": "878b467580097e9c383acbb16adab57a"
+      "Hash": "b4404b1de13758dea1c0484ad0d48563"
     },
     "purrr": {
       "Package": "purrr",
@@ -721,14 +719,17 @@
     },
     "ragg": {
       "Package": "ragg",
-      "Version": "1.3.2",
+      "Version": "1.3.3",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "https://carpentries.r-universe.dev",
+      "RemoteUrl": "https://github.com/r-lib/ragg",
+      "RemoteRef": "v1.3.3",
+      "RemoteSha": "6f2279ae8cd0e0d7e9d0e1ede2b742666f9f1d49",
       "Requirements": [
         "systemfonts",
         "textshaping"
       ],
-      "Hash": "e3087db406e079a8a2fd87f413918ed3"
+      "Hash": "0595fe5e47357111f29ad19101c7d271"
     },
     "rappdirs": {
       "Package": "rappdirs",
@@ -742,13 +743,13 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "1.0.7",
+      "Version": "1.0.11",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
-      "Hash": "397b7b2a265bc5a7a06852524dabae20"
+      "Hash": "47623f66b4e80b3b0587bc5d7b309888"
     },
     "rlang": {
       "Package": "rlang",
@@ -763,7 +764,7 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "2.28",
+      "Version": "2.29",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -782,7 +783,7 @@
         "xfun",
         "yaml"
       ],
-      "Hash": "062470668513dcda416927085ee9bdc7"
+      "Hash": "df99277f63d01c34e95e3d2f06a79736"
     },
     "rprojroot": {
       "Package": "rprojroot",
@@ -796,14 +797,14 @@
     },
     "rstudioapi": {
       "Package": "rstudioapi",
-      "Version": "0.16.0",
+      "Version": "0.17.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "96710351d642b70e8f02ddeb237c46a7"
+      "Hash": "5f90cd73946d706cfe26024294236113"
     },
     "sandpaper": {
       "Package": "sandpaper",
-      "Version": "0.16.9",
+      "Version": "0.16.6",
       "Source": "Repository",
       "Repository": "https://carpentries.r-universe.dev",
       "Requirements": [
@@ -832,7 +833,7 @@
         "withr",
         "yaml"
       ],
-      "Hash": "ead7d47bf156dac02e7c441cbed4b9f3"
+      "Hash": "766498aa0c35795e431003acb08f28c6"
     },
     "sass": {
       "Package": "sass",
@@ -850,7 +851,7 @@
     },
     "servr": {
       "Package": "servr",
-      "Version": "0.30",
+      "Version": "0.32",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -860,20 +861,23 @@
         "mime",
         "xfun"
       ],
-      "Hash": "562294886e51319dfad3f3e6e61fb0b8"
+      "Hash": "63e4ea2379e79cf18813dd0d8146d27c"
     },
     "sys": {
       "Package": "sys",
-      "Version": "3.4.2",
+      "Version": "3.4.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "3a1be13d68d47a8cd0bfd74739ca1555"
+      "Hash": "de342ebfebdbf40477d0758d05426646"
     },
     "systemfonts": {
       "Package": "systemfonts",
       "Version": "1.1.0",
       "Source": "Repository",
       "Repository": "https://carpentries.r-universe.dev",
+      "RemoteUrl": "https://github.com/r-lib/systemfonts",
+      "RemoteRef": "v1.1.0",
+      "RemoteSha": "78df90ca6d869feeb6a40c88f72269093505aa22",
       "Requirements": [
         "R",
         "cpp11",
@@ -886,6 +890,9 @@
       "Version": "0.4.0",
       "Source": "Repository",
       "Repository": "https://carpentries.r-universe.dev",
+      "RemoteUrl": "https://github.com/r-lib/textshaping",
+      "RemoteRef": "v0.4.0",
+      "RemoteSha": "76682df21dce8ef29e905a90dd05732a58b1249f",
       "Requirements": [
         "R",
         "cpp11",
@@ -931,14 +938,14 @@
     },
     "tinkr": {
       "Package": "tinkr",
-      "Version": "0.2.0.9000",
+      "Version": "0.2.0.9001",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "ropensci",
       "RemoteRepo": "tinkr",
       "RemoteRef": "main",
-      "RemoteSha": "8a57235f7072dbcb7eb22516290c58b692a9c015",
+      "RemoteSha": "9dc038a5885421582d0bf07f292c6b2a16199544",
+      "RemoteHost": "api.github.com",
       "Requirements": [
         "R6",
         "commonmark",
@@ -950,17 +957,17 @@
         "xslt",
         "yaml"
       ],
-      "Hash": "a46321228fc84a3e633ee96e5b7fcc57"
+      "Hash": "4078eb090251a5ae37b79a00b6f0984a"
     },
     "tinytex": {
       "Package": "tinytex",
-      "Version": "0.52",
+      "Version": "0.54",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "xfun"
       ],
-      "Hash": "cfbad971a71f0e27cec22e544a08bc3b"
+      "Hash": "3ec7e3ddcacc2d34a9046941222bf94d"
     },
     "usethis": {
       "Package": "usethis",
@@ -1005,15 +1012,15 @@
     },
     "varnish": {
       "Package": "varnish",
-      "Version": "1.0.4",
+      "Version": "1.0.5",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "carpentries",
       "RemoteRepo": "varnish",
       "RemoteRef": "main",
-      "RemoteSha": "0f0552ea659b29cd034e5ac5ebb84aacaa302051",
+      "RemoteSha": "ab51231e5ff374108c93a27c151fd6c9d11b848e",
       "RemoteHost": "api.github.com",
-      "Hash": "0f95697461c3a222e8a546733edb6eea"
+      "Hash": "72c66db1d46b6faecdca9426145b30ed"
     },
     "vctrs": {
       "Package": "vctrs",
@@ -1038,7 +1045,7 @@
     },
     "withr": {
       "Package": "withr",
-      "Version": "3.0.1",
+      "Version": "3.0.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1046,11 +1053,11 @@
         "grDevices",
         "graphics"
       ],
-      "Hash": "07909200e8bbe90426fbfeb73e1e27aa"
+      "Hash": "cc2d62c76458d425210d1eb1478b30b4"
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.47",
+      "Version": "0.49",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1059,13 +1066,16 @@
         "stats",
         "tools"
       ],
-      "Hash": "36ab21660e2d095fef0d83f689e0477c"
+      "Hash": "8687398773806cfff9401a2feca96298"
     },
     "xml2": {
       "Package": "xml2",
       "Version": "1.3.6",
       "Source": "Repository",
       "Repository": "https://carpentries.r-universe.dev",
+      "RemoteUrl": "https://github.com/r-lib/xml2",
+      "RemoteRef": "v1.3.6",
+      "RemoteSha": "6a1b5e8fd44601faffcd5c56b6837bbf6ee41322",
       "Requirements": [
         "R",
         "cli",
@@ -1076,14 +1086,14 @@
     },
     "xslt": {
       "Package": "xslt",
-      "Version": "1.4.5",
+      "Version": "1.4.6",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "Rcpp",
         "xml2"
       ],
-      "Hash": "1ff6a2b18d8937ec8f39bb7c9385d2b8"
+      "Hash": "fddf5280c2bf4d63fb2c9c8d6b040c90"
     },
     "yaml": {
       "Package": "yaml",
