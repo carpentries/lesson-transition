@@ -1,0 +1,31 @@
+name: Request lesson transition
+description: Request help with transitioning a lesson in The Carpentries Incubator to use the Workbench
+title: "REQ: "
+assignees:
+  - tobyhodges
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please provide some information about the lesson you would like to transition to use The Carpentries Workbench.
+        We will try to transition your lesson quickly, but time available for these tasks is limited so please be patient!
+        Note that we are only able to commit to migrating lessons in The Carpentries Incubator, i.e. in the https://github.com/carpentries-incubator organization on GitHub.
+        You may open an issue with this template if your lesson is not in the Incubator, but lessons in the Incubator will be given the highest priority.
+
+        When the lesson transition has been completed, you will be given access to a repository containing the transitioned version, and a chance to review and make/request changes before it is pushed to your Incubator lesson repository, overwriting the previous version.
+        Owners of lessons not in the Incubator will need to take additional steps to finalise the transition of their lesson.
+  - type: input
+    id: repo-url
+    attributes:
+      label: 1. Lesson Repository
+      description: What is the URL of your lesson repository?
+      placeholder: https://github.com/carpentries-incubator/example-repo-name
+    validations:
+      required: true
+  - type: input
+    id: collaborators
+    attributes:
+      label: 2. Tag your collaborators
+      description:  @ mention any other people developing/maintaining your lesson who should be notified about progress on this transition
+      placeholder: ex. @tobyhodges
+  
