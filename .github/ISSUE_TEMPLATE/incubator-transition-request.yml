@@ -26,6 +26,6 @@ body:
     id: collaborators
     attributes:
       label: 2. Tag your collaborators
-      description:  @ mention any other people developing/maintaining your lesson who should be notified about progress on this transition
+      description:  Mention any other people developing/maintaining your lesson who should be notified about progress on this transition
       placeholder: ex. @tobyhodges
   
