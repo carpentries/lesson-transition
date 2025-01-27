@@ -34,8 +34,7 @@ if (dir_exists(lesson)) {
 }
 
 cli::cli_alert_info("creating a new sandpaper lesson")
-tmp <- tempfile()
-tmpout <- file.path(tmp, "workbench-template-rmd")
+tmpout <- file.path(tempdir(), "workbench-template-rmd")
 gert::git_clone("https://github.com/carpentries/workbench-template-rmd", tmpout)
 fs::dir_copy(tmpout, lesson)
 cli::cli_alert_info("Updating workflows")
